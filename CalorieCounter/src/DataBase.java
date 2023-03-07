@@ -13,7 +13,7 @@ public class DataBase implements AutoCloseable {
 	private Connection connection = null;
 
 	/**
-	 * Creates an instance of the DB object and connects to the database
+	 * Creates an instance of the DataBase object and connects to the database
 	 */
 	public DataBase() {
 		try {
