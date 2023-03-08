@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,6 +38,22 @@ public class DataBase implements AutoCloseable {
 		}
 		return result;
 	}
+	
+	// Hasn't been tested yet.
+	public void createFood(String name, int calories) {
+	    try {
+	        PreparedStatement ps = connection.prepareStatement("INSERT INTO Food (name, calories) VALUES (?, ?)");
+	        ps.setString(1, name);
+	        ps.setInt(2, calories);
+	        int rowsInserted = ps.executeUpdate();
+	        if (rowsInserted > 0) {
+	            System.out.println("A new food item was inserted successfully!");
+	        }
+	    } catch (SQLException sqle) {
+	        error(sqle);
+	    }
+	}
+
 
 	/**
 	 * Prints out the details of the SQL error that has occurred, and exits the

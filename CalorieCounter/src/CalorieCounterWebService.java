@@ -1,4 +1,4 @@
-import static spark.Spark.get;
+import static spark.Spark.*;
 import static spark.Spark.port;
 
 import spark.Request;
@@ -8,7 +8,7 @@ import spark.Route;
 public class CalorieCounterWebService {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		port(8088);
 
 		// Simple route so you can check things are working...
@@ -21,7 +21,20 @@ public class CalorieCounterWebService {
 				}
 			}
 		});
+		
+		// Need a front-end to work correctly
+		// Accessible via http://localhost:8088/food in your browser
+		post("/food", (request, response) -> {
+		    String name = request.queryParams("name");
+		    int calories = Integer.parseInt(request.queryParams("calories"));
+		    try (DataBase db = new DataBase()) {
+		        db.createFood(name, calories);
+		    }
+		    response.redirect("/test");
+		    return null;
+		});
 
+		
 	}
 
 }
