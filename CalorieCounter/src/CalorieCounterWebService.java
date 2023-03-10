@@ -34,7 +34,7 @@ public class CalorieCounterWebService {
 			return null;
 		});
 
-		//
+		
 		// Accessible via http://localhost:8088/user in your browser
 		post("/user", (request, response) -> {
 			int weightInKg = Integer.parseInt(request.queryParams("weightInKg"));

@@ -38,72 +38,73 @@ public class DataBase implements AutoCloseable {
 		}
 		return result;
 	}
-	
+
 	// Hasn't been tested yet.
 	public void createFood(String name, int calories) {
-	    try {
-	        PreparedStatement ps = connection.prepareStatement("INSERT INTO Food (name, calories) VALUES (?, ?)");
-	        ps.setString(1, name);
-	        ps.setInt(2, calories);
-	        int rowsInserted = ps.executeUpdate();
-	        if (rowsInserted > 0) {
-	            System.out.println("A new food item was inserted successfully!");
-	        }
-	    } catch (SQLException sqle) {
-	        error(sqle);
-	    }
+		try {
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO Food (name, calories) VALUES (?, ?)");
+			ps.setString(1, name);
+			ps.setInt(2, calories);
+			int rowsInserted = ps.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("A new food item was inserted successfully!");
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+		}
 	}
-	
-	
-	// The BMR for men (655.1 + (9.563 x Weight in kg) + (1.850 x Height in cm) - (4.676 x Age in years)
-	public void menBMR(int weightInKg, int heightInCm, int ageInYears) {
-	    try {
-	    	double BMR = 655.1 + (9.563 * weightInKg) + (1.850 * heightInCm) - (4.676 * ageInYears);
-	    	
-	        PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
-	        ps.setDouble(1, BMR);
-	        int rowsInserted = ps.executeUpdate();
-	        if (rowsInserted > 0) {
-	            System.out.println("A new user's BMR was inserted successfully!");
-	        }
-	    } catch (SQLException sqle) {
-	        error(sqle);
-	    }
-	}	
-	
-	// The BMR for women (66.47 + (13.75 x Weight in kg) + (5.003 x Height in cm) - (6.755 x Age in years)
-	public void womenBMR(int weightInKg, int heightInCm, int ageInYears) {
-	    try {
-	    	double BMR = 66.47 + (13.75 * weightInKg) + (5.003 * heightInCm) - (6.755 * ageInYears);
-	    	
-	        PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
-	        ps.setDouble(1, BMR);
-	        int rowsInserted = ps.executeUpdate();
-	        if (rowsInserted > 0) {
-	            System.out.println("A new user's BMR was inserted successfully!");
-	        }
-	    } catch (SQLException sqle) {
-	        error(sqle);
-	    }
-	}	
-	
-	// The AMR (activity level) AMR = BMR x 1.2 for sedentary (little to no exercise).
-	public double Sedentary() {	
-		double result = 0;
-	try {
-		Statement s = connection.createStatement();
-		ResultSet results = s.executeQuery("SELECT BMR, BMR * 1.2 AS AMR FROM User");
-		 while (results.next()) { 
-			 result = results.getInt(results.findColumn("count"));
-	            System.out.println("User AMR: " + result);
-	        }
-	} catch (SQLException sqle) {
-		error(sqle);
 
+	// The BMR for men (655.1 + (9.563 x Weight in kg) + (1.850 x Height in cm) -
+	// (4.676 x Age in years)
+	public void menBMR(int weightInKg, int heightInCm, int ageInYears) {
+		try {
+			double BMR = 655.1 + (9.563 * weightInKg) + (1.850 * heightInCm) - (4.676 * ageInYears);
+
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
+			ps.setDouble(1, BMR);
+			int rowsInserted = ps.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("A new user's BMR was inserted successfully!");
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+		}
 	}
-	return result;
-}
-	
+
+	// The BMR for women (66.47 + (13.75 x Weight in kg) + (5.003 x Height in cm) -
+	// (6.755 x Age in years)
+	public void womenBMR(int weightInKg, int heightInCm, int ageInYears) {
+		try {
+			double BMR = 66.47 + (13.75 * weightInKg) + (5.003 * heightInCm) - (6.755 * ageInYears);
+
+			PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
+			ps.setDouble(1, BMR);
+			int rowsInserted = ps.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("A new user's BMR was inserted successfully!");
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+		}
+	}
+
+	// The AMR (activity level) AMR = BMR x 1.2 for sedentary (little to no
+	// exercise).
+	public double Sedentary() {
+		double result = 0;
+		try {
+			Statement s = connection.createStatement();
+			ResultSet results = s.executeQuery("SELECT BMR, BMR * 1.2 AS AMR FROM User");
+			while (results.next()) {
+				result = results.getInt(results.findColumn("count"));
+				System.out.println("User AMR: " + result);
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+
+		}
+		return result;
+	}
 
 	/**
 	 * Prints out the details of the SQL error that has occurred, and exits the
