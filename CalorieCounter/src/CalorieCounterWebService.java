@@ -1,5 +1,4 @@
 import static spark.Spark.*;
-import static spark.Spark.port;
 
 import spark.Request;
 import spark.Response;
@@ -10,6 +9,7 @@ public class CalorieCounterWebService {
 	public static void main(String[] args) {
 
 		port(8088);
+		enableCORS("*", "*", "*");
 
 		// Simple route so you can check things are working...
 		// Accessible via http://localhost:8088/test in your browser
@@ -106,7 +106,31 @@ public class CalorieCounterWebService {
 				}
 			}
 		});
+		
+	}
+	
+	private static void enableCORS(final String origin, final String methods, final String headers) {
 
+	    options("/*", (request, response) -> {
+
+	        String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+	        if (accessControlRequestHeaders != null) {
+	            response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+	        }
+
+	        String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+	        if (accessControlRequestMethod != null) {
+	            response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+	        }
+
+	        return "OK";
+	    });
+
+	    before((request, response) -> {
+	        response.header("Access-Control-Allow-Origin", origin);
+	        response.header("Access-Control-Request-Method", methods);
+	        response.header("Access-Control-Allow-Headers", headers);
+	    });
 	}
 
 }
