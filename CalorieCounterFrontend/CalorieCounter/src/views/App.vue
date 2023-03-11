@@ -1,10 +1,13 @@
 <template>
-  <div>
-    <router-link to="/">Home</router-link>
-    <router-link to="/food">Food</router-link>
-    <router-view/>
-    <h1>Home page </h1>
-  </div>
+  <v-app>
+    <v-app-bar class="bg-grey-darken-4">
+      <v-app-bar-title>
+        <router-link to="/">Home</router-link>
+      </v-app-bar-title>
+      <router-link to="/food"><v-btn variant="text">Calorie Counter</v-btn></router-link>
+    </v-app-bar>
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <script>
