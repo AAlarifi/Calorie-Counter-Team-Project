@@ -23,8 +23,7 @@
           </v-container>
         </v-main>
     </v-app>
-  
-  </template>
+</template>
   
 <script>
     export default {
