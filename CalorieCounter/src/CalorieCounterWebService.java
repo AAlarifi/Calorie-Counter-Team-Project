@@ -49,13 +49,25 @@ public class CalorieCounterWebService {
 		// Accessible via http://localhost:8088/sedentary in your browser
 		// could be user/sedentary ????
 		post("/sedentary", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					return "Number of Entries: " + db.Sedentary();
-				}
-			}
+		    @Override
+		    public Object handle(Request request, Response response) throws Exception {
+		        try (DataBase db = new DataBase()) {
+		            String result = db.sedentary();
+		            return result;
+		        }
+		    }
 		});
+		
+		post("/lightlyActive", new Route() {
+		    @Override
+		    public Object handle(Request request, Response response) throws Exception {
+		        try (DataBase db = new DataBase()) {
+		            String result = db.lightlyActive();
+		            return result;
+		        }
+		    }
+		});
+
 
 	}
 
