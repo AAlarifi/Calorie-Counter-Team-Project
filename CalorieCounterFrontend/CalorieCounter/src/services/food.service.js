@@ -6,3 +6,8 @@ const submitCalories = (food, calories) => {
     })
 
 }
+
+// Exports functions
+export const foodService = {
+    submitCalories
+}

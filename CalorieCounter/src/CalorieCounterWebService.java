@@ -30,44 +30,82 @@ public class CalorieCounterWebService {
 			try (DataBase db = new DataBase()) {
 				db.createFood(name, calories);
 			}
-			response.redirect("/test");
-			return null;
+//			response.redirect("/test");
+			return "Food has been added to the database";
 		});
 
-		
-		// Accessible via http://localhost:8088/user in your browser
-		post("/user", (request, response) -> {
+		// Accessible via http://localhost:8088/maleUser in your browser
+		post("/maleUser", (request, response) -> {
 			int weightInKg = Integer.parseInt(request.queryParams("weightInKg"));
 			int heightInCm = Integer.parseInt(request.queryParams("heightInCm"));
 			int ageInYears = Integer.parseInt(request.queryParams("ageInYears"));
 			try (DataBase db = new DataBase()) {
 				db.menBMR(weightInKg, heightInCm, ageInYears);
 			}
-			return "a user has been created";
+			return "A male user has been created";
+		});
+
+		post("/femaleUser", (request, response) -> {
+			int weightInKg = Integer.parseInt(request.queryParams("weightInKg"));
+			int heightInCm = Integer.parseInt(request.queryParams("heightInCm"));
+			int ageInYears = Integer.parseInt(request.queryParams("ageInYears"));
+			try (DataBase db = new DataBase()) {
+				db.womenBMR(weightInKg, heightInCm, ageInYears);
+			}
+			return "A female user has been created";
 		});
 
 		// Accessible via http://localhost:8088/sedentary in your browser
 		// could be user/sedentary ????
 		post("/sedentary", new Route() {
-		    @Override
-		    public Object handle(Request request, Response response) throws Exception {
-		        try (DataBase db = new DataBase()) {
-		            String result = db.sedentary();
-		            return result;
-		        }
-		    }
-		});
-		
-		post("/lightlyActive", new Route() {
-		    @Override
-		    public Object handle(Request request, Response response) throws Exception {
-		        try (DataBase db = new DataBase()) {
-		            String result = db.lightlyActive();
-		            return result;
-		        }
-		    }
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				try (DataBase db = new DataBase()) {
+					String result = db.sedentary();
+					return result;
+				}
+			}
 		});
 
+		post("/lightlyActive", new Route() {
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				try (DataBase db = new DataBase()) {
+					String result = db.lightlyActive();
+					return result;
+				}
+			}
+		});
+
+		post("/moderatelyActive", new Route() {
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				try (DataBase db = new DataBase()) {
+					String result = db.moderatelyActive();
+					return result;
+				}
+			}
+		});
+
+		post("/active", new Route() {
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				try (DataBase db = new DataBase()) {
+					String result = db.active();
+					return result;
+				}
+			}
+		});
+
+		post("/veryActive", new Route() {
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				try (DataBase db = new DataBase()) {
+					String result = db.veryActive();
+					return result;
+				}
+			}
+		});
 
 	}
 

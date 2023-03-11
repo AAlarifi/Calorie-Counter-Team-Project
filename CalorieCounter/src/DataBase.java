@@ -59,7 +59,6 @@ public class DataBase implements AutoCloseable {
 	public void menBMR(int weightInKg, int heightInCm, int ageInYears) {
 		try {
 			double BMR = 655.1 + (9.563 * weightInKg) + (1.850 * heightInCm) - (4.676 * ageInYears);
-
 			PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
 			ps.setDouble(1, BMR);
 			int rowsInserted = ps.executeUpdate();
@@ -88,106 +87,96 @@ public class DataBase implements AutoCloseable {
 		}
 	}
 
-	// The AMR (activity level) AMR = BMR x 1.2 for Sedentary (little to no exercise).
+	// Sedentary (little to no exercise)
 	public String sedentary() {
 		double AMR = 0;
 		try {
-	        Statement statement = connection.createStatement();
-	        String query = "SELECT BMR * 1.2 AS AMR FROM User";
-	        ResultSet resultSet = statement.executeQuery(query);
-	        if (resultSet.next()) {
-	        	AMR = resultSet.getDouble("AMR");
-	        	String updateQuery = "UPDATE User SET AMR = " + AMR;
-	            statement.executeUpdate(updateQuery);
-	  
-	        }
+			Statement statement = connection.createStatement();
+			String query = "SELECT BMR * 1.2 AS AMR FROM User";
+			ResultSet resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				AMR = resultSet.getDouble("AMR");
+				String updateQuery = "UPDATE User SET AMR = " + AMR;
+				statement.executeUpdate(updateQuery);
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
 		return "AMR for sedentary activity level:" + AMR;
 	}
-	
-	// lightlyActive (exercise 1-3 days/week)
+
+	// Lightly active (exercise 1-3 days/week)
 	public String lightlyActive() {
 		double AMR = 0;
 		try {
-	        Statement statement = connection.createStatement();
-	        String query = "SELECT BMR * 1.375 AS AMR FROM User";
-	        ResultSet resultSet = statement.executeQuery(query);
-	        if (resultSet.next()) {
-	        	AMR = resultSet.getDouble("AMR");
-	        	String updateQuery = "UPDATE User SET AMR = " + AMR;
-	            statement.executeUpdate(updateQuery);
-	  
-	        }
+			Statement statement = connection.createStatement();
+			String query = "SELECT BMR * 1.375 AS AMR FROM User";
+			ResultSet resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				AMR = resultSet.getDouble("AMR");
+				String updateQuery = "UPDATE User SET AMR = " + AMR;
+				statement.executeUpdate(updateQuery);
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
 		return "AMR for light activity level:" + AMR;
 	}
-	
-	// lightlyActive (exercise 1-5 days/week)
+
+	// Moderately active (exercise 3-5 days/week)
 	public String moderatelyActive() {
 		double AMR = 0;
 		try {
-	        Statement statement = connection.createStatement();
-	        String query = "SELECT BMR * 1.55 AS AMR FROM User";
-	        ResultSet resultSet = statement.executeQuery(query);
-	        if (resultSet.next()) {
-	        	AMR = resultSet.getDouble("AMR");
-	        	String updateQuery = "UPDATE User SET AMR = " + AMR;
-	            statement.executeUpdate(updateQuery);
-	  
-	        }
+			Statement statement = connection.createStatement();
+			String query = "SELECT BMR * 1.55 AS AMR FROM User";
+			ResultSet resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				AMR = resultSet.getDouble("AMR");
+				String updateQuery = "UPDATE User SET AMR = " + AMR;
+				statement.executeUpdate(updateQuery);
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
 		return "AMR for moderate activity level:" + AMR;
 	}
-	
-	// lightlyActive (exercise 6-7 days/week)
-	public String Active() {
+
+	// Active (exercise 6-7 days/week)
+	public String active() {
 		double AMR = 0;
 		try {
-	        Statement statement = connection.createStatement();
-	        String query = "SELECT BMR * 1.725 AS AMR FROM User";
-	        ResultSet resultSet = statement.executeQuery(query);
-	        if (resultSet.next()) {
-	        	AMR = resultSet.getDouble("AMR");
-	        	String updateQuery = "UPDATE User SET AMR = " + AMR;
-	            statement.executeUpdate(updateQuery);
-	  
-	        }
+			Statement statement = connection.createStatement();
+			String query = "SELECT BMR * 1.725 AS AMR FROM User";
+			ResultSet resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				AMR = resultSet.getDouble("AMR");
+				String updateQuery = "UPDATE User SET AMR = " + AMR;
+				statement.executeUpdate(updateQuery);
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
 		return "AMR for Active level of activity:" + AMR;
 	}
-	
-	// lightlyActive (exercise 6-7 days/week)
+
+	// Very active (hard exercise 6-7 days/week)
 	public String veryActive() {
 		double AMR = 0;
 		try {
-	        Statement statement = connection.createStatement();
-	        String query = "SELECT BMR * 1.9 AS AMR FROM User";
-	        ResultSet resultSet = statement.executeQuery(query);
-	        if (resultSet.next()) {
-	        	AMR = resultSet.getDouble("AMR");
-	        	String updateQuery = "UPDATE User SET AMR = " + AMR;
-	            statement.executeUpdate(updateQuery);
-	  
-	        }
+			Statement statement = connection.createStatement();
+			String query = "SELECT BMR * 1.9 AS AMR FROM User";
+			ResultSet resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				AMR = resultSet.getDouble("AMR");
+				String updateQuery = "UPDATE User SET AMR = " + AMR;
+				statement.executeUpdate(updateQuery);
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
 
 		}
-		return "AMR for lightly Active activity level:" + AMR;
+		return "AMR for very Active activity level:" + AMR;
 	}
-	
 
 	/**
 	 * Prints out the details of the SQL error that has occurred, and exits the
