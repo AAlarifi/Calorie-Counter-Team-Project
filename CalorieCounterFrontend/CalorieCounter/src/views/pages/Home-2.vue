@@ -11,10 +11,11 @@
               <v-card-text>
                 <v-form @submit.prevent="submitData()">
                   <v-select label="Select Gender" :items="['Male', 'Female']" v-model="gender"></v-select>
-                  <v-text-field v-model="weight" label="Weight (in kg)"></v-text-field>
-                  <v-text-field v-model="height" label="Height (in cm)"></v-text-field>
-                  <v-text-field v-model="age" label="Age (in years)"></v-text-field>
-                  <v-select label="Select Activity Level" :items="activityLevel" item-title="desc" item-value="level" v-model="activity"></v-select>
+                  <v-text-field v-model="weight" label="Weight (in kg)" :rules="weightRules"></v-text-field>
+                  <v-text-field v-model="height" label="Height (in cm)" :rules="heightRules"></v-text-field>
+                  <v-text-field v-model="age" label="Age (in years)" :rules="ageRules"></v-text-field>
+                  <v-select label="Select Activity Level" :items="activityLevel" item-title="desc" item-value="level"
+                    v-model="activity"></v-select>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -34,7 +35,16 @@ import services from "../../services/user.service"
 export default {
   data() {
     return {
-      activityLevel: [
+      weightRules: [
+        value => !value || value >= 30 && value <=200 || "Weight must be between 30kg and 200gk!"
+      ],
+      heightRules: [
+        value => !value || value >= 50 && value <=300 || "Height must be between 50cm and 300cm!"
+      ],
+      ageRules: [
+        value => !value || value >= 10 && value <=100 || "Age must be between 10 and 100 years old!"
+      ]
+      ,activityLevel: [
         { level: "sedentary", desc: "Sedentary (little or no exercie)" },
         { level: "lightlyActive", desc: "Lightly active (exercise 1-3 days/week)" },
         { level: "moderatelyActive", desc: "Moderately active (exercise 3-6 days/week)" },
