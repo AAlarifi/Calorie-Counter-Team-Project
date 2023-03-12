@@ -1,5 +1,4 @@
-// The baseUrl may change in the future
-const baseUrl = 'http://localhost:8088';
+const baseUrl = 'http://localhost:8008';
 
 const selectGender = async (gender) => {
   const endpoint = gender === 'male' ? '/maleUser' : '/femaleUser';

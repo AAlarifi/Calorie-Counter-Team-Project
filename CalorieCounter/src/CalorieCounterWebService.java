@@ -8,7 +8,7 @@ public class CalorieCounterWebService {
 
 	public static void main(String[] args) {
 
-		port(8088);
+		port(8008);
 		enableCORS("*", "*", "*");
 
 		// Simple route so you can check things are working...
