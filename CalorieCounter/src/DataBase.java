@@ -179,7 +179,7 @@ public class DataBase implements AutoCloseable {
 	}
 	
 	// To lose weight - 500 calories to the maintenance(AMR)
-	public void loseWeight() {
+	public String loseWeight() {
 		try {
 			Statement statement = connection.createStatement();
 			String query = "SELECT AMR - 500 AS AMR FROM User";
@@ -193,9 +193,10 @@ public class DataBase implements AutoCloseable {
 			error(sqle);
 
 		}
+		return " - 500 calories.";
 	}
 	// To gain weight + 500 calories to the mainenance(AMR)
-	public void gainWeight() {
+	public String gainWeight() {
 		try {
 			Statement statement = connection.createStatement();
 			String query = "SELECT AMR + 500 AS AMR FROM User";
@@ -209,6 +210,7 @@ public class DataBase implements AutoCloseable {
 			error(sqle);
 
 		}
+		return " + 500 calories.";
 	}
 
 	/**
