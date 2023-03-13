@@ -177,6 +177,39 @@ public class DataBase implements AutoCloseable {
 		}
 		return "AMR for very Active activity level:" + AMR;
 	}
+	
+	// To lose weight - 500 calories to the maintenance(AMR)
+	public void loseWeight() {
+		try {
+			Statement statement = connection.createStatement();
+			String query = "SELECT AMR - 500 AS AMR FROM User";
+			ResultSet resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				double AMR = resultSet.getDouble("AMR");
+				String updateQuery = "UPDATE User SET CalorieIntake = " + AMR;
+				statement.executeUpdate(updateQuery);
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+
+		}
+	}
+	// To gain weight + 500 calories to the mainenance(AMR)
+	public void gainWeight() {
+		try {
+			Statement statement = connection.createStatement();
+			String query = "SELECT AMR + 500 AS AMR FROM User";
+			ResultSet resultSet = statement.executeQuery(query);
+			if (resultSet.next()) {
+				double AMR = resultSet.getDouble("AMR");
+				String updateQuery = "UPDATE User SET CalorieIntake = " + AMR;
+				statement.executeUpdate(updateQuery);
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+
+		}
+	}
 
 	/**
 	 * Prints out the details of the SQL error that has occurred, and exits the
