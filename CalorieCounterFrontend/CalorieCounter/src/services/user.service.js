@@ -8,7 +8,7 @@ const selectGender = async (gender) => {
 };
 
 const submitUserForm = async (userData) => {
-  const { gender, weightInKg, heightInCm, ageInYears, activityLevel } = userData;
+  const { gender, weightInKg, heightInCm, ageInYears, activityLevel, fitnessGoal} = userData;
 
   let bmrEndpoint;
   if (gender === 'male') {
@@ -55,6 +55,21 @@ const submitUserForm = async (userData) => {
 
     if (activityResponse.status !== 200) {
       throw new Error('Error getting activity level');
+    }
+
+    let fitnessGoalEndpoint;
+    if (fitnessGoal === 'Lose weight') {
+      fitnessGoalEndpoint = '/loseWeight';
+    } else if (fitnessGoal === 'Gain weight') {
+      fitnessGoalEndpoint = '/gainWeight';
+    } else {
+      throw new Error('Invalid fitness goal');
+    }
+
+    const fitnessGoalResponse = await fetch(baseUrl + fitnessGoalEndpoint, { method: 'POST' });
+
+    if (fitnessGoalResponse.status !== 200) {
+      throw new Error('Error getting fitness goal level');
     }
 
     return 'User data has been submitted successfully';

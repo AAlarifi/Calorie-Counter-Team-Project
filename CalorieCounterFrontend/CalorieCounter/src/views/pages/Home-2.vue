@@ -16,6 +16,7 @@
                   <v-text-field v-model="age" label="Age (in years)" :rules="ageRules"></v-text-field>
                   <v-select label="Select Activity Level" :items="activityLevel" item-title="desc" item-value="level"
                     v-model="activity"></v-select>
+                    <v-select label="Select Fitness goal" :items="['Lose weight', 'Gain weight']" v-model="fitnessGoal"></v-select>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -55,7 +56,8 @@ export default {
       weight: "",
       height: "",
       age: "",
-      activity: ""
+      activity: "",
+      fitnessGoal: ""
     }
   },
   methods: {
@@ -65,7 +67,8 @@ export default {
         weightInKg: this.weight,
         heightInCm: this.height,
         ageInYears: this.age,
-        activityLevel: this.activity
+        activityLevel: this.activity,
+        fitnessGoal: this.fitnessGoal
       };
 
       try {
