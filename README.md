@@ -6,5 +6,15 @@ Found a nice tutorial which shows how to do everything -
 
 [Git and Github Tutorial for Beginners](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners)
 
+Some basic git commands:
+git commit -m ""
+git push
+git pull
+git clone
+git commit -a -m ""
+
+| Attempt | #1    | #2    |
+| :---:   | :---: | :---: |
+| Seconds | 301   | 283   |
 ## Trello
 [Trello link](https://trello.com/b/kUX9g9p6/calories-counter-team-project)
