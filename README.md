@@ -15,8 +15,7 @@ git commit -a -m ""
 
 | Git commands | What they do |
 
-| git commit -m "<message>"   | Commit the staged snapshot, but instead of launching
-a text editor, use <message> as the commit message | 
+| git commit -m "<message>"   | Commit the staged snapshot, but instead of launching a text editor, use <message> as the commit message | 
 | git commit -a -m "" | 301   |
 ## Trello
 [Trello link](https://trello.com/b/kUX9g9p6/calories-counter-team-project)
