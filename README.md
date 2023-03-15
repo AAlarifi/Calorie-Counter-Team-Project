@@ -14,6 +14,7 @@ git clone
 git commit -a -m ""
 
 | Git commands | What they do |
+
 | git commit -m "<message>"   | Commit the staged snapshot, but instead of launching
 a text editor, use <message> as the commit message | 
 | git commit -a -m "" | 301   |
