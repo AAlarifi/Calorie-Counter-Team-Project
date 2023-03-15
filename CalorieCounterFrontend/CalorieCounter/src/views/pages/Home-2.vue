@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main class="bg-grey-darken-4">
-  <v-container style="height: 100svh; max-height: 100svh" class="align-center d-flex">
+      <v-container style="height: 100svh; max-height: 100svh" class="align-center d-flex">
         <v-row justify="center">
           <v-col cols="12" lg="6">
             <v-card elevation="10">
