@@ -127,8 +127,20 @@ public class CalorieCounterWebService {
 			}
 		});
 
+		get("/getCalorieIntake", new Route() {
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				try (DataBase db = new DataBase()) {
+					return "Your current calorie intake is: " + db.getCalorieIntake();
+				}
+			}
+		});
+		
+		
 	}
-
+	
+	
+	
 	private static void enableCORS(final String origin, final String methods, final String headers) {
 
 		options("/*", (request, response) -> {

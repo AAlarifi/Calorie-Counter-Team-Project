@@ -91,13 +91,13 @@ public class DataBase implements AutoCloseable {
 	public String sedentary() {
 		double AMR = 0;
 		try {
-			Statement statement = connection.createStatement();
+			Statement s = connection.createStatement();
 			String query = "SELECT BMR * 1.2 AS AMR FROM User";
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = s.executeQuery(query);
 			if (resultSet.next()) {
 				AMR = resultSet.getDouble("AMR");
 				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				statement.executeUpdate(updateQuery);
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -109,13 +109,13 @@ public class DataBase implements AutoCloseable {
 	public String lightlyActive() {
 		double AMR = 0;
 		try {
-			Statement statement = connection.createStatement();
+			Statement s = connection.createStatement();
 			String query = "SELECT BMR * 1.375 AS AMR FROM User";
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = s.executeQuery(query);
 			if (resultSet.next()) {
 				AMR = resultSet.getDouble("AMR");
 				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				statement.executeUpdate(updateQuery);
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -127,13 +127,13 @@ public class DataBase implements AutoCloseable {
 	public String moderatelyActive() {
 		double AMR = 0;
 		try {
-			Statement statement = connection.createStatement();
+			Statement s = connection.createStatement();
 			String query = "SELECT BMR * 1.55 AS AMR FROM User";
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = s.executeQuery(query);
 			if (resultSet.next()) {
 				AMR = resultSet.getDouble("AMR");
 				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				statement.executeUpdate(updateQuery);
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -145,13 +145,13 @@ public class DataBase implements AutoCloseable {
 	public String active() {
 		double AMR = 0;
 		try {
-			Statement statement = connection.createStatement();
+			Statement s = connection.createStatement();
 			String query = "SELECT BMR * 1.725 AS AMR FROM User";
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = s.executeQuery(query);
 			if (resultSet.next()) {
 				AMR = resultSet.getDouble("AMR");
 				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				statement.executeUpdate(updateQuery);
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -163,13 +163,13 @@ public class DataBase implements AutoCloseable {
 	public String veryActive() {
 		double AMR = 0;
 		try {
-			Statement statement = connection.createStatement();
+			Statement s = connection.createStatement();
 			String query = "SELECT BMR * 1.9 AS AMR FROM User";
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = s.executeQuery(query);
 			if (resultSet.next()) {
 				AMR = resultSet.getDouble("AMR");
 				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				statement.executeUpdate(updateQuery);
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -181,13 +181,13 @@ public class DataBase implements AutoCloseable {
 	// To lose weight - 500 calories to the maintenance(AMR)
 	public String loseWeight() {
 		try {
-			Statement statement = connection.createStatement();
+			Statement s = connection.createStatement();
 			String query = "SELECT AMR - 500 AS AMR FROM User";
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = s.executeQuery(query);
 			if (resultSet.next()) {
 				double AMR = resultSet.getDouble("AMR");
 				String updateQuery = "UPDATE User SET CalorieIntake = " + AMR;
-				statement.executeUpdate(updateQuery);
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -198,19 +198,35 @@ public class DataBase implements AutoCloseable {
 	// To gain weight + 500 calories to the mainenance(AMR)
 	public String gainWeight() {
 		try {
-			Statement statement = connection.createStatement();
+			Statement s = connection.createStatement();
 			String query = "SELECT AMR + 500 AS AMR FROM User";
-			ResultSet resultSet = statement.executeQuery(query);
+			ResultSet resultSet = s.executeQuery(query);
 			if (resultSet.next()) {
 				double AMR = resultSet.getDouble("AMR");
 				String updateQuery = "UPDATE User SET CalorieIntake = " + AMR;
-				statement.executeUpdate(updateQuery);
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
 
 		}
 		return " + 500 calories.";
+	}
+	
+	// Get current calorie intake
+	public String getCalorieIntake() {
+		String result = null;
+		try {
+			Statement s = connection.createStatement();
+			ResultSet results = s.executeQuery("SELECT CalorieIntake FROM User");
+			if (results.next()) {
+				result = results.getString("CalorieIntake");
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+
+		}
+		return "Your current calorie intake is: " + result;
 	}
 
 	/**
