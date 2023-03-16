@@ -79,7 +79,28 @@ const submitUserForm = async (userData) => {
   }
 };
 
+const getCalorieIntake = async () => {
+
+  try {
+    const response = await fetch(baseUrl + '/getCalorieIntake', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Error fetching the calorie intake');
+    }
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+      console.error(error);
+      throw new Error('Internal server error')
+    }
+};
+
 export default {
   selectGender,
   submitUserForm,
+  getCalorieIntake
 };

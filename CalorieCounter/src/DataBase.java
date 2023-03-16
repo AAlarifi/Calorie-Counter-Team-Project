@@ -214,19 +214,19 @@ public class DataBase implements AutoCloseable {
 	}
 	
 	// Get current calorie intake
-	public String getCalorieIntake() {
-		String result = null;
+	public double getCalorieIntake() {
+		double result = 0;
 		try {
 			Statement s = connection.createStatement();
 			ResultSet results = s.executeQuery("SELECT CalorieIntake FROM User");
 			if (results.next()) {
-				result = results.getString("CalorieIntake");
+				result = results.getDouble("CalorieIntake");
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
 
 		}
-		return "Your current calorie intake is: " + result;
+		return result;
 	}
 
 	/**

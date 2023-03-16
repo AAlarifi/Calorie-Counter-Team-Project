@@ -19,14 +19,14 @@
                           </v-card-actions>
                       </v-card>
                       <v-snackbar v-model="snackbar">
-                        {{ response }}
-                    
+                        {{ response }}          
                         <template v-slot:actions>
                             <v-btn color="purple" variant="text" @click="snackbar = false">
                                 Close
                             </v-btn>
                         </template>
                     </v-snackbar>
+                    <p>Your current calorie intake is: {{ currentCalorieIntake }}</p>
                   </v-col>
               </v-row>
           </v-container>
@@ -36,7 +36,8 @@
   
 <script>
 
-    import services from "../../services/food.service"
+    import foodServices from "../../services/food.service"
+    import userServices from "../../services/user.service"
 
     export default {
 
@@ -45,12 +46,22 @@
           food: "",
           calories: "",
           response: "",
-          snackbar: false
+          snackbar: false,
+          currentCalorieIntake: ""
         }
       },
+      mounted(){
+          userServices.getCalorieIntake()
+          .then(serverResponse => {
+            this.currentCalorieIntake = serverResponse;
+          })
+          .catch(error => {
+            this.currentCalorieIntake = error;
+          })
+        },
       methods: {
         submitData() {
-          services.submitCalories(this.food, this.calories)
+          foodServices.submitCalories(this.food, this.calories)
           .then(serverResponse => {
             this.response = serverResponse;
             this.snackbar =  true;

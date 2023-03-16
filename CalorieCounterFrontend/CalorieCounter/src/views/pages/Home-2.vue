@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       weightRules: [
-        value => !value || value >= 30 && value <=200 || "Weight must be between 30kg and 200gk!"
+        value => !value || value >= 30 && value <=200 || "Weight must be between 30kg and 200kg!"
       ],
       heightRules: [
         value => !value || value >= 50 && value <=300 || "Height must be between 50cm and 300cm!"
@@ -74,6 +74,8 @@ export default {
       try {
         const response = await services.submitUserForm(userData);
         console.log(response);
+        this.$router.push('/food')
+        //location.reload()
       } catch (error) {
         console.error(error);
       }
