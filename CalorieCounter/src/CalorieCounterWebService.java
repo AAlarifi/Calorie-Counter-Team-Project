@@ -131,7 +131,7 @@ public class CalorieCounterWebService {
 			@Override
 			public Object handle(Request request, Response response) throws Exception {
 				try (DataBase db = new DataBase()) {
-					return "Your current calorie intake is: " + db.getCalorieIntake();
+					return db.getCalorieIntake();
 				}
 			}
 		});
