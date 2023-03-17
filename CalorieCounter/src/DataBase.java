@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class DataBase implements AutoCloseable {
 
 	// allows us to easily change the database used
-	private static final String JDBC_CONNECTION_STRING = "jdbc:sqlite:CalorieCounter/data/CalorieDB.db";
+	private static final String JDBC_CONNECTION_STRING = "jdbc:sqlite:data/CalorieDB.db";
 
 	// allows us to re-use the connection between queries if desired
 	private Connection connection = null;
