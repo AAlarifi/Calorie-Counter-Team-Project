@@ -136,6 +136,14 @@ public class CalorieCounterWebService {
 			}
 		});
 		
+		get("/foodCalories", new Route() {
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				try (DataBase db = new DataBase()) {
+					return db.foodCalories();
+				}
+			}
+		});
 		
 	}
 	

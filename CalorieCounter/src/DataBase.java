@@ -177,7 +177,7 @@ public class DataBase implements AutoCloseable {
 		}
 		return "AMR for very Active activity level:" + AMR;
 	}
-	
+
 	// To lose weight - 500 calories to the maintenance(AMR)
 	public String loseWeight() {
 		try {
@@ -191,10 +191,10 @@ public class DataBase implements AutoCloseable {
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
 		return " - 500 calories.";
 	}
+
 	// To gain weight + 500 calories to the mainenance(AMR)
 	public String gainWeight() {
 		try {
@@ -208,11 +208,10 @@ public class DataBase implements AutoCloseable {
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
 		return " + 500 calories.";
 	}
-	
+
 	// Get current calorie intake
 	public double getCalorieIntake() {
 		double result = 0;
@@ -224,9 +223,25 @@ public class DataBase implements AutoCloseable {
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
 		return result;
+	}
+
+	// Subs food calories from calorie intak
+	public String foodCalories() {
+		int result = 0;
+		try {
+			Statement s = connection.createStatement();
+			ResultSet results = s.executeQuery("SELECT Calories FROM Food");
+			if (results.next()) {
+				result = results.getInt("Calories");
+				String updateQuery = "UPDATE User SET CalorieIntake = CalorieIntake - " + result;
+				s.executeUpdate(updateQuery);
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+		}
+		return "Food calories subtracted from CalorieIntake";
 	}
 
 	/**
