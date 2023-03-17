@@ -65,6 +65,8 @@
           .then(serverResponse => {
             this.response = serverResponse;
             this.snackbar =  true;
+            foodServices.foodCaloriesCalc()
+            location.reload()
           })
           .catch(error => {
             this.response = error;
