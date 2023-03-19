@@ -4,11 +4,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from "../views/pages/Home-2.vue"
 import Food from "../views/pages/Food.vue"
 import NotFound from "../NotFound.vue"
+import About from "../views/pages/About.vue"
 
 
 const routes = [
     { path: "/", component: Home },
     {path: "/food", component: Food},
+    {path: "/About", component: About},
     { path: "/:pathMatch(.*)*", component: NotFound}
 ]
 //the error route should be the last in the array..
