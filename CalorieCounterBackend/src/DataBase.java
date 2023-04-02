@@ -87,12 +87,6 @@ public class DataBase implements AutoCloseable {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
 	// Sedentary (little to no exercise)
 	public String sedentary() {
 	    double AMR = 0;
@@ -128,7 +122,6 @@ public class DataBase implements AutoCloseable {
 	            int maxID = maxIDResultSet.getInt("MaxID");
 	            String updateQuery = "UPDATE User SET AMR = BMR * 1.375 WHERE UserID = " + maxID;
 	            s.executeUpdate(updateQuery);
-	            System.out.println(AMR);
 	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
 	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
 	            if (AMRResultSet.next()) {
@@ -220,7 +213,6 @@ public class DataBase implements AutoCloseable {
 	        if (maxIDResultSet.next()) {
 	            int maxID = maxIDResultSet.getInt("MaxID");
 	            String updateQuery = "UPDATE User SET CalorieIntake = AMR - 500 WHERE UserID = " + maxID;
-	            System.out.println(maxID);
 	            s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
@@ -232,13 +224,13 @@ public class DataBase implements AutoCloseable {
 	// To gain weight + 500 calories to the mainenance(AMR)
 	public String gainWeight() {
 		try {
-			Statement s = connection.createStatement();
-			String query = "SELECT AMR + 500 AS AMR FROM User";
-			ResultSet resultSet = s.executeQuery(query);
-			if (resultSet.next()) {
-				double AMR = resultSet.getDouble("AMR");
-				String updateQuery = "UPDATE User SET CalorieIntake = " + AMR;
-				s.executeUpdate(updateQuery);
+	        Statement s = connection.createStatement();
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+	            String updateQuery = "UPDATE User SET CalorieIntake = AMR + 500 WHERE UserID = " + maxID;
+	            s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
