@@ -86,37 +86,55 @@ public class DataBase implements AutoCloseable {
 			error(sqle);
 		}
 	}
-
+	
+	
+	
+	
+	
+	
+	
 	// Sedentary (little to no exercise)
 	public String sedentary() {
-		double AMR = 0;
-		try {
-			Statement s = connection.createStatement();
-			String query = "SELECT BMR * 1.2 AS AMR FROM User";
-			ResultSet resultSet = s.executeQuery(query);
-			if (resultSet.next()) {
-				AMR = resultSet.getDouble("AMR");
-				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				s.executeUpdate(updateQuery);
-			}
-		} catch (SQLException sqle) {
-			error(sqle);
-		}
-		return "AMR for sedentary activity level:" + AMR;
+	    double AMR = 0;
+	    try {
+	        Statement s = connection.createStatement();
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+	            String updateQuery = "UPDATE User SET AMR = BMR * 1.2 WHERE UserID = " + maxID;
+	            s.executeUpdate(updateQuery);
+	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+	            if (AMRResultSet.next()) {
+	                AMR = AMRResultSet.getDouble("AMR");
+	            }
+	        }
+	    } catch (SQLException sqle) {
+	        error(sqle);
+	    }
+	    return "AMR for sedentary activity level: " + AMR;
 	}
+
 
 	// Lightly active (exercise 1-3 days/week)
 	public String lightlyActive() {
 		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
-			String query = "SELECT BMR * 1.375 AS AMR FROM User";
-			ResultSet resultSet = s.executeQuery(query);
-			if (resultSet.next()) {
-				AMR = resultSet.getDouble("AMR");
-				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				s.executeUpdate(updateQuery);
-			}
+	        Statement s = connection.createStatement();
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+	            String updateQuery = "UPDATE User SET AMR = BMR * 1.375 WHERE UserID = " + maxID;
+	            s.executeUpdate(updateQuery);
+	            System.out.println(AMR);
+	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+	            if (AMRResultSet.next()) {
+	                AMR = AMRResultSet.getDouble("AMR");
+	            }
+	        }
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
@@ -127,14 +145,19 @@ public class DataBase implements AutoCloseable {
 	public String moderatelyActive() {
 		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
-			String query = "SELECT BMR * 1.55 AS AMR FROM User";
-			ResultSet resultSet = s.executeQuery(query);
-			if (resultSet.next()) {
-				AMR = resultSet.getDouble("AMR");
-				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				s.executeUpdate(updateQuery);
-			}
+	        Statement s = connection.createStatement();
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+	            String updateQuery = "UPDATE User SET AMR = BMR * 1.55 WHERE UserID = " + maxID;
+	            s.executeUpdate(updateQuery);
+	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+	            if (AMRResultSet.next()) {
+	                AMR = AMRResultSet.getDouble("AMR");
+	            }
+	        }
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
@@ -145,14 +168,19 @@ public class DataBase implements AutoCloseable {
 	public String active() {
 		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
-			String query = "SELECT BMR * 1.725 AS AMR FROM User";
-			ResultSet resultSet = s.executeQuery(query);
-			if (resultSet.next()) {
-				AMR = resultSet.getDouble("AMR");
-				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				s.executeUpdate(updateQuery);
-			}
+	        Statement s = connection.createStatement();
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+	            String updateQuery = "UPDATE User SET AMR = BMR * 1.725 WHERE UserID = " + maxID;
+	            s.executeUpdate(updateQuery);
+	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+	            if (AMRResultSet.next()) {
+	                AMR = AMRResultSet.getDouble("AMR");
+	            }
+	        }
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
@@ -163,14 +191,19 @@ public class DataBase implements AutoCloseable {
 	public String veryActive() {
 		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
-			String query = "SELECT BMR * 1.9 AS AMR FROM User";
-			ResultSet resultSet = s.executeQuery(query);
-			if (resultSet.next()) {
-				AMR = resultSet.getDouble("AMR");
-				String updateQuery = "UPDATE User SET AMR = " + AMR;
-				s.executeUpdate(updateQuery);
-			}
+	        Statement s = connection.createStatement();
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+	            String updateQuery = "UPDATE User SET AMR = BMR * 1.9 WHERE UserID = " + maxID;
+	            s.executeUpdate(updateQuery);
+	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+	            if (AMRResultSet.next()) {
+	                AMR = AMRResultSet.getDouble("AMR");
+	            }
+	        }
 		} catch (SQLException sqle) {
 			error(sqle);
 
@@ -181,13 +214,14 @@ public class DataBase implements AutoCloseable {
 	// To lose weight - 500 calories to the maintenance(AMR)
 	public String loseWeight() {
 		try {
-			Statement s = connection.createStatement();
-			String query = "SELECT AMR - 500 AS AMR FROM User";
-			ResultSet resultSet = s.executeQuery(query);
-			if (resultSet.next()) {
-				double AMR = resultSet.getDouble("AMR");
-				String updateQuery = "UPDATE User SET CalorieIntake = " + AMR;
-				s.executeUpdate(updateQuery);
+	        Statement s = connection.createStatement();
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+	            String updateQuery = "UPDATE User SET CalorieIntake = AMR - 500 WHERE UserID = " + maxID;
+	            System.out.println(maxID);
+	            s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
