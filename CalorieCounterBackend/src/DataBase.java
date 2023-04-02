@@ -240,17 +240,23 @@ public class DataBase implements AutoCloseable {
 
 	// Get current calorie intake
 	public double getCalorieIntake() {
-		double result = 0;
+		double CalorieIntake = 0;
 		try {
 			Statement s = connection.createStatement();
-			ResultSet results = s.executeQuery("SELECT CalorieIntake FROM User");
-			if (results.next()) {
-				result = results.getDouble("CalorieIntake");
+	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+	        if (maxIDResultSet.next()) {
+	            int maxID = maxIDResultSet.getInt("MaxID");
+			String results = "SELECT CalorieIntake FROM User WHERE UserID = " + maxID;
+			ResultSet CalorieSet = s.executeQuery(results);
+			if (CalorieSet.next()) {
+				CalorieIntake = CalorieSet.getDouble("CalorieIntake");
 			}
+	        }
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
-		return result;
+		return CalorieIntake;
 	}
 
 	// Subs food calories from calorie intak
