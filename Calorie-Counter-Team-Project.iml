@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="file://CalorieCounter/lib/sparkjava-2.9.3.jar" />
+    <libelement value="file://CalorieCounter/lib/sqlite-jdbc-3.36.0.3.jar" />
+    <src_description expected_position="1">
+      <src_folder value="file://$MODULE_DIR$/CalorieCounter/src" expected_position="1" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/CalorieCounter/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/CalorieCounter/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="sparkjava-2.9.3.jar">
+        <CLASSES>
+          <root url="file://CalorieCounter/lib/sparkjava-2.9.3.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sqlite-jdbc-3.36.0.3.jar">
+        <CLASSES>
+          <root url="file://CalorieCounter/lib/sqlite-jdbc-3.36.0.3.jar" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
