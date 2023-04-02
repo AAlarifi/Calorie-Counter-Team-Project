@@ -22,7 +22,6 @@ public class CalorieCounterWebService {
 			}
 		});
 
-		// Has been successfully tested in postman
 		// Accessible via http://localhost:8088/food in your browser
 		post("/food", (request, response) -> {
 			String name = request.queryParams("name");
@@ -56,7 +55,6 @@ public class CalorieCounterWebService {
 		});
 
 		// Accessible via http://localhost:8088/sedentary in your browser
-		// could be user/sedentary ????
 		post("/sedentary", new Route() {
 			@Override
 			public Object handle(Request request, Response response) throws Exception {
@@ -135,7 +133,10 @@ public class CalorieCounterWebService {
 				}
 			}
 		});
-		
+
+		/*
+		Handles the calculation when food is inserted into database
+		 */
 		get("/foodCalories", new Route() {
 			@Override
 			public Object handle(Request request, Response response) throws Exception {
@@ -146,9 +147,7 @@ public class CalorieCounterWebService {
 		});
 		
 	}
-	
-	
-	
+
 	private static void enableCORS(final String origin, final String methods, final String headers) {
 
 		options("/*", (request, response) -> {
@@ -172,5 +171,4 @@ public class CalorieCounterWebService {
 			response.header("Access-Control-Allow-Headers", headers);
 		});
 	}
-
 }
