@@ -86,48 +86,47 @@ public class DataBase implements AutoCloseable {
 			error(sqle);
 		}
 	}
-	
+
 	// Sedentary (little to no exercise)
 	public String sedentary() {
-	    double AMR = 0;
-	    try {
-	        Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-	            String updateQuery = "UPDATE User SET AMR = BMR * 1.2 WHERE UserID = " + maxID;
-	            s.executeUpdate(updateQuery);
-	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-	            if (AMRResultSet.next()) {
-	                AMR = AMRResultSet.getDouble("AMR");
-	            }
-	        }
-	    } catch (SQLException sqle) {
-	        error(sqle);
-	    }
-	    return "AMR for sedentary activity level: " + AMR;
+		double AMR = 0;
+		try {
+			Statement s = connection.createStatement();
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String updateQuery = "UPDATE User SET AMR = BMR * 1.2 WHERE UserID = " + maxID;
+				s.executeUpdate(updateQuery);
+				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+				if (AMRResultSet.next()) {
+					AMR = AMRResultSet.getDouble("AMR");
+				}
+			}
+		} catch (SQLException sqle) {
+			error(sqle);
+		}
+		return "AMR for sedentary activity level: " + AMR;
 	}
-
 
 	// Lightly active (exercise 1-3 days/week)
 	public String lightlyActive() {
 		double AMR = 0;
 		try {
-	        Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-	            String updateQuery = "UPDATE User SET AMR = BMR * 1.375 WHERE UserID = " + maxID;
-	            s.executeUpdate(updateQuery);
-	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-	            if (AMRResultSet.next()) {
-	                AMR = AMRResultSet.getDouble("AMR");
-	            }
-	        }
+			Statement s = connection.createStatement();
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String updateQuery = "UPDATE User SET AMR = BMR * 1.375 WHERE UserID = " + maxID;
+				s.executeUpdate(updateQuery);
+				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+				if (AMRResultSet.next()) {
+					AMR = AMRResultSet.getDouble("AMR");
+				}
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
@@ -138,19 +137,19 @@ public class DataBase implements AutoCloseable {
 	public String moderatelyActive() {
 		double AMR = 0;
 		try {
-	        Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-	            String updateQuery = "UPDATE User SET AMR = BMR * 1.55 WHERE UserID = " + maxID;
-	            s.executeUpdate(updateQuery);
-	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-	            if (AMRResultSet.next()) {
-	                AMR = AMRResultSet.getDouble("AMR");
-	            }
-	        }
+			Statement s = connection.createStatement();
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String updateQuery = "UPDATE User SET AMR = BMR * 1.55 WHERE UserID = " + maxID;
+				s.executeUpdate(updateQuery);
+				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+				if (AMRResultSet.next()) {
+					AMR = AMRResultSet.getDouble("AMR");
+				}
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
@@ -161,19 +160,19 @@ public class DataBase implements AutoCloseable {
 	public String active() {
 		double AMR = 0;
 		try {
-	        Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-	            String updateQuery = "UPDATE User SET AMR = BMR * 1.725 WHERE UserID = " + maxID;
-	            s.executeUpdate(updateQuery);
-	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-	            if (AMRResultSet.next()) {
-	                AMR = AMRResultSet.getDouble("AMR");
-	            }
-	        }
+			Statement s = connection.createStatement();
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String updateQuery = "UPDATE User SET AMR = BMR * 1.725 WHERE UserID = " + maxID;
+				s.executeUpdate(updateQuery);
+				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+				if (AMRResultSet.next()) {
+					AMR = AMRResultSet.getDouble("AMR");
+				}
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
@@ -184,19 +183,19 @@ public class DataBase implements AutoCloseable {
 	public String veryActive() {
 		double AMR = 0;
 		try {
-	        Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-	            String updateQuery = "UPDATE User SET AMR = BMR * 1.9 WHERE UserID = " + maxID;
-	            s.executeUpdate(updateQuery);
-	            String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-	            ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-	            if (AMRResultSet.next()) {
-	                AMR = AMRResultSet.getDouble("AMR");
-	            }
-	        }
+			Statement s = connection.createStatement();
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String updateQuery = "UPDATE User SET AMR = BMR * 1.9 WHERE UserID = " + maxID;
+				s.executeUpdate(updateQuery);
+				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
+				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
+				if (AMRResultSet.next()) {
+					AMR = AMRResultSet.getDouble("AMR");
+				}
+			}
 		} catch (SQLException sqle) {
 			error(sqle);
 
@@ -207,13 +206,13 @@ public class DataBase implements AutoCloseable {
 	// To lose weight - 500 calories to the maintenance(AMR)
 	public String loseWeight() {
 		try {
-	        Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-	            String updateQuery = "UPDATE User SET CalorieIntake = AMR - 500 WHERE UserID = " + maxID;
-	            s.executeUpdate(updateQuery);
+			Statement s = connection.createStatement();
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String updateQuery = "UPDATE User SET CalorieIntake = AMR - 500 WHERE UserID = " + maxID;
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -224,13 +223,13 @@ public class DataBase implements AutoCloseable {
 	// To gain weight + 500 calories to the mainenance(AMR)
 	public String gainWeight() {
 		try {
-	        Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-	            String updateQuery = "UPDATE User SET CalorieIntake = AMR + 500 WHERE UserID = " + maxID;
-	            s.executeUpdate(updateQuery);
+			Statement s = connection.createStatement();
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String updateQuery = "UPDATE User SET CalorieIntake = AMR + 500 WHERE UserID = " + maxID;
+				s.executeUpdate(updateQuery);
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
@@ -243,32 +242,46 @@ public class DataBase implements AutoCloseable {
 		double CalorieIntake = 0;
 		try {
 			Statement s = connection.createStatement();
-	        String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-	        ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
-	        if (maxIDResultSet.next()) {
-	            int maxID = maxIDResultSet.getInt("MaxID");
-			String results = "SELECT CalorieIntake FROM User WHERE UserID = " + maxID;
-			ResultSet CalorieSet = s.executeQuery(results);
-			if (CalorieSet.next()) {
-				CalorieIntake = CalorieSet.getDouble("CalorieIntake");
+			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String results = "SELECT CalorieIntake FROM User WHERE UserID = " + maxID;
+				ResultSet CalorieSet = s.executeQuery(results);
+				if (CalorieSet.next()) {
+					CalorieIntake = CalorieSet.getDouble("CalorieIntake");
+				}
 			}
-	        }
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
 		return CalorieIntake;
 	}
 
-	// Subs food calories from calorie intak
+	/*
+	 * Subtract Food calories from the user's Calorie intake
+	 */
 	public String foodCalories() {
-		int result = 0;
 		try {
 			Statement s = connection.createStatement();
-			ResultSet results = s.executeQuery("SELECT Calories FROM Food");
-			if (results.next()) {
-				result = results.getInt("Calories");
-				String updateQuery = "UPDATE User SET CalorieIntake = CalorieIntake - " + result;
-				s.executeUpdate(updateQuery);
+			String getMaxIDQueryFood = "SELECT MAX(FoodID) AS MaxID FROM Food";
+			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQueryFood);
+			if (maxIDResultSet.next()) {
+				int maxID = maxIDResultSet.getInt("MaxID");
+				String selectQuery = "SELECT Calories AS foodCalorie FROM Food WHERE FoodID = " + maxID;
+				ResultSet CalorieSet = s.executeQuery(selectQuery);
+				if (CalorieSet.next()) {
+					int foodCalorie = CalorieSet.getInt("foodCalorie");
+					String getMaxIDQuery = "SELECT MAX(UserID) AS MaxUserID FROM User";
+					ResultSet maxUserIDResult = s.executeQuery(getMaxIDQuery);
+					if (maxUserIDResult.next()) {
+						int maxUserID = maxIDResultSet.getInt("MaxUserID");
+						String updateQuery = "UPDATE User SET CalorieIntake = CalorieIntake - " + foodCalorie
+								+ " WHERE UserID = " + maxUserID;
+						s.executeUpdate(updateQuery);
+					}
+				}
+
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
