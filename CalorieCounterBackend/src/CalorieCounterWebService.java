@@ -18,6 +18,8 @@ public class CalorieCounterWebService {
 		get("/getCalorieIntake", UserRoutes.getCalorieIntakeRoute);
 		get("/foodCalories", FoodRoutes.getFoodCalories);
 		post("/food", FoodRoutes.insertFoodRoute);
+		get("/food/search", FoodRoutes.foodSearchRoute);
+
 
 	}
 
