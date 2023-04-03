@@ -4,6 +4,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+
 public class CalorieCounterWebService {
 
 	public static void main(String[] args) {
@@ -11,141 +12,19 @@ public class CalorieCounterWebService {
 		port(8008);
 		enableCORS("*", "*", "*");
 
-		// Simple route so you can check things are working...
-		// Accessible via http://localhost:8088/test in your browser
-		get("/test", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					return "Number of Entries: " + db.getNumberOfEntries();
-				}
-			}
-		});
+		post("/maleUser", UserRoutes.createMaleUser);
+		post("/femaleUser", UserRoutes.createFemaleUser);
+		post("/sedentary", UserRoutes.sedentaryRoute);
+		post("/lightlyActive", UserRoutes.lightlyActiveRoute);
+		post("/moderatelyActive", UserRoutes.moderatelyActiveRoute);
+		post("/active", UserRoutes.activeRoute);
+		post("/veryActive", UserRoutes.veryActiveRoute);
+		post("/loseWeight", UserRoutes.loseWeightRoute);
+		post("/gainWeight", UserRoutes.gainWeightRoute);
+		get("/getCalorieIntake", UserRoutes.getCalorieIntakeRoute);
+		get("/foodCalories", FoodRoutes.getFoodCalories);
+		post("/food", FoodRoutes.insertFoodRoute);
 
-		// Accessible via http://localhost:8088/food in your browser
-		post("/food", (request, response) -> {
-			String name = request.queryParams("name");
-			int calories = Integer.parseInt(request.queryParams("calories"));
-			try (DataBase db = new DataBase()) {
-				db.createFood(name, calories);
-			}
-//			response.redirect("/test");
-			return "Food has been added to the database";
-		});
-
-		// Accessible via http://localhost:8088/maleUser in your browser
-		post("/maleUser", (request, response) -> {
-			int weightInKg = Integer.parseInt(request.queryParams("weightInKg"));
-			int heightInCm = Integer.parseInt(request.queryParams("heightInCm"));
-			int ageInYears = Integer.parseInt(request.queryParams("ageInYears"));
-			try (DataBase db = new DataBase()) {
-				db.menBMR(weightInKg, heightInCm, ageInYears);
-			}
-			return "A male user has been created";
-		});
-
-		post("/femaleUser", (request, response) -> {
-			int weightInKg = Integer.parseInt(request.queryParams("weightInKg"));
-			int heightInCm = Integer.parseInt(request.queryParams("heightInCm"));
-			int ageInYears = Integer.parseInt(request.queryParams("ageInYears"));
-			try (DataBase db = new DataBase()) {
-				db.womenBMR(weightInKg, heightInCm, ageInYears);
-			}
-			return "A female user has been created";
-		});
-
-		// Accessible via http://localhost:8088/sedentary in your browser
-		post("/sedentary", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					String result = db.sedentary();
-					return result;
-				}
-			}
-		});
-
-		post("/lightlyActive", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					String result = db.lightlyActive();
-					return result;
-				}
-			}
-		});
-
-		post("/moderatelyActive", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					String result = db.moderatelyActive();
-					return result;
-				}
-			}
-		});
-
-		post("/active", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					String result = db.active();
-					return result;
-				}
-			}
-		});
-
-		post("/veryActive", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					String result = db.veryActive();
-					return result;
-				}
-			}
-		});
-
-		post("/loseWeight", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					String result = db.loseWeight();
-					return result;
-				}
-			}
-		});
-
-		post("/gainWeight", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					String result = db.gainWeight();
-					return result;
-				}
-			}
-		});
-
-		get("/getCalorieIntake", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					return db.getCalorieIntake();
-				}
-			}
-		});
-
-		/*
-		Handles the calculation when food is inserted into database
-		 */
-		get("/foodCalories", new Route() {
-			@Override
-			public Object handle(Request request, Response response) throws Exception {
-				try (DataBase db = new DataBase()) {
-					return db.foodCalories();
-				}
-			}
-		});
-		
 	}
 
 	private static void enableCORS(final String origin, final String methods, final String headers) {

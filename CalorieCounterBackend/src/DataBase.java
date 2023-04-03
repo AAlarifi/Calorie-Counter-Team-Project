@@ -24,22 +24,6 @@ public class DataBase implements AutoCloseable {
 		}
 	}
 
-	public int getNumberOfEntries() {
-		int result = -1;
-		try {
-			Statement s = connection.createStatement();
-			ResultSet results = s.executeQuery("SELECT COUNT(*) AS count FROM Food");
-			while (results.next()) { // will only execute once, because SELECT COUNT(*) returns just 1 number
-				result = results.getInt(results.findColumn("count"));
-			}
-		} catch (SQLException sqle) {
-			error(sqle);
-
-		}
-		return result;
-	}
-
-	// has been tested.
 	public void createFood(String name, int calories) {
 		try {
 			PreparedStatement ps = connection.prepareStatement("INSERT INTO Food (name, calories) VALUES (?, ?)");
