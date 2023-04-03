@@ -43,8 +43,8 @@
 
       data() {
         return {
-          food: "",
-          calories: "",
+          food: "Test food",
+          calories: "100",
           response: "",
           snackbar: false,
           currentCalorieIntake: ""
