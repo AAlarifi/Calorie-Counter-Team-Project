@@ -52,12 +52,12 @@ export default {
         { level: "active", desc: "Active (exercise 6-7 days/week)" },
         { level: "veryActive", desc: "Very active (hard exercise 6-7 days/week)" }
       ],
-      gender: "",
-      weight: "",
-      height: "",
-      age: "",
-      activity: "",
-      fitnessGoal: ""
+      gender: "Male",
+      weight: "90",
+      height: "180",
+      age: "26",
+      activity: "lightlyActive",
+      fitnessGoal: "Lose weight"
     }
   },
   methods: {
