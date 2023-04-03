@@ -1,10 +1,4 @@
 import static spark.Spark.*;
-
-import spark.Request;
-import spark.Response;
-import spark.Route;
-
-
 public class CalorieCounterWebService {
 
 	public static void main(String[] args) {
