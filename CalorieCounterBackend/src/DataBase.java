@@ -54,11 +54,12 @@ public class DataBase implements AutoCloseable {
 		}
 	}
 
-	// The BMR for men (655.1 + (9.563 x Weight in kg) + (1.850 x Height in cm) -
-	// (4.676 x Age in years)
+/*	 The BMR for men (655.1 + (9.563 x Weight in kg) + (1.850 x Height in cm) -
+	 (4.676 x Age in years)*/
 	public void menBMR(int weightInKg, int heightInCm, int ageInYears) {
 		try {
 			double BMR = 655.1 + (9.563 * weightInKg) + (1.850 * heightInCm) - (4.676 * ageInYears);
+            BMR = Math.ceil(BMR);
 			PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
 			ps.setDouble(1, BMR);
 			int rowsInserted = ps.executeUpdate();
@@ -75,7 +76,7 @@ public class DataBase implements AutoCloseable {
 	public void womenBMR(int weightInKg, int heightInCm, int ageInYears) {
 		try {
 			double BMR = 66.47 + (13.75 * weightInKg) + (5.003 * heightInCm) - (6.755 * ageInYears);
-
+            BMR = Math.ceil(BMR);
 			PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
 			ps.setDouble(1, BMR);
 			int rowsInserted = ps.executeUpdate();
@@ -89,118 +90,137 @@ public class DataBase implements AutoCloseable {
 
 	// Sedentary (little to no exercise)
 	public String sedentary() {
-		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
 			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			ResultSet maxIDResultSet = connection.createStatement().executeQuery(getMaxIDQuery);
 			if (maxIDResultSet.next()) {
 				int maxID = maxIDResultSet.getInt("MaxID");
-				String updateQuery = "UPDATE User SET AMR = BMR * 1.2 WHERE UserID = " + maxID;
-				s.executeUpdate(updateQuery);
-				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-				if (AMRResultSet.next()) {
-					AMR = AMRResultSet.getDouble("AMR");
+				String getBMRQuery = "SELECT BMR FROM User WHERE UserID = " + maxID;
+				ResultSet BMRResultSet = connection.createStatement().executeQuery(getBMRQuery);
+				if (BMRResultSet.next()) {
+					double BMR = BMRResultSet.getDouble("BMR");
+					double AMRcalc = Math.ceil(BMR * 1.2);
+					PreparedStatement updateQuery = connection.prepareStatement("UPDATE User Set AMR = ? WHERE UserID = ?");
+					updateQuery.setDouble(1, AMRcalc);
+					updateQuery.setInt(2, maxID);
+					int rowsUpadted = updateQuery.executeUpdate();
+					if (rowsUpadted > 0) {
+						return "AMR for sedentary activity level: " + AMRcalc;
+					}
 				}
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
-		return "AMR for sedentary activity level: " + AMR;
+		return "Unable to calculate AMR for sedentary activity level";
 	}
 
 	// Lightly active (exercise 1-3 days/week)
 	public String lightlyActive() {
-		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
 			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			ResultSet maxIDResultSet = connection.createStatement().executeQuery(getMaxIDQuery);
 			if (maxIDResultSet.next()) {
 				int maxID = maxIDResultSet.getInt("MaxID");
-				String updateQuery = "UPDATE User SET AMR = BMR * 1.375 WHERE UserID = " + maxID;
-				s.executeUpdate(updateQuery);
-				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-				if (AMRResultSet.next()) {
-					AMR = AMRResultSet.getDouble("AMR");
+				String getBMRQuery = "SELECT BMR FROM User WHERE UserID = " + maxID;
+				ResultSet BMRResultSet = connection.createStatement().executeQuery(getBMRQuery);
+				if (BMRResultSet.next()) {
+					double BMR = BMRResultSet.getDouble("BMR");
+					double AMRcalc = Math.ceil(BMR * 1.375);
+					PreparedStatement updateQuery = connection.prepareStatement("UPDATE User Set AMR = ? WHERE UserID = ?");
+					updateQuery.setDouble(1, AMRcalc);
+					updateQuery.setInt(2, maxID);
+					int rowsUpadted = updateQuery.executeUpdate();
+					if (rowsUpadted > 0) {
+						return "AMR for lightly active activity level: " + AMRcalc;
+					}
 				}
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
-		return "AMR for light activity level:" + AMR;
+		return "Unable to calculate AMR for lightly active activity level";
 	}
 
 	// Moderately active (exercise 3-5 days/week)
 	public String moderatelyActive() {
-		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
 			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			ResultSet maxIDResultSet = connection.createStatement().executeQuery(getMaxIDQuery);
 			if (maxIDResultSet.next()) {
 				int maxID = maxIDResultSet.getInt("MaxID");
-				String updateQuery = "UPDATE User SET AMR = BMR * 1.55 WHERE UserID = " + maxID;
-				s.executeUpdate(updateQuery);
-				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-				if (AMRResultSet.next()) {
-					AMR = AMRResultSet.getDouble("AMR");
+				String getBMRQuery = "SELECT BMR FROM User WHERE UserID = " + maxID;
+				ResultSet BMRResultSet = connection.createStatement().executeQuery(getBMRQuery);
+				if (BMRResultSet.next()) {
+					double BMR = BMRResultSet.getDouble("BMR");
+					double AMRcalc = Math.ceil(BMR * 1.55);
+					PreparedStatement updateQuery = connection.prepareStatement("UPDATE User Set AMR = ? WHERE UserID = ?");
+					updateQuery.setDouble(1, AMRcalc);
+					updateQuery.setInt(2, maxID);
+					int rowsUpadted = updateQuery.executeUpdate();
+					if (rowsUpadted > 0) {
+						return "AMR for moderately active activity level: " + AMRcalc;
+					}
 				}
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
-		return "AMR for moderate activity level:" + AMR;
+		return "Unable to calculate AMR for moderately active activity level";
 	}
 
 	// Active (exercise 6-7 days/week)
 	public String active() {
-		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
 			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			ResultSet maxIDResultSet = connection.createStatement().executeQuery(getMaxIDQuery);
 			if (maxIDResultSet.next()) {
 				int maxID = maxIDResultSet.getInt("MaxID");
-				String updateQuery = "UPDATE User SET AMR = BMR * 1.725 WHERE UserID = " + maxID;
-				s.executeUpdate(updateQuery);
-				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-				if (AMRResultSet.next()) {
-					AMR = AMRResultSet.getDouble("AMR");
+				String getBMRQuery = "SELECT BMR FROM User WHERE UserID = " + maxID;
+				ResultSet BMRResultSet = connection.createStatement().executeQuery(getBMRQuery);
+				if (BMRResultSet.next()) {
+					double BMR = BMRResultSet.getDouble("BMR");
+					double AMRcalc = Math.ceil(BMR * 1.725);
+					PreparedStatement updateQuery = connection.prepareStatement("UPDATE User Set AMR = ? WHERE UserID = ?");
+					updateQuery.setDouble(1, AMRcalc);
+					updateQuery.setInt(2, maxID);
+					int rowsUpadted = updateQuery.executeUpdate();
+					if (rowsUpadted > 0) {
+						return "AMR for active activity level: " + AMRcalc;
+					}
 				}
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
 		}
-		return "AMR for Active level of activity:" + AMR;
+		return "Unable to calculate AMR for active activity level";
 	}
 
 	// Very active (hard exercise 6-7 days/week)
 	public String veryActive() {
-		double AMR = 0;
 		try {
-			Statement s = connection.createStatement();
 			String getMaxIDQuery = "SELECT MAX(UserID) AS MaxID FROM User";
-			ResultSet maxIDResultSet = s.executeQuery(getMaxIDQuery);
+			ResultSet maxIDResultSet = connection.createStatement().executeQuery(getMaxIDQuery);
 			if (maxIDResultSet.next()) {
 				int maxID = maxIDResultSet.getInt("MaxID");
-				String updateQuery = "UPDATE User SET AMR = BMR * 1.9 WHERE UserID = " + maxID;
-				s.executeUpdate(updateQuery);
-				String getAMRQuery = "SELECT AMR FROM User WHERE UserID = " + maxID;
-				ResultSet AMRResultSet = s.executeQuery(getAMRQuery);
-				if (AMRResultSet.next()) {
-					AMR = AMRResultSet.getDouble("AMR");
+				String getBMRQuery = "SELECT BMR FROM User WHERE UserID = " + maxID;
+				ResultSet BMRResultSet = connection.createStatement().executeQuery(getBMRQuery);
+				if (BMRResultSet.next()) {
+					double BMR = BMRResultSet.getDouble("BMR");
+					double AMRcalc = Math.ceil(BMR * 1.9);
+					PreparedStatement updateQuery = connection.prepareStatement("UPDATE User Set AMR = ? WHERE UserID = ?");
+					updateQuery.setDouble(1, AMRcalc);
+					updateQuery.setInt(2, maxID);
+					int rowsUpadted = updateQuery.executeUpdate();
+					if (rowsUpadted > 0) {
+						return "AMR for very active activity level: " + AMRcalc;
+					}
 				}
 			}
 		} catch (SQLException sqle) {
 			error(sqle);
-
 		}
-		return "AMR for very Active activity level:" + AMR;
+		return "Unable to calculate AMR for very active activity level";
 	}
 
 	// To lose weight - 500 calories to the maintenance(AMR)
