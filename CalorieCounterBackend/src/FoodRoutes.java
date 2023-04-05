@@ -2,6 +2,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -30,32 +31,35 @@ public class FoodRoutes {
     private static final String API_ENDPOINT = "https://api.edamam.com/api/food-database/v2/parser";
     private static final String API_APPLICATION_ID = "b588e64f";
 
-public static Route foodSearchRoute = (Request request, Response response) -> {
-    String query = request.queryParams("query");
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest httpRequest = HttpRequest.newBuilder()
-            .uri(URI.create(API_ENDPOINT + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY + "&nutrition-type=logging&ingr=" + query))
-            .GET()
-            .build();
-    HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-    String responseBody =  httpResponse.body();
+    public static Route foodSearchRoute = (Request request, Response response) -> {
+        String query = request.queryParams("query");
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(API_ENDPOINT + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY + "&nutrition-type=logging&ingr=" + query))
+                .GET()
+                .build();
+        HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        String responseBody = httpResponse.body();
 
-    // parse response body int a JSONObject
-    JSONObject responseJson = new JSONObject(responseBody);
-    JSONArray parsedFoods = responseJson.getJSONArray("parsed");
+        JSONObject responseJson = new JSONObject(responseBody);
+        JSONArray parsedFoods = responseJson.getJSONArray("parsed");
+        JSONArray foodItems = new JSONArray();
 
-    for (int i = 0; i < parsedFoods.length(); i++) {
-        JSONObject food = parsedFoods.getJSONObject(i).getJSONObject("food");
-        String name = food.getString("label");
-        int calories = food.getJSONObject("nutrients").getInt("ENERC_KCAL");
+        for (int i = 0; i < parsedFoods.length(); i++) {
+            JSONObject food = parsedFoods.getJSONObject(i).getJSONObject("food");
+            String name = food.getString("label");
+            int calories = food.getJSONObject("nutrients").getInt("ENERC_KCAL");
 
-        // Insert the food into the database
-        try (DataBase db = new DataBase()) {
-            db.createFood(name, calories);
-            return db.foodCalories();
+            JSONObject foodItem = new JSONObject();
+            foodItem.put("name", name);
+            foodItem.put("calories", calories);
+
+            foodItems.put(foodItem);
         }
-    }
-    return "Foods have been added to the database";
-};
+        JSONObject responseObj = new JSONObject();
+        responseObj.put("foods", foodItems);
+
+        return responseObj.toString();
+    };
 
 }
