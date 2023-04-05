@@ -30,6 +30,26 @@
                   </v-col>
               </v-row>
           </v-container>
+          <v-container>
+              <v-row justify="center">
+                  <v-col cols="12" lg="6">
+                      <v-card>
+                          <v-card-item>
+                              <v-card-title class="text-center">Search bar</v-card-title>
+                          </v-card-item>
+                          <v-card-text>
+                              <v-form @submit.prevent="searchFoodButton">
+                                  <v-text-field v-model="search" label="Search"></v-text-field>
+                              </v-form>
+                          </v-card-text>
+                          <v-card-actions>
+                              <v-btn  @click="searchFoodButton" block variant="outlined">Search</v-btn>
+                          </v-card-actions>
+                      </v-card>
+                    <p style="white-space: pre-wrap" v-html="searchResponse"> </p>
+                  </v-col>
+              </v-row>
+          </v-container>
         </v-main>
     </v-app>
 </template>
@@ -43,9 +63,11 @@
 
       data() {
         return {
+          search: "Chocolate",
           food: "Test food",
           calories: "100",
           response: "",
+          searchResponse: "",
           snackbar: false,
           currentCalorieIntake: ""
         }
@@ -71,6 +93,20 @@
           .catch(error => {
             this.response = error;
             this.snackbar =  true;
+          })
+        },
+        searchFoodButton(){
+          foodServices.searchFood(this.search)
+          .then(serverResponse => {
+            const parsedResponse = JSON.parse(serverResponse);
+            const foods = parsedResponse.foods;
+            const foodList = foods.map(food => `${food.name}: ${food.calories}`);
+            this.searchResponse = foodList.join("<br>");
+            
+          })
+          .catch(error => {
+            this.searchResponse = error;
+            
           })
         }
       }
