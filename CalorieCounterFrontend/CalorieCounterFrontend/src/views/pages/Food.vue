@@ -59,6 +59,14 @@
                 <v-list-item-title>{{ result.name}}</v-list-item-title>
               </v-list-item>
             </v-list>
+            <v-snackbar v-model="snackbar">
+              {{ searchResponse }}
+              <template v-slot:actions>
+                <v-btn color="purple" variant="text" @click="snackbar = false">
+                  Close
+                </v-btn>
+              </template>
+            </v-snackbar>
           </v-col>
         </v-row>
       </v-container>
@@ -117,10 +125,13 @@ export default {
           this.searchResults = foods;
           console.log("it works?");
           console.log(serverResponse);
+          this.snackbar = true;
         })
         .catch((error) => {
           this.searchResponse = error;
           console.log(error);
+          this.searchResponse = error;
+          this.snackbar = true;
           //console.log(serverResponse);
         });
     },
