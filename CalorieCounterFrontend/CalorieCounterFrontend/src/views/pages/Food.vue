@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-main class="bg-grey-darken-4">
-      <v-container style="height: 50vh; max-height: 100vh" class="align-center d-flex">
+      <v-container
+        style="height: 50vh; max-height: 100vh"
+        class="align-center d-flex"
+      >
         <v-row justify="center">
           <v-col cols="12" lg="6">
             <v-card elevation="10">
@@ -11,11 +14,16 @@
               <v-card-text>
                 <v-form @submit.prevent="submitData">
                   <v-text-field v-model="food" label="Food"></v-text-field>
-                  <v-text-field v-model="calories" label="Calories"></v-text-field>
+                  <v-text-field
+                    v-model="calories"
+                    label="Calories"
+                  ></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-btn @click="submitData" block variant="outlined">Submit</v-btn>
+                <v-btn @click="submitData" block variant="outlined"
+                  >Submit</v-btn
+                >
               </v-card-actions>
             </v-card>
             <v-snackbar v-model="snackbar">
@@ -48,10 +56,7 @@
             </v-card>
             <v-list>
               <v-list-item v-for="(result, index) in searchResults" :key="index" @click="selectResult(result)">
-                <v-list-item-title>{{ result.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{
-                  result.calories
-                }}</v-list-item-subtitle>
+                <v-list-item-title>{{ result.name}}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-col>
@@ -68,7 +73,7 @@ import userServices from "../../services/user.service";
 export default {
   data() {
     return {
-      search: "Chocolate",
+      search: "apple",
       food: "Test food",
       calories: "100",
       response: "",
@@ -108,20 +113,21 @@ export default {
         .searchFood(this.search)
         .then((serverResponse) => {
           const parsedResponse = JSON.parse(serverResponse);
-          const foods = parsedResponse.foods;
+          const foods = parsedResponse;
           this.searchResults = foods;
+          console.log("it works?");
+          console.log(serverResponse);
         })
         .catch((error) => {
           this.searchResponse = error;
+          console.log(error);
+          //console.log(serverResponse);
         });
     },
     selectResult(result) {
       this.food = result.name;
-      this.calories = result.calories;
+      //this.search = result.name;
       this.searchResults = [];
-      foodServices.submitCalories(this.food, this.calories);
-      foodServices.foodCaloriesCalc();
-      location.reload();
     },
   },
 };
