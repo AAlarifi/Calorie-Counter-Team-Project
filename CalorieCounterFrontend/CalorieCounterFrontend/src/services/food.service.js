@@ -1,6 +1,6 @@
 const submitCalories = (food, calories) => {
 
-    return fetch("http://localhost:8008/food?name=" + food + "&calories=" + calories, {
+    return fetch(`http://localhost:8008/food?name=${food}&calories=${calories}`, {
         method: "POST"
     })
     .then((response) => {
@@ -22,7 +22,7 @@ const submitCalories = (food, calories) => {
 
 const foodCaloriesCalc = () => {
 
-    return fetch("http://localhost:8008/foodCalories", {
+    return fetch(`http://localhost:8008/foodCalories`, {
         method: "GET"
     })
     .then((response) => {
