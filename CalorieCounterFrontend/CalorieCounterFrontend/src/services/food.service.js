@@ -44,7 +44,11 @@ const foodCaloriesCalc = () => {
 
 const searchFood = (search) => {
 
+    if (!search) {
+        return Promise.reject("Search string is empty or undefined");
+      }
     const encodedSearch = encodeURIComponent(search);
+    
     return fetch(`http://localhost:8008/food/search?query=${encodedSearch}` , {
         method: "GET"
     })
