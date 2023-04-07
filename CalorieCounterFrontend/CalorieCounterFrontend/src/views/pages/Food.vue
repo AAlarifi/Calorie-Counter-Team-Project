@@ -137,7 +137,7 @@ export default {
     },
     selectResult(result) {
       this.food = result.name;
-      //this.search = result.name;
+      this.search = result.name;
       this.searchResults = [];
     },
   },

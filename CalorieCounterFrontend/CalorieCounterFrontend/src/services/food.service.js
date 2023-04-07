@@ -42,9 +42,10 @@ const foodCaloriesCalc = () => {
     })
 }
 
-const searchFood = (Search) => {
+const searchFood = (search) => {
 
-    return fetch("http://localhost:8008/food/search?query=" + Search , {
+    const encodedSearch = encodeURIComponent(search);
+    return fetch(`http://localhost:8008/food/search?query=${encodedSearch}` , {
         method: "GET"
     })
     .then((response) => {

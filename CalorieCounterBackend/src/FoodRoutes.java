@@ -1,7 +1,9 @@
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +39,11 @@ public class FoodRoutes {
     public static Route foodSearchRoute = (Request request, Response response) -> {
         String query = request.queryParams("query");
         HttpClient client = HttpClient.newHttpClient();
+
+        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(API_ENDPOINT + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY + "&q=" + query))
+                .uri(URI.create(API_ENDPOINT + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY + "&q=" + encodedQuery))
                 .GET()
                 .build();
         try {
