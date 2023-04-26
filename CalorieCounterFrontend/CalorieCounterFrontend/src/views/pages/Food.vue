@@ -9,7 +9,7 @@
           <v-col cols="12" lg="6">
             <v-card elevation="10">
               <v-card-item>
-                <v-card-title class="text-center">Calorie Counter</v-card-title>
+                <v-card-title class="text-center">Quick Add</v-card-title>
               </v-card-item>
               <v-card-text>
                 <v-form @submit.prevent="submitData">
@@ -43,16 +43,13 @@
           <v-col cols="12" lg="6">
             <v-card>
               <v-card-item>
-                <v-card-title class="text-center">Search bar</v-card-title>
+                <v-card-title class="text-center">Search food</v-card-title>
               </v-card-item>
               <v-card-text>
-                <v-form @submit.prevent="searchFoodButton">
-                  <v-text-field v-model="search" label="Search"></v-text-field>
+                <v-form>
+                  <v-text-field v-model="search" label="Search" @input="searchFoodBar"></v-text-field>
                 </v-form>
               </v-card-text>
-              <v-card-actions>
-                <v-btn @click="searchFoodButton" block variant="outlined">Search</v-btn>
-              </v-card-actions>
             </v-card>
             <v-list>
               <v-list-item v-for="(result, index) in searchResults" :key="index" @click="selectResult(result)">
@@ -116,7 +113,7 @@ export default {
           this.snackbar = true;
         });
     },
-    searchFoodButton() {
+    searchFoodBar() {
       foodServices
         .searchFood(this.search)
         .then((serverResponse) => {

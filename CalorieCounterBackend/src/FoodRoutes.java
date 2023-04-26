@@ -47,14 +47,9 @@ public class FoodRoutes {
                 .GET()
                 .build();
         try {
-
-
             HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String responseBody = httpResponse.body();
-
             //JSONArray parsedFoods = responseJson.getJSONArray("parsed");
-
-
 //        for (int i = 0; i < parsedFoods.length(); i++) {
 //            JSONObject food = parsedFoods.getJSONObject(i).getJSONObject("food");
 //            String name = food.getString("label");
