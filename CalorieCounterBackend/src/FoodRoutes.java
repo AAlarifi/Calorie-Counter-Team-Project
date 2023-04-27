@@ -91,12 +91,12 @@ public class FoodRoutes {
             JSONArray parsedFood = responseJson.getJSONArray("parsed");
             JSONObject foodObj = parsedFood.getJSONObject(0).getJSONObject("food");
             String foodId = foodObj.getString("foodId");
-            JSONObject foodOject = new JSONObject();
-            foodOject.put("foodId", foodId);
+
+            //creating a json object to hold the foodId
 
 
             response.header("Content-Type", "application/json");
-            return foodOject;
+            return foodId; // food id json should be here?
 
         }catch (Exception e){
             e.printStackTrace();
@@ -104,5 +104,50 @@ public class FoodRoutes {
             return "Error: " + e.getMessage();
         }
     };
+// Isn't working. 
+    public static Route foodSearchRequest = (Request request, Response response) -> {
+        HttpClient client = HttpClient.newHttpClient();
 
+        // get quantity and foodId from request parameters
+        int quantity = Integer.parseInt(request.queryParams("quantity"));
+        String foodId = request.queryParams("foodId");
+        String measureURI = request.queryParams("measureURI");
+
+        // call the foodSearchParser route to get the foodId
+        //JSONObject foodSearchResponse = foodSearchParser(request, response);
+        //String foodId = foodSearchResponse.getJSONArray("parsed").getJSONObject(0).getJSONObject("food").getString("foodId");
+        //String foodId = (String) foodSearchParser.handle(request, response);
+
+        JSONObject requestBodyJson = new JSONObject();
+        JSONArray ingredientsArray = new JSONArray();
+
+        JSONObject ingredientObject = new JSONObject();
+        ingredientObject.put("quantity", quantity);
+        ingredientObject.put("measureURI", measureURI);
+        ingredientObject.put("foodId", foodId);
+
+        ingredientsArray.put(ingredientObject);
+        requestBodyJson.put("ingredients", ingredientsArray);
+
+        String requestBody = requestBodyJson.toString();
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(API_ENPOINT_REQUEST + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        try {
+            HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            response.header("Content-Type", "application/json");
+            String responseBody = httpResponse.body();
+            JSONObject responseJson = new JSONObject(responseBody);
+            System.out.println(responseBody);
+            return responseJson;
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            response.status(500);
+            return "Error: " + e.getMessage();
+        }
+    };
 }

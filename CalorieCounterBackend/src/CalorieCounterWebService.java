@@ -20,6 +20,7 @@ public class CalorieCounterWebService {
 		post("/food", FoodRoutes.insertFoodRoute);
 		get("/food/search", FoodRoutes.foodSearchRoute);
 		get("/food/searchParser", FoodRoutes.foodSearchParser);
+		post("/food/searchRequest",FoodRoutes.foodSearchRequest);
 
 
 	}
