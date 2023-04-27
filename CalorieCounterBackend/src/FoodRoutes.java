@@ -4,9 +4,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -34,8 +31,8 @@ public class FoodRoutes {
     private static final String API_HOST = "edamam-recipe-search.p.rapidapi.com";
 
     private static final String API_ENDPOINT_AUTOCOMPLETE = "https://api.edamam.com/auto-complete";
-    private static final String API_ENPOINT_PARSER = "https://api.edamam.com/api/food-database/v2/parser";
-    private static final String API_ENPOINT_REQUEST = "https://api.edamam.com/api/food-database/v2/nutrients";
+    private static final String API_ENDPOINT_PARSER = "https://api.edamam.com/api/food-database/v2/parser";
+    private static final String API_ENDPOINT_REQUEST = "https://api.edamam.com/api/food-database/v2/nutrients";
     private static final String API_APPLICATION_ID = "b588e64f";
 
     // Search bar auto-complete
@@ -61,8 +58,6 @@ public class FoodRoutes {
                 foodObj.put("name", foodName);
                 foodList.put(foodObj);
             }
-
-
         response.header("Content-Type", "application/json");
         return foodList;
     }catch (Exception e){
@@ -80,7 +75,7 @@ public class FoodRoutes {
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
 
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(API_ENPOINT_PARSER + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY + "&ingr=" + encodedQuery + "&nutrition-type=logging"))
+                .uri(URI.create(API_ENDPOINT_PARSER + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY + "&ingr=" + encodedQuery + "&nutrition-type=logging"))
                 .GET()
                 .build();
         try {
@@ -104,19 +99,13 @@ public class FoodRoutes {
             return "Error: " + e.getMessage();
         }
     };
-// Isn't working. 
+// x-www-form-urlencoded must be used for testing in Postman
     public static Route foodSearchRequest = (Request request, Response response) -> {
         HttpClient client = HttpClient.newHttpClient();
 
-        // get quantity and foodId from request parameters
         int quantity = Integer.parseInt(request.queryParams("quantity"));
         String foodId = request.queryParams("foodId");
         String measureURI = request.queryParams("measureURI");
-
-        // call the foodSearchParser route to get the foodId
-        //JSONObject foodSearchResponse = foodSearchParser(request, response);
-        //String foodId = foodSearchResponse.getJSONArray("parsed").getJSONObject(0).getJSONObject("food").getString("foodId");
-        //String foodId = (String) foodSearchParser.handle(request, response);
 
         JSONObject requestBodyJson = new JSONObject();
         JSONArray ingredientsArray = new JSONArray();
@@ -132,15 +121,15 @@ public class FoodRoutes {
         String requestBody = requestBodyJson.toString();
 
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(API_ENPOINT_REQUEST + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY))
+                .uri(URI.create(API_ENDPOINT_REQUEST + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         try {
             HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            response.header("Content-Type", "application/json");
             String responseBody = httpResponse.body();
             JSONObject responseJson = new JSONObject(responseBody);
+            response.header("Content-Type", "application/json");
             System.out.println(responseBody);
             return responseJson;
         }catch (Exception e){
