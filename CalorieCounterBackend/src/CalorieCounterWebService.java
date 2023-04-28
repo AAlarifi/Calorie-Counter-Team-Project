@@ -22,7 +22,6 @@ public class CalorieCounterWebService {
 		get("/food/searchParser", FoodRoutes.foodSearchParser);
 		post("/food/searchRequest",FoodRoutes.foodSearchRequest);
 
-
 	}
 
 	private static void enableCORS(final String origin, final String methods, final String headers) {
