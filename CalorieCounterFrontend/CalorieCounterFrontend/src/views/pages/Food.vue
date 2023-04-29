@@ -1,8 +1,9 @@
 <template>
   <v-app>
     <v-main class="bg-grey-darken-4">
+      <div class="bg-image">
       <v-container
-        style="height: 50vh; max-height: 100vh"
+        style="height: 70vh; max-height: 100vh"
         class="align-center d-flex"
       >
         <v-row justify="center">
@@ -67,6 +68,7 @@
           </v-col>
         </v-row>
       </v-container>
+    </div>
     </v-main>
   </v-app>
 </template>
@@ -140,3 +142,29 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.bg-image {
+  background-image: url('image1.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  filter: brightness(1.2) contrast(1.2);
+  height: 100vh;
+  width: 100vw;
+}
+
+@media only screen and (max-width: 3868px) {
+  .bg-image {
+    background-size: contain;
+    background-position: center top;
+  }
+}
+
+@media only screen and (max-width: 3876px) {
+  .bg-image {
+    background-size: cover;
+  }
+}
+</style>

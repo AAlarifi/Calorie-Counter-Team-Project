@@ -3,6 +3,7 @@ import './style.css'
 import router from "./router"
 import 'bootstrap/dist/css/bootstrap.css'
 
+
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'

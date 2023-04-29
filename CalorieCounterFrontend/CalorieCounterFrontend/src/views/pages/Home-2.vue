@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main class="bg-grey-darken-4">
-      <v-container style="height: 100svh; max-height: 100svh" class="align-center d-flex">
+      <div class="bg-image">
+      <v-container style="height: 110svh; max-height: 110svh" class="align-center d-flex">
         <v-row justify="center">
           <v-col cols="12" lg="6">
             <v-card elevation="10">
@@ -26,6 +27,7 @@
           </v-col>
         </v-row>
       </v-container>
+    </div>
     </v-main>
   </v-app>
 </template>
@@ -83,3 +85,37 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.bg-image {
+  background-image: url('image2.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  filter: brightness(1.2) contrast(1.2);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  z-index: 1;
+  overflow: auto;
+}
+
+@media only screen and (max-width: 1068px) {
+  .bg-image {
+    background-size: contain;
+    background-position: center top;
+    z-index: 1;
+    overflow: auto;
+
+  }
+}
+
+@media only screen and (max-width: 1076px) {
+  .bg-image {
+    background-size: cover;
+    z-index: 1;
+    overflow: auto;
+  }
+}
+</style>
