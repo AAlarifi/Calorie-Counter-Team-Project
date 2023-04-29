@@ -102,24 +102,18 @@ public class FoodRoutes {
 // x-www-form-urlencoded must be used for testing in Postman
     public static Route foodSearchRequest = (Request request, Response response) -> {
         HttpClient client = HttpClient.newHttpClient();
-
         int quantity = Integer.parseInt(request.queryParams("quantity"));
         String foodId = request.queryParams("foodId");
         String measureURI = request.queryParams("measureURI");
-
         JSONObject requestBodyJson = new JSONObject();
         JSONArray ingredientsArray = new JSONArray();
-
         JSONObject ingredientObject = new JSONObject();
         ingredientObject.put("quantity", quantity);
         ingredientObject.put("measureURI", measureURI);
         ingredientObject.put("foodId", foodId);
-
         ingredientsArray.put(ingredientObject);
         requestBodyJson.put("ingredients", ingredientsArray);
-
         String requestBody = requestBodyJson.toString();
-
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(API_ENDPOINT_REQUEST + "?app_id=" + API_APPLICATION_ID + "&app_key=" + API_KEY))
                 .header("Content-Type", "application/json")
@@ -130,8 +124,20 @@ public class FoodRoutes {
             String responseBody = httpResponse.body();
             JSONObject responseJson = new JSONObject(responseBody);
             response.header("Content-Type", "application/json");
-            System.out.println(responseBody);
-            return responseJson;
+
+            JSONObject totalNutrients = responseJson.getJSONObject("totalNutrients");
+            JSONObject caloriesObject = totalNutrients.getJSONObject("ENERC_KCAL");
+            JSONObject proteinObject = totalNutrients.getJSONObject("PROCNT");
+            JSONObject carbsObject = totalNutrients.getJSONObject("CHOCDF");
+            JSONObject fatObject = totalNutrients.getJSONObject("FAT");
+
+            JSONObject nutritionObject = new JSONObject();
+            nutritionObject.put("calories", caloriesObject.getDouble("quantity"));
+            nutritionObject.put("protein", proteinObject.getDouble("quantity"));
+            nutritionObject.put("carbs", carbsObject.getDouble("quantity"));
+            nutritionObject.put("fat", fatObject.getDouble("quantity"));
+
+            return nutritionObject;
         }catch (Exception e){
             e.printStackTrace();
             System.out.println(e.getMessage());
