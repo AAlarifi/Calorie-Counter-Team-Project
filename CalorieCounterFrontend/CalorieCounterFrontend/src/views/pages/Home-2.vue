@@ -7,7 +7,7 @@
           <v-col cols="12" lg="6">
             <v-card elevation="10">
               <v-card-item>
-                <v-card-title class="text-center">Home Page</v-card-title>
+                <v-card-title class="text-center btn btn-primary">Home Page</v-card-title>
               </v-card-item>
               <v-card-text>
                 <v-form @submit.prevent="submitData()">
@@ -21,7 +21,7 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-btn block variant="outlined" @click="calculateAMR()">calculate AMR</v-btn>
+                <v-btn block variant="outlined btn btn-primary" @click="calculateAMR()">calculate AMR</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>

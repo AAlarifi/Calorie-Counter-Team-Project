@@ -2,6 +2,12 @@
   <v-app>
     <v-main class="bg-grey-darken-4">
       <div class="bg-image">
+        <div class="logo3">
+      <img src="image5.jpg" alt="My Picture">
+    </div>
+    <div class="logo4">
+      <img src="image6.jpg" alt="My Picture">
+    </div>
       <v-container
         style="height: 70vh; max-height: 100vh"
         class="align-center d-flex"
@@ -10,7 +16,7 @@
           <v-col cols="12" lg="6">
             <v-card elevation="10">
               <v-card-item>
-                <v-card-title class="text-center">Quick Add</v-card-title>
+                <v-card-title class="text-center btn btn-primary">Quick Add</v-card-title>
               </v-card-item>
               <v-card-text>
                 <v-form @submit.prevent="submitData">
@@ -22,7 +28,7 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-btn @click="submitData" block variant="outlined"
+                <v-btn @click="submitData" block variant="outlined btn btn-primary"
                   >Submit</v-btn
                 >
               </v-card-actions>
@@ -35,7 +41,8 @@
                 </v-btn>
               </template>
             </v-snackbar>
-            <p>Your current calorie intake is: {{ currentCalorieIntake }}</p>
+            <!-- <b class="btn btn-light">Your current calorie intake issssss: {{ currentCalorieIntake }}</b> -->
+            <button class="sharp-btn">Your current calorie intake issssss:{{ currentCalorieIntake }}</button>
           </v-col>
         </v-row>
       </v-container>
@@ -44,7 +51,7 @@
           <v-col cols="12" lg="6">
             <v-card>
               <v-card-item>
-                <v-card-title class="text-center">Search food</v-card-title>
+                <v-card-title class="text-center btn btn-primary">Search food</v-card-title>
               </v-card-item>
               <v-card-text>
                 <v-form>
@@ -154,6 +161,44 @@ export default {
   height: 100vh;
   width: 100vw;
 }
+
+.logo3 {
+  position: absolute;
+  top: 365px;
+  left: 520px;
+}
+
+.logo3 img {
+  width: 50px; /* adjust the size as needed */
+  height: 33px;
+}
+
+.logo4 {
+  position: absolute;
+  top: 362px;
+  left: 177px;
+}
+
+.logo4 img {
+  width: 270px; /* adjust the size as needed */
+  height: 40px;
+}
+
+.sharp-btn {
+  background-color: white;
+  border-radius: 0;
+  color: #0e0101;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.sharp-btn:hover {
+  background-color: #ffffff;
+  color: #ffffff;
+}
+
 
 @media only screen and (max-width: 3868px) {
   .bg-image {
