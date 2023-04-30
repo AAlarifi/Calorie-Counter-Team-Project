@@ -93,7 +93,7 @@ export default {
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  filter: brightness(1.2) contrast(1.2);
+  /* filter: brightness(1.2) contrast(1.2); */
   height: 100vh;
   width: 100vw;
   overflow: hidden;
