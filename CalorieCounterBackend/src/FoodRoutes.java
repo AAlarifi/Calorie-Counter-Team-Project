@@ -137,10 +137,10 @@ public class FoodRoutes {
             JSONObject fatObject = totalNutrients.getJSONObject("FAT");
 
             JSONObject nutritionObject = new JSONObject();
-            nutritionObject.put("protein", proteinObject.getDouble("quantity"));
-            nutritionObject.put("fat", fatObject.getDouble("quantity"));
-            nutritionObject.put("carbs", carbsObject.getDouble("quantity"));
-            nutritionObject.put("calories", caloriesObject.getDouble("quantity"));
+            nutritionObject.put("protein", Math.ceil(proteinObject.getDouble("quantity")* 100)/ 100);
+            nutritionObject.put("fat", Math.ceil(fatObject.getDouble("quantity")* 100)/ 100);
+            nutritionObject.put("carbs", Math.ceil(carbsObject.getDouble("quantity") * 100)/ 100);
+            nutritionObject.put("calories", Math.ceil(caloriesObject.getDouble("quantity")));
 
             return nutritionObject;
         }catch (Exception e){

@@ -97,23 +97,10 @@ const searchParser = (result) => {
 }
 
 const foodInformation = (foodData) => {
-    const {NOS, foodId, measurements} = foodData
+    const { NOS, foodId, measurements } = foodData
 
-    // if (!NOS || !servingSize || !foodId || !measurements) {
-    //     return Promise.reject("Number of servings, serving size, or food ID is empty or undefined");
-    // }
-    // if (!servingSize) {
-    //     return Promise.reject(" serving size error");
-    // }
-    if ( !foodId ) {
-        return Promise.reject("food id missing");
-    }
-    if (!measurements) {
-        return Promise.reject("measurement errror");
-    }
-
-    if (!NOS) {
-        return Promise.reject("nos errror");
+    if (!NOS || !foodId || !measurements) {
+        return Promise.reject("Number of servings, serving size, or food ID is empty or undefined");
     }
 
     let measurementsOption;
@@ -172,7 +159,6 @@ const foodInformation = (foodData) => {
             return Promise.reject(error)
         })
 }
-
 
 // Exports functions
 export default {

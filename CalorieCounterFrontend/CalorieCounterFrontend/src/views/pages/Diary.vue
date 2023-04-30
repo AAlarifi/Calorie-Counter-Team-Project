@@ -1,133 +1,118 @@
 <template>
-  <v-app>
-    <v-main class="bg-grey-darken-4">
-      <div class="bg-image">
-        <v-container
-          style="height: 70vh; max-height: 100vh"
-          class="align-center d-flex"
-        >
-          <v-row justify="center">
-            <v-col cols="12" lg="6">
-              <v-card elevation="10">
-                <v-card-item>
-                  <v-card-title class="text-center">{{
-                    foodName
-                  }}</v-card-title>
-                </v-card-item>
-                <v-card-text>
-                  <v-form>
-                    <v-text-field
-                      v-model="NOS"
-                      label="Number of Servings"
-                      @input="foodDataFunc"
-                    ></v-text-field>
-                    <v-select
-                    v-model="servingSize"
-                      label="Serving Size"
-                      :items="measurements"
-                      item-title="desc"
-                      item-value="level"
-                      
-                    ></v-select>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn
-                    @click="foodInformationHolder"
-                    block
-                    variant="outlined btn btn-primary"
-                    >Add food</v-btn
-                  >
-                </v-card-actions>
-                <v-card-item>
-                  <v-card-text class="text-center"
-                    >Calories {{ serverResponse }}</v-card-text
-                  >
-                </v-card-item>
-              </v-card>
-              {{ response }}
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
-    </v-main>
-  </v-app>
+    <v-app>
+        <v-main class="bg-grey-darken-4">
+            <div class="bg-image">
+                <v-container style="height: 70vh; max-height: 100vh" class="align-center d-flex">
+                    <v-row justify="center">
+                        <v-col cols="12" lg="6">
+                            <v-card elevation="10">
+                                <v-card-item>
+                                    <v-card-title class="text-center">{{
+                                        foodName
+                                    }}</v-card-title>
+                                </v-card-item>
+                                <v-card-text>
+                                    <v-form>
+                                        <v-text-field v-model="NOS" label="Number of Servings"
+                                            @input="foodDataFunc"></v-text-field>
+                                        <v-select v-model="servingSize" label="Serving Size" :items="measurements"
+                                            item-title="desc" item-value="level"></v-select>
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn @click="foodInformationHolder" block variant="outlined btn btn-primary">Add
+                                        food</v-btn>
+                                </v-card-actions>
+                                <v-card-item>
+                                    <v-card-text class="text-center">
+                                        <v-card-text class="text-center">{{ foodInfo }}</v-card-text>
+                                    </v-card-text>
+                                </v-card-item>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </div>
+        </v-main>
+    </v-app>
 </template>
 
 <script>
 import foodServices from "../../services/food.service";
 
 export default {
-  data() {
-    return {
-      measurements: [
-        { level: "ml", desc: "1.0 Milliliter" },
-        { level: "gram", desc: "1.0 Gram" },
-        { level: "ounce", desc: "1.0 Ounce" },
-        { level: "pound", desc: "1.0 Pound" },
-        { level: "kilogram", desc: "1.0 Kilogram" },
-        { level: "cup", desc: "Cup" },
-        { level: "serving", desc: "Serving" },
-      ],
-      servingSize: "",
-      NOS: "20",
-      foodName: this.$route.query.food,
-      foodId: this.$route.query.foodId,
-    };
-  },
-  methods: {
-    async foodDataFunc() {
-        console.log(this.servingSize);
-      const foodData = {
-        foodId: this.foodId,
-        measurements: this.servingSize,
-        NOS: this.NOS,
-      };
-      try {
-        const response = await foodServices.foodInformation(foodData);
-        console.log(response);
-      } catch (error) {
-        this.response = error;
-        console.log(error);
-      }
+    data() {
+        return {
+            measurements: [
+                { level: "ml", desc: "1.0 Milliliter" },
+                { level: "gram", desc: "1.0 Gram" },
+                { level: "ounce", desc: "1.0 Ounce" },
+                { level: "pound", desc: "1.0 Pound" },
+                { level: "kilogram", desc: "1.0 Kilogram" },
+                { level: "cup", desc: "Cup" },
+                { level: "serving", desc: "Serving" },
+            ],
+            servingSize: "",
+            NOS: "",
+            foodName: this.$route.query.food,
+            foodId: this.$route.query.foodId,
+            foodInfo: []
+        };
     },
-  },
-  watch: {
-    servingSize: function(){
-        this.foodDataFunc();
+    methods: {
+        async foodDataFunc() {
+            console.log(this.servingSize);
+            const foodData = {
+                foodId: this.foodId,
+                measurements: this.servingSize,
+                NOS: this.NOS,
+            };
+            try {
+                const response = await foodServices.foodInformation(foodData);
+                console.log(response);
+                this.foodInfo = response
+            } catch (error) {
+                this.foodInfo = 'Error: Food information not found.';
+                console.log(error);
+            }
+        },
+    },
+    watch: {
+        servingSize: function () {
+            this.foodDataFunc();
+        }
     }
-  }
 };
 </script>
 <style scoped>
 .bg-image {
-  background-image: url("src/images/image2.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  /* filter: brightness(1.2) contrast(1.2); */
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  z-index: 1;
-  overflow: auto;
+    background-image: url("src/images/image2.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* filter: brightness(1.2) contrast(1.2); */
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    z-index: 1;
+    overflow: auto;
 }
 
 @media only screen and (max-width: 1068px) {
-  .bg-image {
-    background-size: contain;
-    background-position: center top;
-    z-index: 1;
-    overflow: auto;
-  }
+    .bg-image {
+        background-size: contain;
+        background-position: center top;
+        z-index: 1;
+        overflow: auto;
+    }
 }
 
 @media only screen and (max-width: 1076px) {
-  .bg-image {
-    background-size: cover;
-    z-index: 1;
-    overflow: auto;
-  }
+    .bg-image {
+        background-size: cover;
+        z-index: 1;
+        overflow: auto;
+    }
 }
 </style>
