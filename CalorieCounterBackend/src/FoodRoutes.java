@@ -105,7 +105,12 @@ public class FoodRoutes {
         int quantity = Integer.parseInt(request.queryParams("quantity"));
         String foodId = request.queryParams("foodId");
         String measureURI = request.queryParams("measureURI");
-        JSONObject requestBodyJson = new JSONObject();
+
+    // get the foodId from the foodSearchParser
+    //String foodId = foodSearchParser(request, response);
+
+
+    JSONObject requestBodyJson = new JSONObject();
         JSONArray ingredientsArray = new JSONArray();
         JSONObject ingredientObject = new JSONObject();
         ingredientObject.put("quantity", quantity);
@@ -132,10 +137,10 @@ public class FoodRoutes {
             JSONObject fatObject = totalNutrients.getJSONObject("FAT");
 
             JSONObject nutritionObject = new JSONObject();
-            nutritionObject.put("calories", caloriesObject.getDouble("quantity"));
             nutritionObject.put("protein", proteinObject.getDouble("quantity"));
-            nutritionObject.put("carbs", carbsObject.getDouble("quantity"));
             nutritionObject.put("fat", fatObject.getDouble("quantity"));
+            nutritionObject.put("carbs", carbsObject.getDouble("quantity"));
+            nutritionObject.put("calories", caloriesObject.getDouble("quantity"));
 
             return nutritionObject;
         }catch (Exception e){
