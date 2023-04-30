@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main class="bg-grey-darken-4">
+    <v-main class="bg-grey-darken-4 overflow-y-auto">
       <div class="bg-image">
         <div class="logo3">
       <img src="src/images/image5.jpg" alt="My Picture">
