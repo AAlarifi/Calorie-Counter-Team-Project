@@ -88,7 +88,7 @@ export default {
 
 <style scoped>
 .bg-image {
-  background-image: url('image2.jpg');
+  background-image: url('src/images/image2.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

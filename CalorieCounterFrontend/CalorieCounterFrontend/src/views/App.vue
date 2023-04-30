@@ -2,10 +2,10 @@
   <v-app>
     <v-app-bar class="bg-grey-darken-4">
       <div class="logo">
-      <img src="image3.jpeg" alt="My Picture">
+      <img src="src/images/image3.jpeg" alt="My Picture">
     </div>
     <div class="logo2">
-      <img src="image4.jpeg" alt="My Picture">
+      <img src="src/images/image4.jpeg" alt="My Picture">
     </div>
       <v-app-bar-title>
       </v-app-bar-title>

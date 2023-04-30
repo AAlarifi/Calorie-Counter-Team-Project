@@ -3,10 +3,10 @@
     <v-main class="bg-grey-darken-4">
       <div class="bg-image">
         <div class="logo3">
-      <img src="image5.jpg" alt="My Picture">
+      <img src="src/images/image5.jpg" alt="My Picture">
     </div>
     <div class="logo4">
-      <img src="image6.jpg" alt="My Picture">
+      <img src="src/images/image6.jpg" alt="My Picture">
     </div>
       <v-container
         style="height: 70vh; max-height: 100vh"
@@ -152,7 +152,7 @@ export default {
 
 <style scoped>
 .bg-image {
-  background-image: url('image1.jpg');
+  background-image: url('src/images/image1.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
