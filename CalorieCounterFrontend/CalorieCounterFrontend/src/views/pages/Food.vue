@@ -87,7 +87,7 @@ import userServices from "../../services/user.service";
 export default {
   data() {
     return {
-      search: "apple",
+      search: "",
       food: "Test food",
       calories: "100",
       response: "",
@@ -95,6 +95,8 @@ export default {
       snackbar: false,
       currentCalorieIntake: "",
       searchResults: [],
+      foodName: "",
+      foodId: ""
     };
   },
   mounted() {
@@ -142,9 +144,26 @@ export default {
         });
     },
     selectResult(result) {
+      //const foodId = result.id;
       this.food = result.name;
       this.search = result.name;
       this.searchResults = [];
+      foodServices.searchParser(result.name)
+      .then((serverResponse) => {
+        this.foodId = serverResponse;
+        console.log(serverResponse);
+        this.$router.push({
+          path: '/Diary',
+          query: {
+            foodId: this.foodId,
+            food: this.food
+          }
+          });
+      })
+      .catch((error) => {
+          this.searchResponse = error;
+          console.log(error);
+      });
     },
   },
 };
