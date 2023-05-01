@@ -20,7 +20,7 @@
                                     </v-form>
                                 </v-card-text>
                                 <v-card-actions>
-                                    <v-btn @click="foodInformationHolder" block variant="outlined btn btn-primary">Add
+                                    <v-btn @click="submitData" block variant="outlined btn btn-primary">Add
                                         food</v-btn>
                                 </v-card-actions>
                                 <v-card-item>
@@ -62,6 +62,10 @@
                                         </template>
                                     </v-card-text>
                                 </v-card-item>
+                            <v-card-item>
+                                {{ AddFoodresponse }}
+                                </v-card-item>
+
                             </v-card>
                         </v-col>
                     </v-row>
@@ -73,6 +77,7 @@
 
 <script>
 import foodServices from "../../services/food.service";
+// import userServices from "../../services/user.service";
 
 export default {
     data() {
@@ -96,6 +101,7 @@ export default {
             NOS: "",
             foodName: this.$route.query.food,
             foodId: this.$route.query.foodId,
+            AddFoodresponse: ""
         };
     },
     methods: {
@@ -121,6 +127,19 @@ export default {
                     console.log(error);
             }
         },
+        submitData() {
+            foodServices
+                .submitCalories(this.foodName, this.foodInfo.calories)
+                .then((serverResponse) => {
+                    this.AddFoodresponse = serverResponse;
+                    foodServices.foodCaloriesCalc();
+                    this.$router.push('/food');
+                })
+                .catch((error) => {
+                    this.AddFoodresponse = error;
+                    
+                });
+        }
     },
     watch: {
         servingSize: function () {
