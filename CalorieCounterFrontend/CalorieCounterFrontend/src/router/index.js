@@ -10,10 +10,10 @@ import Diary from "../views/pages/Diary.vue"
 
 const routes = [
     { path: "/", component: Home },
-    {path: "/food", component: Food},
-    {path: "/About", component: About},
-    {path: "/Diary", component: Diary},
-    { path: "/:pathMatch(.*)*", component: NotFound}
+    { path: "/food", component: Food },
+    { path: "/About", component: About },
+    { path: "/Diary", component: Diary },
+    { path: "/:pathMatch(.*)*", component: NotFound }
 ]
 //the error route should be the last in the array..
 

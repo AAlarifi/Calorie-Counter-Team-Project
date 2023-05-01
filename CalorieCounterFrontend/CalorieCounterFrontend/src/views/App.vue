@@ -2,16 +2,16 @@
   <v-app>
     <v-app-bar class="bg-grey-darken-4">
       <div class="logo">
-      <img src="src/images/image3.jpeg" alt="My Picture">
-    </div>
-    <div class="logo2">
-      <img src="src/images/image4.jpeg" alt="My Picture">
-    </div>
+        <img src="src/images/image3.jpeg" alt="My Picture">
+      </div>
+      <div class="logo2">
+        <img src="src/images/image4.jpeg" alt="My Picture">
+      </div>
       <v-app-bar-title>
       </v-app-bar-title>
       <div class="btn-group">
         <router-link to="/">
-           <v-btn class="btn btn-primary mx-3" color="white" variant="primary">Home</v-btn>
+          <v-btn class="btn btn-primary mx-3" color="white" variant="primary">Home</v-btn>
         </router-link>
         <router-link to="/food">
           <v-btn class="btn btn-primary mx-3" color="white" variant="primary">Calorie Counter</v-btn>
@@ -24,7 +24,6 @@
     </v-app-bar>
     <router-view></router-view>
   </v-app>
-  
 </template>
 
 
@@ -40,7 +39,8 @@
 }
 
 .logo img {
-  width: 93px; /* adjust the size as needed */
+  width: 93px;
+  /* adjust the size as needed */
 }
 
 .logo2 {
@@ -50,13 +50,14 @@
 }
 
 .logo2 img {
-  width: 450px; /* adjust the size as needed */
+  width: 450px;
+  /* adjust the size as needed */
   height: 63px;
 }
 </style>
 
 <script>
-import  router  from "../router/index.js";
+import router from "../router/index.js";
 
 export default {
   name: "App",

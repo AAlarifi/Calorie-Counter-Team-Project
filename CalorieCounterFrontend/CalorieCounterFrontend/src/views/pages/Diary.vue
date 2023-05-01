@@ -62,8 +62,8 @@
                                         </template>
                                     </v-card-text>
                                 </v-card-item>
-                            <v-card-item>
-                                {{ AddFoodresponse }}
+                                <v-card-item>
+                                    {{ AddFoodresponse }}
                                 </v-card-item>
 
                             </v-card>
@@ -137,7 +137,6 @@ export default {
                 })
                 .catch((error) => {
                     this.AddFoodresponse = error;
-                    
                 });
         }
     },

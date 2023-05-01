@@ -2,32 +2,33 @@
   <v-app>
     <v-main class="bg-grey-darken-4">
       <div class="bg-image">
-      <v-container style="height: 110svh; max-height: 110svh" class="align-center d-flex">
-        <v-row justify="center">
-          <v-col cols="12" lg="6">
-            <v-card elevation="10">
-              <v-card-item>
-                <v-card-title class="text-center btn btn-primary">Home Page</v-card-title>
-              </v-card-item>
-              <v-card-text>
-                <v-form @submit.prevent="submitData()">
-                  <v-select label="Select Gender" :items="['Male', 'Female']" v-model="gender"></v-select>
-                  <v-text-field v-model="weight" label="Weight (in kg)" :rules="weightRules"></v-text-field>
-                  <v-text-field v-model="height" label="Height (in cm)" :rules="heightRules"></v-text-field>
-                  <v-text-field v-model="age" label="Age (in years)" :rules="ageRules"></v-text-field>
-                  <v-select label="Select Activity Level" :items="activityLevel" item-title="desc" item-value="level"
-                    v-model="activity"></v-select>
-                    <v-select label="Select Fitness goal" :items="['Lose weight', 'Gain weight']" v-model="fitnessGoal"></v-select>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn block variant="outlined btn btn-primary" @click="calculateAMR()">calculate AMR</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
+        <v-container style="height: 110svh; max-height: 110svh" class="align-center d-flex">
+          <v-row justify="center">
+            <v-col cols="12" lg="6">
+              <v-card elevation="10">
+                <v-card-item>
+                  <v-card-title class="text-center btn btn-primary">Home Page</v-card-title>
+                </v-card-item>
+                <v-card-text>
+                  <v-form @submit.prevent="submitData()">
+                    <v-select label="Select Gender" :items="['Male', 'Female']" v-model="gender"></v-select>
+                    <v-text-field v-model="weight" label="Weight (in kg)" :rules="weightRules"></v-text-field>
+                    <v-text-field v-model="height" label="Height (in cm)" :rules="heightRules"></v-text-field>
+                    <v-text-field v-model="age" label="Age (in years)" :rules="ageRules"></v-text-field>
+                    <v-select label="Select Activity Level" :items="activityLevel" item-title="desc" item-value="level"
+                      v-model="activity"></v-select>
+                    <v-select label="Select Fitness goal" :items="['Lose weight', 'Gain weight']"
+                      v-model="fitnessGoal"></v-select>
+                  </v-form>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn block variant="outlined btn btn-primary" @click="calculateAMR()">calculate AMR</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -39,15 +40,15 @@ export default {
   data() {
     return {
       weightRules: [
-        value => !value || value >= 30 && value <=200 || "Weight must be between 30kg and 200kg!"
+        value => !value || value >= 30 && value <= 200 || "Weight must be between 30kg and 200kg!"
       ],
       heightRules: [
-        value => !value || value >= 50 && value <=300 || "Height must be between 50cm and 300cm!"
+        value => !value || value >= 50 && value <= 300 || "Height must be between 50cm and 300cm!"
       ],
       ageRules: [
-        value => !value || value >= 10 && value <=100 || "Age must be between 10 and 100 years old!"
+        value => !value || value >= 10 && value <= 100 || "Age must be between 10 and 100 years old!"
       ]
-      ,activityLevel: [
+      , activityLevel: [
         { level: "sedentary", desc: "Sedentary (little or no exercie)" },
         { level: "lightlyActive", desc: "Lightly active (exercise 1-3 days/week)" },
         { level: "moderatelyActive", desc: "Moderately active (exercise 3-6 days/week)" },

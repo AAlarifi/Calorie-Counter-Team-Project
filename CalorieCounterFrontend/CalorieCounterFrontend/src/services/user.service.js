@@ -8,7 +8,7 @@ const selectGender = async (gender) => {
 };
 
 const submitUserForm = async (userData) => {
-  const { gender, weightInKg, heightInCm, ageInYears, activityLevel, fitnessGoal} = userData;
+  const { gender, weightInKg, heightInCm, ageInYears, activityLevel, fitnessGoal } = userData;
 
   let bmrEndpoint;
   if (gender === 'male') {
@@ -94,9 +94,9 @@ const getCalorieIntake = async () => {
     return data;
 
   } catch (error) {
-      console.error(error);
-      throw new Error('Internal server error')
-    }
+    console.error(error);
+    throw new Error('Internal server error')
+  }
 };
 
 export default {
