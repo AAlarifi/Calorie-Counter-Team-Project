@@ -127,7 +127,7 @@ const foodInformation = (foodData) => {
             measurementsOption = 'http://www.edamam.com/ontologies/edamam.owl#Measure_serving';
             break;
         default:
-            throw new Error('Invalid measurement level');
+            return Promise.reject('Invalid measurement level');
     }
 
     const requestBody = new URLSearchParams({
@@ -145,7 +145,9 @@ const foodInformation = (foodData) => {
     })
         .then((response) => {
             if (response.status === 200) {
-                return response.text();
+                return response.text().then(text => {
+                    return JSON.parse(text);
+                });
             }
             else {
                 throw "Something went wrong"

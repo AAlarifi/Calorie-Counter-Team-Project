@@ -25,7 +25,41 @@
                                 </v-card-actions>
                                 <v-card-item>
                                     <v-card-text class="text-center">
-                                        <v-card-text class="text-center">{{ foodInfo }}</v-card-text>
+                                        <!-- <v-card-text class="text-center">{{ foodInfo }}</v-card-text> -->
+                                        <template v-if="foodInfo.carbs ||
+                                                foodInfo.protein ||
+                                                foodInfo.fat ||
+                                                foodInfo.calories
+                                                ">
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <td scope="row" class="bg-primary text-white">
+                                                            Carbs
+                                                        </td>
+                                                        <td>{{ foodInfo.carbs }}g</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row" class="bg-danger text-white protein-cell">
+                                                            Protein
+                                                        </td>
+                                                        <td>{{ foodInfo.protein }}g</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row" class="bg-success text-white fat-cell">
+                                                            Fat
+                                                        </td>
+                                                        <td>{{ foodInfo.fat }}g</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td scope="row" class="bg-warning text-white calories-cell">
+                                                            Calories
+                                                        </td>
+                                                        <td>{{ foodInfo.calories }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </template>
                                     </v-card-text>
                                 </v-card-item>
                             </v-card>
@@ -52,11 +86,16 @@ export default {
                 { level: "cup", desc: "Cup" },
                 { level: "serving", desc: "Serving" },
             ],
-            servingSize: "",
+            foodInfo: {
+                carbs: null,
+                protein: null,
+                fat: null,
+                calories: null,
+            },
+            servingSize: "gram",
             NOS: "",
             foodName: this.$route.query.food,
             foodId: this.$route.query.foodId,
-            foodInfo: []
         };
     },
     methods: {
@@ -70,18 +109,24 @@ export default {
             try {
                 const response = await foodServices.foodInformation(foodData);
                 console.log(response);
-                this.foodInfo = response
+                this.foodInfo = response;
             } catch (error) {
-                this.foodInfo = 'Error: Food information not found.';
-                console.log(error);
+                // this.foodInfo = 'Error: Food information not found.';
+                (this.foodInfo = {
+                    carbs: 0,
+                    protein: 0,
+                    fat: 0,
+                    calories: 0,
+                }),
+                    console.log(error);
             }
         },
     },
     watch: {
         servingSize: function () {
             this.foodDataFunc();
-        }
-    }
+        },
+    },
 };
 </script>
 <style scoped>
