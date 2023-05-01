@@ -19,8 +19,10 @@
         <router-link to="/about">
           <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">About us</v-btn>
         </router-link>
+        <router-link to="/signup">
+          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">signup</v-btn>
+        </router-link>
       </div>
-
     </v-app-bar>
     <router-view></router-view>
   </v-app>

@@ -99,8 +99,47 @@ const getCalorieIntake = async () => {
   }
 };
 
+const createUser = (firstName, lastName, email, password) => {
+  // let session_token = localStorage.getItem("session_token");
+  // if (!session_token) {
+  //   return Promise.reject(new Error("No session token found. Please login again."));
+  // }
+
+  const requestBody = new URLSearchParams({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password
+  });
+
+  return fetch(baseUrl + "/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+      // "X-Authorization": session_token
+    },
+    body: requestBody
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.text();
+      }
+      if (response.status === 400) {
+        return Promise.reject(new Error("Email already exist in the database."));
+    }
+    })
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      console.log("err", error)
+      return Promise.reject(error)
+    })
+};
+
 export default {
   selectGender,
   submitUserForm,
-  getCalorieIntake
+  getCalorieIntake,
+  createUser: createUser
 };
