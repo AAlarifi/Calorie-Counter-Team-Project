@@ -4,6 +4,20 @@ import spark.Request;
 import spark.Response;
 public class UserRoutes {
 
+    public static Route signup = (Request request, Response response) -> {
+        String firstName = (request.queryParams("firstName"));
+        String lastName = (request.queryParams("lastName"));
+        String email = (request.queryParams("email"));
+        String password = (request.queryParams("password"));
+        try (DataBase db = new DataBase()) {
+            db.addNewUser(firstName, lastName, email, password);
+            return "A user has been added";
+        }catch (Exception e) {
+            response.status(400);
+            return e.getMessage();
+        }
+    };
+
     public static Route createMaleUser = (Request request, Response response) -> {
         int weightInKg = Integer.parseInt(request.queryParams("weightInKg"));
         int heightInCm = Integer.parseInt(request.queryParams("heightInCm"));

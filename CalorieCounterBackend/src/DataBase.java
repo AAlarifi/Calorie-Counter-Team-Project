@@ -1,9 +1,12 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.sql.*;
+
+
 
 public class DataBase implements AutoCloseable {
 
@@ -22,6 +25,74 @@ public class DataBase implements AutoCloseable {
         } catch (SQLException sqle) {
             error(sqle);
         }
+    }
+
+    // Add new user to database validating input before adding to database (email & password format & if email exists in database)
+    public void addNewUser(String firstName, String lastName, String email, String password) throws Exception {
+
+        List<String> errorMessages = new ArrayList<>();
+
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            errorMessages.add("Invalid email format. Please enter a valid email address in the format example@example.com.");
+        }
+        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,30}$")) {
+            errorMessages.add("Invalid password format. Your password must be between 8 and 30 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@$!%*?&).");
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM users WHERE email = ?")) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                errorMessages.add("Email already exists");
+            }
+        } catch (SQLException sqle) {
+            error(sqle);
+            throw new Exception("Error checking email exists in database");
+        }
+
+        if (!errorMessages.isEmpty()) {
+            throw new Exception(String.join(", ", errorMessages));
+        }
+
+        // A salt is generated for the new user.
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[64];
+        random.nextBytes(salt);
+        // The hash of the new user's password is created.
+        String hash = getHash(password, salt);
+
+        String sql = "INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setString(3, email);
+            ps.setString(4, hash);
+            ps.setString(5, bytesToHex(salt));
+
+            int rowsInserted = ps.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new user was inserted successfully!");
+            }
+        } catch (SQLException sqle) {
+            error(sqle);
+        }
+    }
+
+    // This function returns the hash of a password and its salt.
+    public static String getHash(String password, byte[] salt) throws Exception {
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 100000, 256);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        byte[] hash = factory.generateSecret(spec).getEncoded();
+        return bytesToHex(hash);
+    }
+
+    // Converts bytes to hexadecimal string.
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
     }
 
     public void createFood(String name, int calories) {
