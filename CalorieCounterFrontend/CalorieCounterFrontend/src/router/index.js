@@ -7,6 +7,7 @@ import NotFound from "../NotFound.vue"
 import About from "../views/pages/About.vue"
 import Diary from "../views/pages/Diary.vue"
 import Signup from "../views/pages/Signup.vue"
+import Login from "../views/pages/Login.vue"
 
 
 const routes = [
@@ -15,6 +16,7 @@ const routes = [
     { path: "/About", component: About },
     { path: "/Diary", component: Diary },
     { path: "/Signup", component: Signup },
+    { path: "/Login", component: Login },
     { path: "/:pathMatch(.*)*", component: NotFound }
 ]
 //the error route should be the last in the array..
