@@ -25,7 +25,6 @@
                                 </v-card-actions>
                                 <v-card-item>
                                     <v-card-text class="text-center">
-                                        <!-- <v-card-text class="text-center">{{ foodInfo }}</v-card-text> -->
                                         <template v-if="foodInfo.carbs ||
                                                 foodInfo.protein ||
                                                 foodInfo.fat ||
@@ -159,15 +158,14 @@ export default {
     width: 100vw;
     overflow: hidden;
     z-index: 1;
-    overflow: auto;
+
 }
 
 @media only screen and (max-width: 1068px) {
     .bg-image {
         background-size: contain;
-        background-position: center top;
+        background-position: no-repeat;
         z-index: 1;
-        overflow: auto;
     }
 }
 
