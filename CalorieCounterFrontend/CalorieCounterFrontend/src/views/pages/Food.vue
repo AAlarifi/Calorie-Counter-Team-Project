@@ -2,79 +2,88 @@
   <v-app>
     <v-main class="bg-grey-darken-4">
       <div class="bg-image">
-        <div class="logo3">
-      <img src="src/images/image5.jpg" alt="My Picture">
-    </div>
-    <div class="logo4">
-      <img src="src/images/image6.jpg" alt="My Picture">
-    </div>
-      <v-container
-        style="height: 70vh; max-height: 100vh"
-        class="align-center d-flex"
-      >
-        <v-row justify="center">
-          <v-col cols="12" lg="6">
-            <v-card elevation="10">
-              <v-card-item>
-                <v-card-title class="text-center btn btn-primary">Quick Add</v-card-title>
-              </v-card-item>
-              <v-card-text>
-                <v-form @submit.prevent="submitData">
-                  <v-text-field v-model="food" label="Food"></v-text-field>
-                  <v-text-field
-                    v-model="calories"
-                    label="Calories"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn @click="submitData" block variant="outlined btn btn-primary"
-                  >Submit</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-            <v-snackbar v-model="snackbar">
-              {{ response }}
-              <template v-slot:actions>
-                <v-btn color="purple" variant="text" @click="snackbar = false">
-                  Close
-                </v-btn>
-              </template>
-            </v-snackbar>
-            <button class="sharp-btn">Your current calorie intake is:{{ currentCalorieIntake }}</button>
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-container>
-        <v-row justify="center">
-          <v-col cols="12" lg="6">
-            <v-card>
-              <v-card-item>
-                <v-card-title class="text-center btn btn-primary">Search food</v-card-title>
-              </v-card-item>
-              <v-card-text>
-                <v-form>
-                  <v-text-field v-model="search" label="Search" @input="searchFoodBar"></v-text-field>
-                </v-form>
-              </v-card-text>
-            </v-card>
-            <v-list>
-              <v-list-item v-for="(result, index) in searchResults" :key="index" @click="selectResult(result)">
-                <v-list-item-title>{{ result.name}}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-            <v-snackbar v-model="snackbar">
-              {{ searchResponse }}
-              <template v-slot:actions>
-                <v-btn color="purple" variant="text" @click="snackbar = false">
-                  Close
-                </v-btn>
-              </template>
-            </v-snackbar>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
+        <v-container style="height: 70vh; max-height: 70vh" class="align-center d-flex">
+          <v-row justify="center">
+            <v-col cols="12" lg="6">
+              <v-card elevation="10">
+                <v-card-item>
+                  <v-card-title class="text-center">Quick Add</v-card-title>
+                </v-card-item>
+                <v-card-text>
+                  <v-form @submit.prevent="submitData">
+                    <v-text-field v-model="food" label="Food"></v-text-field>
+                    <v-text-field v-model="calories" label="Calories"></v-text-field>
+                  </v-form>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn @click="submitData" block variant="outlined btn btn-primary">Submit</v-btn>
+                </v-card-actions>
+              </v-card>
+              <v-snackbar v-model="snackbar">
+                {{ response }}
+                <template v-slot:actions>
+                  <v-btn color="purple" variant="text" @click="snackbar = false">
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-card>
+                      <v-card-item>
+                        <v-card-text>
+                          <table class="table table-striped">
+                            <tbody>
+                              <tr>
+                                <td scope="row" class="bg-primary text-white">
+                                  Your current calorie intake is:
+                                </td>
+                                <td>
+                                  {{ currentCalorieIntake }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </v-card-text>
+                      </v-card-item>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-container style="max-height: 1vh" class="align-center d-flex">
+          <v-row justify="center">
+            <v-col cols="12" lg="6">
+              <v-card>
+                <v-card-item>
+                  <v-card-title class="text-center">Search food</v-card-title>
+                </v-card-item>
+                <v-card-text>
+                  <v-form>
+                    <v-text-field v-model="search" label="Search" @input="searchFoodBar"></v-text-field>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+              <v-list>
+                <v-list-item v-for="(result, index) in searchResults" :key="index" @click="selectResult(result)">
+                  <v-list-item-title>{{ result.name }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+              <v-snackbar v-model="snackbar">
+                {{ searchResponse }}
+                <template v-slot:actions>
+                  <v-btn color="purple" variant="text" @click="snackbar = false">
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -168,26 +177,13 @@ export default {
 </script>
 
 <style scoped>
-
 .bg-image {
-    margin: 0;
-    padding: 0;
-    background-image: url('src/images/image1.jpg');
-    background-size: cover;
-    z-index: 3;
-  }
-  
-  .bg-grey.darken-4 {
-    background-color: rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 1;
-  }
-  
-  .v-main {
-    overflow-y: auto;
-    position: relative;
-    z-index: 2;
-  }
+  margin: 0;
+  padding: 0;
+  background-image: url('src/images/image1.jpg');
+  background-size: cover;
+  z-index: 3;
+}
 
 /* .v-main{
   overflow-y: auto;
@@ -212,43 +208,6 @@ export default {
   height: 100vh;
   width: 100vw;
 } */
-
-.logo3 {
-  position: absolute;
-  top: 365px;
-  left: 520px;
-}
-
-.logo3 img {
-  width: 50px; /* adjust the size as needed */
-  height: 33px;
-}
-
-.logo4 {
-  position: absolute;
-  top: 362px;
-  left: 177px;
-}
-
-.logo4 img {
-  width: 270px; /* adjust the size as needed */
-  height: 40px;
-}
-
-.sharp-btn {
-  background-color: white;
-  border-radius: 0;
-  color: #0e0101;
-  cursor: pointer;
-  font-weight: bold;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-}
-
-.sharp-btn:hover {
-  background-color: #ffffff;
-}
-
 
 @media only screen and (max-width: 3868px) {
   .bg-image {
