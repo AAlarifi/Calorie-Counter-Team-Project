@@ -41,8 +41,7 @@
                 </v-btn>
               </template>
             </v-snackbar>
-            <!-- <b class="btn btn-light">Your current calorie intake issssss: {{ currentCalorieIntake }}</b> -->
-            <button class="sharp-btn">Your current calorie intake issssss:{{ currentCalorieIntake }}</button>
+            <button class="sharp-btn">Your current calorie intake is:{{ currentCalorieIntake }}</button>
           </v-col>
         </v-row>
       </v-container>
@@ -87,14 +86,16 @@ import userServices from "../../services/user.service";
 export default {
   data() {
     return {
-      search: "apple",
-      food: "Test food",
-      calories: "100",
+      search: "",
+      food: "",
+      calories: "",
       response: "",
       searchResponse: "",
       snackbar: false,
       currentCalorieIntake: "",
       searchResults: [],
+      foodName: "",
+      foodId: ""
     };
   },
   mounted() {
@@ -145,6 +146,22 @@ export default {
       this.food = result.name;
       this.search = result.name;
       this.searchResults = [];
+      foodServices.searchParser(result.name)
+        .then((serverResponse) => {
+          this.foodId = serverResponse;
+          console.log(serverResponse);
+          this.$router.push({
+            path: '/Diary',
+            query: {
+              foodId: this.foodId,
+              food: this.food
+            }
+          });
+        })
+        .catch((error) => {
+          this.searchResponse = error;
+          console.log(error);
+        });
     },
   },
 };

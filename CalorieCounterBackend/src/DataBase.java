@@ -95,25 +95,25 @@ public class DataBase implements AutoCloseable {
         return sb.toString();
     }
     
-//    private void authenticateUser(String email, String password, AuthCallback callback) {
-//        String sql = "SELECT user_id, password, salt FROM users WHERE email = ?";
-//        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-//            statement.setString(1, email);
-//            ResultSet resultSet = statement.executeQuery();
-//            if (resultSet.next()) {
-//                String hash = getHash(password, resultSet.getString("salt"));
-//                if (hash.equals(resultSet.getString("password"))) {
-//                    callback.onSuccess(resultSet.getLong("user_id"));
-//                } else {
-//                    callback.onError(new Exception("Wrong password!"));
-//                }
-//            } else {
-//                callback.onError(new Exception("User not found!"));
-//            }
-//        } catch (SQLException | NoSuchAlgorithmException e) {
-//            callback.onError(e);
-//        }
-//    }
+    private void authenticateUser(String email, String password, AuthCallback callback) {
+        String sql = "SELECT user_id, password, salt FROM users WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String hash = getHash(password, resultSet.getString("salt"));
+                if (hash.equals(resultSet.getString("password"))) {
+                    callback.onSuccess(resultSet.getLong("user_id"));
+                } else {
+                    callback.onError(new Exception("Wrong password!"));
+                }
+            } else {
+                callback.onError(new Exception("User not found!"));
+            }
+        } catch (SQLException e) {
+            callback.onError(e);
+        }
+    }
 
     public void createFood(String name, int calories) {
         try {
