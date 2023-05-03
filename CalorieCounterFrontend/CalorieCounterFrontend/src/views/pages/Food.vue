@@ -173,6 +173,19 @@ export default {
   width: 100vw;
 }
 
+.bg-grey.darken-4 {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .v-main {
+    overflow-y: auto;
+    position: relative;
+    z-index: 2;
+  }
+
+
 .logo3 {
   position: absolute;
   top: 365px;
