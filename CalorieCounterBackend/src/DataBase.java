@@ -94,18 +94,31 @@ public class DataBase implements AutoCloseable {
         return sb.toString();
     }
 
+    // Converts a hexadecimal string to a byte array.
+    private static byte[] hexToBytes(String hex) {
+        int len = hex.length();
+        byte[] bytes = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
+                    + Character.digit(hex.charAt(i+1), 16));
+        }
+        return bytes;
+    }
+
     public long authenticateUser(String email, String password) {
         String sql = "SELECT user_id, password, salt FROM users WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String hash = getHash(password, resultSet.getString("salt").getBytes());
-                System.out.println("hash: " + hash);
-                System.out.println("password: " + password);
-                System.out.println("salt: " + resultSet.getString("salt"));
-
-                if (hash.equals(resultSet.getString("password"))) {
+                String saltString = resultSet.getString("salt");
+                byte[] salt = hexToBytes(saltString);
+                String hash = getHash(password, salt);
+                String storedHash = resultSet.getString("password");
+                System.out.println("Salt: " + saltString);
+                System.out.println("Generated hash: " + hash);
+                System.out.println("Stored hash: " + storedHash);
+                if (hash.equals(storedHash)) {
                     return resultSet.getLong("user_id");
                 } else {
                     throw new Exception("Wrong password!");
@@ -119,6 +132,8 @@ public class DataBase implements AutoCloseable {
             return -1;
         }
     }
+
+    
 
 
     public void createFood(String name, int calories) {
