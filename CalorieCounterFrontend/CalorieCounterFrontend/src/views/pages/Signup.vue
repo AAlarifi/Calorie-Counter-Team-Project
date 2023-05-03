@@ -7,7 +7,7 @@
                         <v-col cols="12" lg="6">
                             <v-card elevation="10">
                                 <v-card-item>
-                                    <v-card-title class="text-center">Create a profile</v-card-title>
+                                    <v-card-title class="text-center btn btn-primary">Create a profile</v-card-title>
                                 </v-card-item>
                                 <v-card-text>
                                     <v-form @submit.prevent="createUserButton">

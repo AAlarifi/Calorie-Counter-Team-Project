@@ -177,7 +177,7 @@ export default {
   z-index: 3;
 }
 
-/* .v-main{
+ .v-main{
   overflow-y: auto;
 }
 
@@ -185,7 +185,7 @@ export default {
   overflow: auto;
   z-index: 1;
 }
-.bg-image {
+/* .bg-image {
   position: fixed;
   top: 0;
   left: 0;
@@ -199,7 +199,7 @@ export default {
   filter: brightness(1.2) contrast(1.2);
   height: 100vh;
   width: 100vw;
-} */
+}  */
 
 @media only screen and (max-width: 3868px) {
   .bg-image {

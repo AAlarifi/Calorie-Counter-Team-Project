@@ -97,7 +97,6 @@ export default {
   /* filter: brightness(1.2) contrast(1.2); */
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
   z-index: 1;
   overflow: auto;
 }

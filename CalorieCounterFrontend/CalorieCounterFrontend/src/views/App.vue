@@ -9,7 +9,36 @@
       </div>
       <v-app-bar-title>
       </v-app-bar-title>
-      <div class="btn-group">
+
+      <div class="dropdown">
+  <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Menu
+  </a>
+
+  <ul class="dropdown-menu">
+    <router-link to="/">
+    <li><a class="btn btn-primary dropdown-item" href="#">Home</a></li>
+  </router-link>
+  <router-link to="/food">
+    <li><a class="btn btn-primary dropdown-item" href="#">Calorie Counter</a></li>
+  </router-link>
+  <router-link to="/about">
+    <li><a class="btn btn-primary dropdown-item" href="#">About us</a></li>
+  </router-link>
+  <router-link to="/signup">
+    <li><a class="btn btn-primary dropdown-item" href="#">Signup</a></li>
+  </router-link>
+  <router-link to="/Login">
+    <li><a class="btn btn-primary dropdown-item" href="#">Login</a></li>
+  </router-link>
+  </ul>
+</div>
+
+
+
+
+
+      <!-- <div class="btn-group">
         <router-link to="/">
           <v-btn class="btn btn-primary mx-3" color="white" variant="primary">Home</v-btn>
         </router-link>
@@ -25,7 +54,7 @@
         <router-link to="/Login">
           <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">Login(temp)</v-btn>
         </router-link>
-      </div>
+      </div> -->
     </v-app-bar>
     <router-view></router-view>
   </v-app>
@@ -33,6 +62,17 @@
 
 
 <style>
+.bg-grey-darken-4{
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 3;
+}
+.dropdown{
+position: relative;
+    z-index: 9999;
+    overflow: auto;
+}
+
 .btn-white {
   color: white;
 }
@@ -49,7 +89,7 @@
 }
 
 .logo2 {
-  position: absolute;
+  /* position: absolute; */
   top: 0;
   left: 0px;
 }
