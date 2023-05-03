@@ -11,12 +11,27 @@ public class UserRoutes {
         String password = (request.queryParams("password"));
         try (DataBase db = new DataBase()) {
             db.addNewUser(firstName, lastName, email, password);
-            return "A user has been added";
+            return "A user has signed up";
         }catch (Exception e) {
             response.status(400);
             return e.getMessage();
         }
     };
+
+    public static Route login = (Request request, Response response) -> {
+        String email = (request.queryParams("email"));
+        String password = (request.queryParams("password"));
+        try (DataBase db = new DataBase()) {
+            Long result = db.authenticateUser(email, password);
+            response.status(200);
+            return result;
+        }catch (Exception e) {
+            response.status(401);
+            return e.getMessage();
+        }
+    };
+
+
 
     public static Route createMaleUser = (Request request, Response response) -> {
         int weightInKg = Integer.parseInt(request.queryParams("weightInKg"));

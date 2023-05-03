@@ -2,7 +2,6 @@ import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.sql.*;
 
@@ -94,26 +93,33 @@ public class DataBase implements AutoCloseable {
         }
         return sb.toString();
     }
-    
-    private void authenticateUser(String email, String password, AuthCallback callback) {
+
+    public long authenticateUser(String email, String password) {
         String sql = "SELECT user_id, password, salt FROM users WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String hash = getHash(password, resultSet.getString("salt"));
+                String hash = getHash(password, resultSet.getString("salt").getBytes());
+                System.out.println("hash: " + hash);
+                System.out.println("password: " + password);
+                System.out.println("salt: " + resultSet.getString("salt"));
+
                 if (hash.equals(resultSet.getString("password"))) {
-                    callback.onSuccess(resultSet.getLong("user_id"));
+                    return resultSet.getLong("user_id");
                 } else {
-                    callback.onError(new Exception("Wrong password!"));
+                    throw new Exception("Wrong password!");
                 }
             } else {
-                callback.onError(new Exception("User not found!"));
+                throw new Exception("User not found!");
             }
-        } catch (SQLException e) {
-            callback.onError(e);
+        } catch (SQLException sqle) {
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
     }
+
 
     public void createFood(String name, int calories) {
         try {

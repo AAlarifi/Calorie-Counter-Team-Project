@@ -170,12 +170,18 @@ export default {
 
 <style scoped>
 .bg-image {
-  margin: 0;
-  padding: 0;
-  background-image: url('src/images/image1.jpg');
-  background-size: cover;
-  z-index: 3;
-}
+    margin: 0;
+    padding: 0;
+    background-image: url('src/images/image1.jpg');
+    background-size: cover;
+    z-index: 3;
+  }
+  
+  .bg-grey.darken-4 {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+  }
 
  .v-main{
   overflow-y: auto;
@@ -200,6 +206,41 @@ export default {
   height: 100vh;
   width: 100vw;
 }  */
+
+.logo3 {
+  position: absolute;
+  top: 365px;
+  left: 520px;
+}
+
+.logo3 img {
+  width: 50px; /* adjust the size as needed */
+  height: 33px;
+}
+
+.logo4 {
+  position: absolute;
+  top: 362px;
+  left: 177px;
+}
+
+.logo4 img {
+  width: 270px; /* adjust the size as needed */
+  height: 40px;
+}
+.sharp-btn {
+  background-color: white;
+  border-radius: 0;
+  color: #0e0101;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.sharp-btn:hover {
+  background-color: #ffffff;
+}
 
 @media only screen and (max-width: 3868px) {
   .bg-image {

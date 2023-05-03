@@ -22,6 +22,8 @@ public class CalorieCounterWebService {
 		get("/food/searchParser", FoodRoutes.foodSearchParser);
 		post("/food/searchRequest",FoodRoutes.foodSearchRequest);
         post("/signup",UserRoutes.signup);
+		post("/login",UserRoutes.login);
+
 
 	}
 
