@@ -6,6 +6,7 @@ const submitCalories = (food, calories) => {
     return fetch(`http://localhost:8008/secured/food?name=${food}&calories=${calories}`, {
         method: "POST",
         headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded',
             "X-Authorization": session_token
         }
     })
@@ -121,12 +122,11 @@ const searchParser = (result) => {
 }
 
 const foodInformation = (foodData) => {
-      let session_token = localStorage.getItem("session_token");
-  if (!session_token) {
-    return Promise.reject(new Error("No session token found. Please login again."));
-  }
     const { NOS, foodId, measurements } = foodData
-
+    let session_token = localStorage.getItem("session_token");
+    if (!session_token) {
+      return Promise.reject(new Error("No session token found. Please login again."));
+    }
     if (!NOS || !foodId || !measurements) {
         return Promise.reject("Number of servings, serving size, or food ID is empty or undefined");
     }
@@ -174,7 +174,7 @@ const foodInformation = (foodData) => {
     })
         .then((response) => {
             if (response.status === 200) {
-                return response.text()
+                return response.json()
             }
             else {
                 throw "Something went wrong"
