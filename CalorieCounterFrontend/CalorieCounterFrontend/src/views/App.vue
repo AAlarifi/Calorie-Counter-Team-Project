@@ -37,21 +37,21 @@
 
       <div class="btn-group">
         <router-link to="/">
-          <v-btn class="btn btn-primary mx-3" color="white" variant="primary">Home</v-btn>
+          <v-btn class="btn btn-primary mx-3" color="white" variant="primary" v-if="isAuthenticated">Home</v-btn>
         </router-link>
         <router-link to="/food">
-          <v-btn class="btn btn-primary mx-3" color="white" variant="primary">Calorie Counter</v-btn>
+          <v-btn class="btn btn-primary mx-3" color="white" variant="primary" v-if="isAuthenticated">Calorie Counter</v-btn>
         </router-link>
         <router-link to="/about">
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">About us</v-btn>
+          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" v-if="!isAuthenticated">About us</v-btn>
         </router-link>
         <router-link to="/signup">
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">signup</v-btn>
+          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" v-if="!isAuthenticated">signup</v-btn>
         </router-link>
         <router-link to="/Login">
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">Login</v-btn>
+          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" v-if="!isAuthenticated">Login</v-btn>
         </router-link>
-        <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" @click="logoutFuncion">logout</v-btn>
+        <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" @click="logoutFuncion" v-if="isAuthenticated">logout</v-btn>
       </div>
     </v-app-bar>
     <router-view></router-view>
@@ -79,12 +79,17 @@ export default {
       snackbar: false
     }
   },
+  computed: {
+    isAuthenticated() {
+      return localStorage.getItem('session_token') !== null
+    }},
   methods: {
     logoutFuncion() {
       userServices.logout()
         .then(() => {
           localStorage.removeItem('session_token')
           this.$router.push('/login')
+          location.reload()
         })
         .catch((error) => {
           this.snackbar = true;
