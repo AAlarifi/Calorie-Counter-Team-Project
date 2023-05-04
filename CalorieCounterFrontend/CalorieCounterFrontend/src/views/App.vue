@@ -51,12 +51,35 @@
         <router-link to="/Login">
           <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">Login</v-btn>
         </router-link>
+          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" @click="logoutFuncion">logout</v-btn>
       </div>
     </v-app-bar>
     <router-view></router-view>
   </v-app>
 </template>
 
+<script>
+import router from "../router/index.js";
+import userServices from "./../services/user.service";
+
+export default {
+  name: "App",
+  router,
+  methods:{
+    logoutFuncion(){
+      userServices.logout()
+        .then(() => {
+          localStorage.removeItem('session_token')
+          this.$router.push('/login')
+          //location.reload()
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  }
+};
+</script>
 
 <style>
 .bg-grey-darken-4{
@@ -97,12 +120,3 @@ position: relative;
   height: 63px;
 }
 </style>
-
-<script>
-import router from "../router/index.js";
-
-export default {
-  name: "App",
-  router,
-};
-</script>

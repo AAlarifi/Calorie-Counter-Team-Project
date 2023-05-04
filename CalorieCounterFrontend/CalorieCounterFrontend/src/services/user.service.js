@@ -168,10 +168,39 @@ const login = (email, password) => {
   })
 }
 
+// Logs out the user removing their session token and user id
+const logout = () => {
+  let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+      return Promise.reject(new Error("No session token found. Please login again."));
+  }
+  localStorage.removeItem("session_token");
+  localStorage.removeItem("user_id");
+  return fetch("http://localhost:8008/secured/logout", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-Authorization": session_token
+      }
+  })
+      .then((response) => {
+          if (response.status === 200) {
+              return Promise.resolve();
+          } else {
+              throw "Something went wrong"
+          }
+      })
+      .catch((error) => {
+          console.log("Err", error)
+          return Promise.reject(error)
+      });
+};
+
 export default {
   selectGender,
   submitUserForm,
   getCalorieIntake,
   createUser: createUser,
-  login: login
+  login: login,
+  logout: logout
 };
