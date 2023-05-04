@@ -12,12 +12,16 @@ public class AuthMiddleware {
             if (id == null) {
                 response.status(401);
                 response.body("Unauthorized");
-                halt(401, "Unauthorized");
+                System.out.println("You are not authorized");
+                halt();
             }
             request.attribute("user_id", id);
+            System.out.println("YOU HAVE BEEN AUTHORIZED");
+
         } catch (Exception e) {
             response.status(500);
             response.body("Internal Server Error");
+            halt();
         }
     };
 }
