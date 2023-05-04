@@ -66,7 +66,7 @@ public class UserRoutes {
         }
 
         try (DataBase db = new DataBase()) {
-            Long userId = db.getIdFromToken(token);
+            Integer userId = db.getIdFromToken(token);
             if (userId == null) {
                 response.status(401);
                 return "User isn't logged in!";
@@ -88,8 +88,8 @@ public class UserRoutes {
         int ageInYears = Integer.parseInt(request.queryParams("ageInYears"));
         try (DataBase db = new DataBase()) {
             db.menBMR(weightInKg, heightInCm, ageInYears);
+            return "A male user has been created";
         }
-        return "A male user has been created";
     };
 
     public static Route createFemaleUser = (Request request, Response response) -> {
@@ -98,8 +98,8 @@ public class UserRoutes {
         int ageInYears = Integer.parseInt(request.queryParams("ageInYears"));
         try (DataBase db = new DataBase()) {
             db.womenBMR(weightInKg, heightInCm, ageInYears);
+            return "A female user has been created";
         }
-        return "A female user has been created";
     };
 
     public static Route sedentaryRoute = (Request request, Response response) -> {

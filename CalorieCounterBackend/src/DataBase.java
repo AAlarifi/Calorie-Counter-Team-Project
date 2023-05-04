@@ -183,7 +183,7 @@ public class DataBase implements AutoCloseable {
         }
     }
 
-    public Long getIdFromToken(String token) throws SQLException {
+    public Integer getIdFromToken(String token) throws SQLException {
         if (token == null) {
             return null;
         }
@@ -192,7 +192,7 @@ public class DataBase implements AutoCloseable {
             ps.setString(1, token);
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getLong("user_id");
+                return resultSet.getInt("user_id");
             } else {
                 return null;
             }
@@ -201,10 +201,6 @@ public class DataBase implements AutoCloseable {
             return null;
         }
     }
-
-
-
-
 
 
     public void createFood(String name, int calories) {

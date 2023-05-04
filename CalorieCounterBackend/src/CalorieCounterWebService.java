@@ -1,3 +1,8 @@
+import spark.Filter;
+import spark.Request;
+import spark.Response;
+import static spark.Spark.*;
+
 import static spark.Spark.*;
 public class CalorieCounterWebService {
 
@@ -6,24 +11,27 @@ public class CalorieCounterWebService {
 		port(8008);
 		enableCORS("*", "*", "*");
 
-		post("/maleUser", UserRoutes.createMaleUser);
-		post("/femaleUser", UserRoutes.createFemaleUser);
-		post("/sedentary", UserRoutes.sedentaryRoute);
-		post("/lightlyActive", UserRoutes.lightlyActiveRoute);
-		post("/moderatelyActive", UserRoutes.moderatelyActiveRoute);
-		post("/active", UserRoutes.activeRoute);
-		post("/veryActive", UserRoutes.veryActiveRoute);
-		post("/loseWeight", UserRoutes.loseWeightRoute);
-		post("/gainWeight", UserRoutes.gainWeightRoute);
-		get("/getCalorieIntake", UserRoutes.getCalorieIntakeRoute);
-		get("/foodCalories", FoodRoutes.getFoodCalories);
-		post("/food", FoodRoutes.insertFoodRoute);
-		get("/food/search", FoodRoutes.foodSearchRoute);
-		get("/food/searchParser", FoodRoutes.foodSearchParser);
-		post("/food/searchRequest",FoodRoutes.foodSearchRequest);
+		before("/secured/*", AuthMiddleware.isAuthenticated);
+
+
+		post("/secured/maleUser", UserRoutes.createMaleUser);
+		post("/secured/femaleUser", UserRoutes.createFemaleUser);
+		post("/secured/sedentary",  UserRoutes.sedentaryRoute);
+		post("/secured/lightlyActive", UserRoutes.lightlyActiveRoute);
+		post("/secured/moderatelyActive", UserRoutes.moderatelyActiveRoute);
+		post("/secured/active", UserRoutes.activeRoute);
+		post("/secured/veryActive", UserRoutes.veryActiveRoute);
+		post("/secured/loseWeight", UserRoutes.loseWeightRoute);
+		post("/secured/gainWeight", UserRoutes.gainWeightRoute);
+		get("/secured/getCalorieIntake", UserRoutes.getCalorieIntakeRoute);
+		get("/secured/foodCalories", FoodRoutes.getFoodCalories);
+		post("/secured/food", FoodRoutes.insertFoodRoute);
+		get("/secured/food/search", FoodRoutes.foodSearchRoute);
+		get("/secured/food/searchParser", FoodRoutes.foodSearchParser);
+		post("/secured/food/searchRequest",FoodRoutes.foodSearchRequest);
         post("/signup",UserRoutes.signup);
 		post("/login",UserRoutes.login);
-		post("/logout",UserRoutes.logout);
+		post("/secured/logout", UserRoutes.logout);
 
 
 	}
