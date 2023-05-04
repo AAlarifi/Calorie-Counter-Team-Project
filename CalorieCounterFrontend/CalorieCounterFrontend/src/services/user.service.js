@@ -10,6 +10,11 @@ const selectGender = async (gender) => {
 const submitUserForm = async (userData) => {
   const { gender, weightInKg, heightInCm, ageInYears, activityLevel, fitnessGoal } = userData;
 
+  let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+    return Promise.reject(new Error("No session token found. Please login again."));
+  }
+
   let bmrEndpoint;
   if (gender === 'male') {
     bmrEndpoint = '/maleUser';
@@ -23,7 +28,10 @@ const submitUserForm = async (userData) => {
     const bmrResponse = await fetch(baseUrl + bmrEndpoint, {
       method: 'POST',
       body: `weightInKg=${weightInKg}&heightInCm=${heightInCm}&ageInYears=${ageInYears}`,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        "X-Authorization": session_token
+      },
     });
 
     if (bmrResponse.status !== 200) {
@@ -51,7 +59,10 @@ const submitUserForm = async (userData) => {
         throw new Error('Invalid activity level');
     }
 
-    const activityResponse = await fetch(baseUrl + activityEndpoint, { method: 'POST' });
+    const activityResponse = await fetch(baseUrl + activityEndpoint, {
+      method: 'POST',
+      headers: { "X-Authorization": session_token }
+    });
 
     if (activityResponse.status !== 200) {
       throw new Error('Error getting activity level');
@@ -66,7 +77,10 @@ const submitUserForm = async (userData) => {
       throw new Error('Invalid fitness goal');
     }
 
-    const fitnessGoalResponse = await fetch(baseUrl + fitnessGoalEndpoint, { method: 'POST' });
+    const fitnessGoalResponse = await fetch(baseUrl + fitnessGoalEndpoint, {
+      method: 'POST',
+      headers: { "X-Authorization": session_token }
+    });
 
     if (fitnessGoalResponse.status !== 200) {
       throw new Error('Error getting fitness goal level');
@@ -80,11 +94,17 @@ const submitUserForm = async (userData) => {
 };
 
 const getCalorieIntake = async () => {
-
+  let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+    return Promise.reject(new Error("No session token found. Please login again."));
+  }
   try {
     const response = await fetch(baseUrl + '/getCalorieIntake', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        "X-Authorization": session_token
+      }
     });
 
     if (response.status !== 200) {
@@ -95,6 +115,7 @@ const getCalorieIntake = async () => {
 
   } catch (error) {
     console.error(error);
+    //console.error(data);
     throw new Error('Internal server error')
   }
 };
@@ -121,7 +142,7 @@ const createUser = (firstName, lastName, email, password) => {
       }
       if (response.status === 400) {
         return Promise.reject(new Error("Email already exist in the database."));
-    }
+      }
     })
     .then((res) => {
       return res
@@ -138,62 +159,62 @@ const login = (email, password) => {
     password: password
   });
 
-  return  fetch("http://localhost:8008/login",
-  {
+  return fetch("http://localhost:8008/login",
+    {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
       body: requestBody
-  })
-  .then((response) => {
-      if(response.status === 200){
+    })
+    .then((response) => {
+      if (response.status === 200) {
         return response.text().then(text => {
           return JSON.parse(text);
-      });
-      }else if (response.status === 404){
-          throw "Bad request"
-      }else {
-          throw "Something went wrong"
+        });
+      } else if (response.status === 404) {
+        throw "Bad request"
+      } else {
+        throw "Something went wrong"
       }
-  })
-  .then((resJson) => {
+    })
+    .then((resJson) => {
       localStorage.setItem("user_id", resJson.user_id);
       localStorage.setItem("session_token", resJson.session_token)
       return resJson
-  })
-  .catch((error) => {
+    })
+    .catch((error) => {
       console.log("Err", error)
       return Promise.reject(error)
-  })
+    })
 }
 
 // Logs out the user removing their session token and user id
 const logout = () => {
   let session_token = localStorage.getItem("session_token");
   if (!session_token) {
-      return Promise.reject(new Error("No session token found. Please login again."));
+    return Promise.reject(new Error("No session token found. Please login again."));
   }
   localStorage.removeItem("session_token");
   localStorage.removeItem("user_id");
   return fetch("http://localhost:8008/secured/logout", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-Authorization": session_token
-      }
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-Authorization": session_token
+    }
   })
-      .then((response) => {
-          if (response.status === 200) {
-              return Promise.resolve();
-          } else {
-              throw "Something went wrong"
-          }
-      })
-      .catch((error) => {
-          console.log("Err", error)
-          return Promise.reject(error)
-      });
+    .then((response) => {
+      if (response.status === 200) {
+        return Promise.resolve();
+      } else {
+        throw "Something went wrong"
+      }
+    })
+    .catch((error) => {
+      console.log("Err", error)
+      return Promise.reject(error)
+    });
 };
 
 export default {

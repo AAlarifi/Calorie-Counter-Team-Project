@@ -89,7 +89,7 @@ export default {
         .then(() => {
           localStorage.removeItem('session_token')
           this.$router.push('/login')
-          location.reload()
+          // location.reload()
         })
         .catch((error) => {
           this.snackbar = true;

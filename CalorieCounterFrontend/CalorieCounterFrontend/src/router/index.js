@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { ifAuthenticated } from '../views/components/ifAuthenticated.js';
 
 
 import Home from "../views/pages/Home.vue"
@@ -11,10 +12,10 @@ import Login from "../views/pages/Login.vue"
 
 
 const routes = [
-    { path: "/", component: Home },
-    { path: "/food", component: Food },
+    { path: "/", component: Home, beforeEnter: ifAuthenticated.call },
+    { path: "/food", component: Food, beforeEnter: ifAuthenticated.call },
     { path: "/About", component: About },
-    { path: "/Diary", component: Diary },
+    { path: "/Diary", component: Diary, beforeEnter: ifAuthenticated.call },
     { path: "/Signup", component: Signup },
     { path: "/Login", component: Login },
     { path: "/:pathMatch(.*)*", component: NotFound }

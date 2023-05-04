@@ -72,7 +72,7 @@ export default {
                     this.loginResponse = serverResponse;
                     console.log('Auth - go to home');
                     this.$router.push('/');
-                    //location.reload()
+                    // location.reload()
                 })
                 .catch(error => {
                     this.loginResponse = error;

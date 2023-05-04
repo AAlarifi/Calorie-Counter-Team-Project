@@ -1,7 +1,13 @@
 const submitCalories = (food, calories) => {
-
+  let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+    return Promise.reject(new Error("No session token found. Please login again."));
+  }
     return fetch(`http://localhost:8008/secured/food?name=${food}&calories=${calories}`, {
-        method: "POST"
+        method: "POST",
+        headers: {
+            "X-Authorization": session_token
+        }
     })
         .then((response) => {
             if (response.status === 200) {
@@ -21,9 +27,15 @@ const submitCalories = (food, calories) => {
 }
 
 const foodCaloriesCalc = () => {
-
+  let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+    return Promise.reject(new Error("No session token found. Please login again."));
+  }
     return fetch(`http://localhost:8008/secured/foodCalories`, {
-        method: "GET"
+        method: "GET",
+        headers: {
+            "X-Authorization": session_token
+        }
     })
         .then((response) => {
             if (response.status === 200) {
@@ -43,14 +55,20 @@ const foodCaloriesCalc = () => {
 }
 
 const searchFood = (search) => {
-
+  let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+    return Promise.reject(new Error("No session token found. Please login again."));
+  }
     if (!search) {
         return Promise.reject("Search string is empty or undefined");
     }
     const encodedSearch = encodeURIComponent(search);
 
     return fetch(`http://localhost:8008/secured/food/search?query=${encodedSearch}`, {
-        method: "GET"
+        method: "GET",
+        headers: {
+            "X-Authorization": session_token
+        }
     })
         .then((response) => {
             if (response.status === 200) {
@@ -70,14 +88,20 @@ const searchFood = (search) => {
 }
 
 const searchParser = (result) => {
-
+  let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+    return Promise.reject(new Error("No session token found. Please login again."));
+  }
     if (!result) {
         return Promise.reject("result is empty or undefined");
     }
     const encodedSearch = encodeURIComponent(result);
 
     return fetch(`http://localhost:8008/secured/food/searchParser?query=${encodedSearch}`, {
-        method: "GET"
+        method: "GET",
+        headers: {
+            "X-Authorization": session_token
+        }
     })
         .then((response) => {
             if (response.status === 200) {
@@ -97,6 +121,10 @@ const searchParser = (result) => {
 }
 
 const foodInformation = (foodData) => {
+      let session_token = localStorage.getItem("session_token");
+  if (!session_token) {
+    return Promise.reject(new Error("No session token found. Please login again."));
+  }
     const { NOS, foodId, measurements } = foodData
 
     if (!NOS || !foodId || !measurements) {
@@ -139,7 +167,8 @@ const foodInformation = (foodData) => {
     return fetch(`http://localhost:8008/secured/food/searchRequest`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-Authorization": session_token
         },
         body: requestBody
     })
