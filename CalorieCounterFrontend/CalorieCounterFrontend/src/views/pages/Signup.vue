@@ -20,7 +20,10 @@
                                         <v-text-field v-model="email" label="Email"></v-text-field>
                                         <v-alert v-if="emailError" class="text-center" type="error">Invalid email format.
                                             Please enter a valid email address in the format example@example.com</v-alert>
-                                        <v-text-field v-model="password" label="Password"></v-text-field>
+                                        <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                            :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password"
+                                            hint="At least 8 characters" counter
+                                            @click:append="show1 = !show1"></v-text-field>
                                         <v-alert v-if="emailError" class="text-center" type="error">Invalid password format.
                                             Your password must be between 8 and 30 characters long and contain at least one
                                             lowercase letter, one uppercase letter, one digit, and one special character
@@ -58,7 +61,9 @@ export default {
             firstNameError: false,
             lastNameError: false,
             error: "",
-            createrUserResponse: ""
+            createrUserResponse: "",
+            show1: false,
+            show2: true,
         };
     },
     methods: {
