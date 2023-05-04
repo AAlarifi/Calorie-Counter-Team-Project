@@ -51,10 +51,18 @@
         <router-link to="/Login">
           <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">Login</v-btn>
         </router-link>
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" @click="logoutFuncion">logout</v-btn>
+        <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" @click="logoutFuncion">logout</v-btn>
       </div>
     </v-app-bar>
     <router-view></router-view>
+    <v-snackbar v-model="snackbar">
+      {{ snackbarError }}
+      <template v-slot:actions>
+        <v-btn color="purple" variant="text" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -65,15 +73,22 @@ import userServices from "./../services/user.service";
 export default {
   name: "App",
   router,
-  methods:{
-    logoutFuncion(){
+  data() {
+    return {
+      snackbarError: "",
+      snackbar: false
+    }
+  },
+  methods: {
+    logoutFuncion() {
       userServices.logout()
         .then(() => {
           localStorage.removeItem('session_token')
           this.$router.push('/login')
-          //location.reload()
         })
         .catch((error) => {
+          this.snackbar = true;
+          this.snackbarError = error;
           console.log(error)
         })
     }
@@ -82,15 +97,16 @@ export default {
 </script>
 
 <style>
-.bg-grey-darken-4{
+.bg-grey-darken-4 {
   background-color: rgba(0, 0, 0, 0.5);
   position: relative;
   z-index: 3;
 }
-.dropdown{
-position: relative;
-    z-index: 9999;
-    overflow: auto;
+
+.dropdown {
+  position: relative;
+  z-index: 9999;
+  overflow: auto;
 }
 
 .btn-white {
