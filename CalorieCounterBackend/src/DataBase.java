@@ -48,7 +48,6 @@ public class DataBase implements AutoCloseable {
             error(sqle);
             throw new Exception("Error checking email exists in database");
         }
-
         if (!errorMessages.isEmpty()) {
             throw new Exception(String.join(", ", errorMessages));
         }
@@ -105,7 +104,7 @@ public class DataBase implements AutoCloseable {
         return bytes;
     }
 
-    public long authenticateUser(String email, String password) {
+    public Integer authenticateUser(String email, String password)  {
         String sql = "SELECT user_id, password, salt FROM users WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
@@ -119,7 +118,7 @@ public class DataBase implements AutoCloseable {
                 System.out.println("Generated hash: " + hash);
                 System.out.println("Stored hash: " + storedHash);
                 if (hash.equals(storedHash)) {
-                    return resultSet.getLong("user_id");
+                    return resultSet.getInt("user_id");
                 } else {
                     throw new Exception("Wrong password!");
                 }
@@ -127,13 +126,85 @@ public class DataBase implements AutoCloseable {
                 throw new Exception("User not found!");
             }
         } catch (SQLException sqle) {
-            return -1;
+            return null;
         } catch (Exception e) {
-            return -1;
+            return null;
         }
     }
 
-    
+    private String generateRandomToken() {
+        SecureRandom random = new SecureRandom();
+        byte[] tokenBytes = new byte[16];
+        random.nextBytes(tokenBytes);
+        return bytesToHex(tokenBytes);
+    }
+
+    public String setToken(int id) {
+        String token = generateRandomToken(); // Implement the generateRandomToken method to generate a random token
+        String sql = "UPDATE users SET session_token=? WHERE user_id=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, token);
+            ps.setInt(2, id);
+            int rowsUpdated = ps.executeUpdate();
+            if (rowsUpdated == 1) {
+                return token;
+            } else {
+                throw new SQLException("Unable to set session token");
+            }
+        } catch (SQLException sqle) {
+            error(sqle);
+            return null;
+        }
+    }
+
+    public String getToken(int id) {
+        String sql = "SELECT session_token FROM users WHERE user_id=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                String sessionToken = resultSet.getString("session_token");
+                if (sessionToken != null) {
+                    return sessionToken;
+                }
+            }
+        } catch (SQLException sqle) {
+            error(sqle);
+        }
+        return null;
+    }
+    public void removeToken(String token) throws SQLException {
+        String sql = "UPDATE users SET session_token=null WHERE session_token=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, token);
+            ps.executeUpdate();
+        } catch (SQLException sqle) {
+            error(sqle);
+        }
+    }
+
+    public Long getIdFromToken(String token) throws SQLException {
+        if (token == null) {
+            return null;
+        }
+        String sql = "SELECT user_id FROM users WHERE session_token=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, token);
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong("user_id");
+            } else {
+                return null;
+            }
+        } catch (SQLException sqle) {
+            error(sqle);
+            return null;
+        }
+    }
+
+
+
+
 
 
     public void createFood(String name, int calories) {

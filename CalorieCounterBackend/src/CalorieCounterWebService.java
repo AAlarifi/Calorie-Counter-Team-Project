@@ -23,6 +23,7 @@ public class CalorieCounterWebService {
 		post("/food/searchRequest",FoodRoutes.foodSearchRequest);
         post("/signup",UserRoutes.signup);
 		post("/login",UserRoutes.login);
+		post("/logout",UserRoutes.logout);
 
 
 	}

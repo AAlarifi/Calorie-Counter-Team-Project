@@ -2,6 +2,9 @@
 import spark.Route;
 import spark.Request;
 import spark.Response;
+
+import java.sql.SQLException;
+import java.util.*;
 public class UserRoutes {
 
     public static Route signup = (Request request, Response response) -> {
@@ -21,16 +24,62 @@ public class UserRoutes {
     public static Route login = (Request request, Response response) -> {
         String email = (request.queryParams("email"));
         String password = (request.queryParams("password"));
+        // Check if email and password are not null or empty
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            response.status(400);
+            return "Email and password are required";
+        }
         try (DataBase db = new DataBase()) {
-            Long result = db.authenticateUser(email, password);
-            response.status(200);
-            return result;
-        }catch (Exception e) {
-            response.status(401);
-            return e.getMessage();
+            Integer  id = db.authenticateUser(email, password);
+            if (id != null) {
+                // Check if token exists for the user
+                String token = db.getToken(id);
+                if (token != null) {
+                    response.status(200);
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("user_id", id);
+                    resultMap.put("session_token", token);
+                    return resultMap;
+                } else {
+                    String newToken = db.setToken(id);
+                    response.status(200);
+                    Map<String, Object> resultMap = new HashMap<>();
+                    resultMap.put("user_id", id);
+                    resultMap.put("session_token", newToken);
+                    return resultMap;
+                }
+            } else {
+                response.status(400);
+                return "Invalid email/password supplied!";
+            }
+        } catch (Exception e) {
+            response.status(500);
+            return "Internal Server Error";
         }
     };
 
+    public static Route logout = (Request request, Response response) -> {
+        String token = request.headers("authToken");
+        if (token == null) {
+            response.status(401);
+            return "User isn't logged in!";
+        }
+
+        try (DataBase db = new DataBase()) {
+            Long userId = db.getIdFromToken(token);
+            if (userId == null) {
+                response.status(401);
+                return "User isn't logged in!";
+            }
+
+            db.removeToken(token);
+            response.status(200);
+            return "";
+        } catch (SQLException e) {
+            response.status(500);
+            return "Internal Server Error";
+        }
+    };
 
 
     public static Route createMaleUser = (Request request, Response response) -> {
