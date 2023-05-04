@@ -114,9 +114,9 @@ public class DataBase implements AutoCloseable {
                 byte[] salt = hexToBytes(saltString);
                 String hash = getHash(password, salt);
                 String storedHash = resultSet.getString("password");
-                System.out.println("Salt: " + saltString);
-                System.out.println("Generated hash: " + hash);
-                System.out.println("Stored hash: " + storedHash);
+//                System.out.println("Salt: " + saltString);
+//                System.out.println("Generated hash: " + hash);
+//                System.out.println("Stored hash: " + storedHash);
                 if (hash.equals(storedHash)) {
                     return resultSet.getInt("user_id");
                 } else {

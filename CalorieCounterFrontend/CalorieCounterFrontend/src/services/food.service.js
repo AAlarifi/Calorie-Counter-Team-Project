@@ -1,6 +1,6 @@
 const submitCalories = (food, calories) => {
 
-    return fetch(`http://localhost:8008/food?name=${food}&calories=${calories}`, {
+    return fetch(`http://localhost:8008/secured/food?name=${food}&calories=${calories}`, {
         method: "POST"
     })
         .then((response) => {
@@ -22,7 +22,7 @@ const submitCalories = (food, calories) => {
 
 const foodCaloriesCalc = () => {
 
-    return fetch(`http://localhost:8008/foodCalories`, {
+    return fetch(`http://localhost:8008/secured/foodCalories`, {
         method: "GET"
     })
         .then((response) => {
@@ -49,7 +49,7 @@ const searchFood = (search) => {
     }
     const encodedSearch = encodeURIComponent(search);
 
-    return fetch(`http://localhost:8008/food/search?query=${encodedSearch}`, {
+    return fetch(`http://localhost:8008/secured/food/search?query=${encodedSearch}`, {
         method: "GET"
     })
         .then((response) => {
@@ -76,7 +76,7 @@ const searchParser = (result) => {
     }
     const encodedSearch = encodeURIComponent(result);
 
-    return fetch(`http://localhost:8008/food/searchParser?query=${encodedSearch}`, {
+    return fetch(`http://localhost:8008/secured/food/searchParser?query=${encodedSearch}`, {
         method: "GET"
     })
         .then((response) => {
@@ -136,7 +136,7 @@ const foodInformation = (foodData) => {
         foodId: foodId
     });
 
-    return fetch(`http://localhost:8008/food/searchRequest`, {
+    return fetch(`http://localhost:8008/secured/food/searchRequest`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -145,9 +145,7 @@ const foodInformation = (foodData) => {
     })
         .then((response) => {
             if (response.status === 200) {
-                return response.text().then(text => {
-                    return JSON.parse(text);
-                });
+                return response.text()
             }
             else {
                 throw "Something went wrong"

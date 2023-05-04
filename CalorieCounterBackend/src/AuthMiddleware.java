@@ -16,7 +16,7 @@ public class AuthMiddleware {
                 halt();
             }
             request.attribute("user_id", id);
-            System.out.println("YOU HAVE BEEN AUTHORIZED");
+            System.out.println("you have been authorized");
 
         } catch (Exception e) {
             response.status(500);

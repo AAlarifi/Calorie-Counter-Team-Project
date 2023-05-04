@@ -28,7 +28,7 @@ public class FoodRoutes {
     };
 
     private static final String API_KEY = "406bd66f1aa712d1f2d764df821325ff";
-    private static final String API_HOST = "edamam-recipe-search.p.rapidapi.com";
+    //private static final String API_HOST = "edamam-recipe-search.p.rapidapi.com";
 
     private static final String API_ENDPOINT_AUTOCOMPLETE = "https://api.edamam.com/auto-complete";
     private static final String API_ENDPOINT_PARSER = "https://api.edamam.com/api/food-database/v2/parser";

@@ -10,7 +10,7 @@
       <v-app-bar-title>
       </v-app-bar-title>
 
-      <div class="dropdown">
+      <!-- <div class="dropdown">
   <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Menu
   </a>
@@ -32,13 +32,10 @@
     <li><a class="btn btn-primary dropdown-item" href="#">Login</a></li>
   </router-link>
   </ul>
-</div>
+</div> -->
 
 
-
-
-
-      <!-- <div class="btn-group">
+      <div class="btn-group">
         <router-link to="/">
           <v-btn class="btn btn-primary mx-3" color="white" variant="primary">Home</v-btn>
         </router-link>
@@ -52,9 +49,9 @@
           <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">signup</v-btn>
         </router-link>
         <router-link to="/Login">
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">Login(temp)</v-btn>
+          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary">Login</v-btn>
         </router-link>
-      </div> -->
+      </div>
     </v-app-bar>
     <router-view></router-view>
   </v-app>

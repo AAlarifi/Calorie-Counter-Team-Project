@@ -1,10 +1,13 @@
 //import static spark.Spark.*;
-import spark.Route;
+
+import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
+import spark.Route;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 public class UserRoutes {
 
     public static Route signup = (Request request, Response response) -> {
@@ -36,17 +39,17 @@ public class UserRoutes {
                 String token = db.getToken(id);
                 if (token != null) {
                     response.status(200);
-                    Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put("user_id", id);
-                    resultMap.put("session_token", token);
-                    return resultMap;
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("user_id", id);
+                    jsonObject.put("session_token", token);
+                    return jsonObject.toString();
                 } else {
                     String newToken = db.setToken(id);
                     response.status(200);
-                    Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put("user_id", id);
-                    resultMap.put("session_token", newToken);
-                    return resultMap;
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("user_id", id);
+                    jsonObject.put("session_token", newToken);
+                    return jsonObject.toString();
                 }
             } else {
                 response.status(400);
@@ -59,7 +62,7 @@ public class UserRoutes {
     };
 
     public static Route logout = (Request request, Response response) -> {
-        String token = request.headers("authToken");
+        String token = request.headers("X-Authorization");
         if (token == null) {
             response.status(401);
             return "User isn't logged in!";

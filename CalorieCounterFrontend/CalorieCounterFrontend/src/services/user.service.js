@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8008';
+const baseUrl = 'http://localhost:8008/secured';
 
 const selectGender = async (gender) => {
   const endpoint = gender === 'male' ? '/maleUser' : '/femaleUser';
@@ -100,10 +100,6 @@ const getCalorieIntake = async () => {
 };
 
 const createUser = (firstName, lastName, email, password) => {
-  // let session_token = localStorage.getItem("session_token");
-  // if (!session_token) {
-  //   return Promise.reject(new Error("No session token found. Please login again."));
-  // }
 
   const requestBody = new URLSearchParams({
     firstName: firstName,
@@ -112,11 +108,10 @@ const createUser = (firstName, lastName, email, password) => {
     password: password
   });
 
-  return fetch(baseUrl + "/signup", {
+  return fetch("http://localhost:8008/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
-      // "X-Authorization": session_token
     },
     body: requestBody
   })
@@ -137,9 +132,46 @@ const createUser = (firstName, lastName, email, password) => {
     })
 };
 
+const login = (email, password) => {
+  const requestBody = new URLSearchParams({
+    email: email,
+    password: password
+  });
+
+  return  fetch("http://localhost:8008/login",
+  {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: requestBody
+  })
+  .then((response) => {
+      if(response.status === 200){
+        return response.text().then(text => {
+          return JSON.parse(text);
+      });
+      }else if (response.status === 404){
+          throw "Bad request"
+      }else {
+          throw "Something went wrong"
+      }
+  })
+  .then((resJson) => {
+      localStorage.setItem("user_id", resJson.user_id);
+      localStorage.setItem("session_token", resJson.session_token)
+      return resJson
+  })
+  .catch((error) => {
+      console.log("Err", error)
+      return Promise.reject(error)
+  })
+}
+
 export default {
   selectGender,
   submitUserForm,
   getCalorieIntake,
-  createUser: createUser
+  createUser: createUser,
+  login: login
 };

@@ -1,72 +1,77 @@
 <template>
-    <div class="container">
-        <h1 class="text-center m-4">Login</h1>
-        <form class="text-center custom-bg rounded rounded-5 p-3 text-white" @submit.prevent="login"
-            v-on:submit="login">
-            <div class="form-group">
-                <label class="form-label" for="email">Email: </label>
-                <input class="form-control text-center" type="email" name="email" v-model="email"
-                    placeholder="your email address..." />
-                <div v-show="submitted && !email">Email is required</div>
+<v-app>
+        <v-main class="bg-grey-darken-4 overflow-y-auto">
+            <div class="bg-image">
+                <v-container style="height: 100vh; max-height: 100vh" class="align-center d-flex">
+                    <v-row justify="center">
+                        <v-col cols="12" lg="6">
+                            <v-card elevation="10">
+                                <v-card-item>
+                                    <v-card-title class="text-center btn btn-primary">Login</v-card-title>
+                                </v-card-item>
+                                <v-card-text>
+                                    <v-form @submit.prevent="loginFunction">
+                                        <v-text-field v-model="email" label="Email"></v-text-field>
+                                        <v-alert v-if="emailError" class="text-center" type="error">Invalid email format.
+                                            Please enter a valid email address in the format example@example.com</v-alert>
+                                        <v-text-field v-model="password" label="Password"></v-text-field>
+                                        <v-alert v-if="emailError" class="text-center" type="error">Invalid password format.
+                                            Your password must be between 8 and 30 characters long and contain at least one
+                                            lowercase letter, one uppercase letter, one digit, and one special character
+                                            (@$!%*?&).</v-alert>
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn @click="loginFunction" block
+                                        variant="outlined btn btn-primary">Login</v-btn>
+                                </v-card-actions>
+                                <v-card-item>
+                                    {{ loginResponse }}
+                                </v-card-item>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </div>
-
-
-            <div class="form-group">
-                <label class="form-label" for="password">Password: </label>
-                <input class="form-control text-center" type="password" name="password" v-model="password"
-                    placeholder="your password..." />
-
-                <div v-show="submitted && !password">Password is required</div>
-            </div>
-
-
-            <button type="submit" class="btn btn-light mt-2">Login</button>
-            <div v-if="error">{{ error }}</div>
-
-        </form>
-    </div>
+        </v-main>
+    </v-app>
 </template>
 
 <script>
-// import { userService } from "../../services/user.service";
-// import EmailValidator from "email-validator";
+import userServices from "../../services/user.service";
 
 export default {
     data() {
         return {
-            email: "admin@admin.com",
-            password: "Admin123!",
-            submitted: false,
-            loading: true,
-            error: ""
+            email: "iflookscould@kill.com",
+            password: "Lonely123!",
+            emailError: false,
+            passwordError: false,
+            loginResponse: ""
         }
     },
     methods: {
-        login() {
-            this.submitted = true
-            if (!this.email || !this.password) {
-                return
+        loginFunction() {
+            this.emailError = false;
+            this.passwordError = false;
+            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
+                this.emailError = true;
             }
-
-            if (!EmailValidator.validate(this.email)) {
-                this.error = "Email must be a valid email."
-                return
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/.test(this.password)) {
+                this.passwordError = true;
             }
-            const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/
-            if (!password_pattern.test(this.password)) {
-                this.error = "Password must be atleast 8 - 30 characters long with at least one lowercase letter, one upercase letter, one special character and one number"
-                return
+            if (this.emailError || this.passwordError) {
+                return;
             }
-
-            userService.login(this.email, this.password)
-                .then(result => {
-                    console.log('Auth - go to dashboard')
-                    this.$router.push('/dashboard')
-                    location.reload()
+            userServices.login(this.email, this.password)
+                .then(serverResponse => {
+                    this.loginResponse = serverResponse;
+                    console.log('Auth - go to home');
+                    this.$router.push('/');
+                    //location.reload()
                 })
                 .catch(error => {
-                    this.error = error
-                    this.loading = false
+                    this.loginResponse = error;
                 })
         }
     }
@@ -74,7 +79,26 @@ export default {
 </script>
 
 <style scoped>
-.custom-bg {
-    background-color: #a1a1a1;
+.bg-image {
+    background-image: url('src/images/image2.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100vw;
+}
+
+@media only screen and (max-width: 3868px) {
+    .bg-image {
+        background-size: contain;
+        background-position: center top;
+    }
+}
+
+@media only screen and (max-width: 3876px) {
+    .bg-image {
+        background-size: cover;
+    }
 }
 </style>
