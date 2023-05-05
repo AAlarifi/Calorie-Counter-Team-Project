@@ -18,7 +18,7 @@
                                             :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password"
                                             hint="At least 8 characters" counter
                                             @click:append="show1 = !show1"></v-text-field>
-                                        <v-alert v-if="emailError" class="text-center" type="error">Invalid password format.
+                                        <v-alert v-if="passwordError" class="text-center" type="error">Invalid password format.
                                             Your password must be between 8 and 30 characters long and contain at least one
                                             lowercase letter, one uppercase letter, one digit, and one special character
                                             (@$!%*?&).</v-alert>
@@ -45,8 +45,8 @@ import userServices from "../../services/user.service";
 export default {
     data() {
         return {
-            email: "iflookscould@kill.com",
-            password: "Lonely123!",
+            email: "Tester2023@gmail.com",
+            password: "Test123!",
             emailError: false,
             passwordError: false,
             loginResponse: "",
