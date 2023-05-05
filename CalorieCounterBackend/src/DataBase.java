@@ -307,7 +307,7 @@ public class DataBase implements AutoCloseable {
     //Sedentary (little to no exercise)
     public String sedentary(int userId) {
         try {
-            updateAMR(userId,"sedentary", 1.2);
+            updateAMR(userId, "sedentary", 1.2);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -317,7 +317,7 @@ public class DataBase implements AutoCloseable {
     // Lightly active (exercise 1-3 days/week)
     public String lightlyActive(int userId) {
         try {
-            updateAMR(userId,"lightly active", 1.375);
+            updateAMR(userId, "lightly active", 1.375);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -327,7 +327,7 @@ public class DataBase implements AutoCloseable {
     // Moderately active (exercise 3-5 days/week)
     public String moderatelyActive(int userId) {
         try {
-            updateAMR(userId,"moderately active", 1.55);
+            updateAMR(userId, "moderately active", 1.55);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -337,7 +337,7 @@ public class DataBase implements AutoCloseable {
     // Active (exercise 6-7 days/week)
     public String active(int userId) {
         try {
-            updateAMR(userId,"active", 1.725);
+            updateAMR(userId, "active", 1.725);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -347,7 +347,7 @@ public class DataBase implements AutoCloseable {
     // Very active (hard exercise 6-7 days/week)
     public String veryActive(int userId) {
         try {
-            updateAMR(userId,"very active", 1.9);
+            updateAMR(userId, "very active", 1.9);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -382,7 +382,6 @@ public class DataBase implements AutoCloseable {
     public double getCalorieIntake(int userId) {
         double CalorieIntake = 0;
         try {
-            int maxID = getMaxUserId();
             String results = "SELECT CalorieIntake FROM users WHERE user_id = " + userId;
             Statement s = connection.createStatement();
             ResultSet CalorieSet = s.executeQuery(results);
@@ -398,28 +397,29 @@ public class DataBase implements AutoCloseable {
     /*
      * Subtract Food calories from the user's Calorie intake
      */
-    public String foodCalories() {
+    public String foodCalories(int userId) {
         try {
             Statement s = connection.createStatement();
-            String getMaxIDQueryFood = "SELECT MAX(FoodID) AS foodMaxID FROM Food";
+            String getMaxIDQueryFood = "SELECT MAX(food_id) AS foodMaxID FROM foods WHERE added_by = " + userId;
             ResultSet maxIDResultSet = s.executeQuery(getMaxIDQueryFood);
             if (maxIDResultSet.next()) {
                 int foodMaxID = maxIDResultSet.getInt("foodMaxID");
-                String selectQuery = "SELECT Calories AS foodCalorie FROM Food WHERE FoodID = " + foodMaxID;
+                String selectQuery = "SELECT calories AS foodCalorie FROM foods WHERE food_id = " + foodMaxID;
                 ResultSet CalorieSet = s.executeQuery(selectQuery);
                 if (CalorieSet.next()) {
                     int foodCalorie = CalorieSet.getInt("foodCalorie");
-                    int maxUserID = getMaxUserId();
-                    String updateQuery = "UPDATE User SET CalorieIntake = CalorieIntake - " + foodCalorie
-                            + " WHERE UserID = " + maxUserID;
+                    String updateQuery = "UPDATE users SET CalorieIntake = CalorieIntake - " + foodCalorie
+                            + " WHERE user_id = " + userId;
                     Statement l = connection.createStatement();
                     l.executeUpdate(updateQuery);
+                    return "Food calories subtracted from CalorieIntake";
                 }
             }
-        } catch (SQLException sqle) {
-            error(sqle);
+            return "Unable to retrieve food calories";
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return "Unable to retrieve food calories";
         }
-        return "Food calories subtracted from CalorieIntake";
     }
 
     private void error(SQLException sqle) {

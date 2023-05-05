@@ -4,6 +4,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -13,18 +15,36 @@ import org.json.JSONObject;
 public class FoodRoutes {
 
     public static Route insertFoodRoute = (Request request, Response response) -> {
-        String name = (request.queryParams("name"));
+        String token = request.headers("X-Authorization");
+        String name = request.queryParams("name");
         int calories = Integer.parseInt(request.queryParams("calories"));
-        int addedByUserId = Integer.parseInt(request.queryParams("addedByUserId"));
         try (DataBase db = new DataBase()) {
+            Integer addedByUserId = db.getIdFromToken(token);
+            if (addedByUserId == null) {
+                response.status(401);
+                return "Invalid session token";
+            }
             db.createFood(name, calories, addedByUserId);
+        } catch (SQLException e) {
+            response.status(500);
+            return "Internal Server Error";
         }
         return "Food has been added to the database";
     };
 
     public static Route getFoodCalories = (Request request, Response response) -> {
+        String token = request.headers("X-Authorization");
         try (DataBase db = new DataBase()) {
-            return db.foodCalories();
+            Integer userId = db.getIdFromToken(token);
+            if (userId == null) {
+                response.status(401);
+                return "Invalid session token";
+            }
+            String result = db.foodCalories(userId);
+            return result;
+        } catch (SQLException e) {
+            response.status(500);
+            return "Internal Server Error";
         }
     };
 
@@ -59,13 +79,13 @@ public class FoodRoutes {
                 foodObj.put("name", foodName);
                 foodList.put(foodObj);
             }
-        response.header("Content-Type", "application/json");
-        return foodList;
-    }catch (Exception e){
-        e.printStackTrace();
-        response.status(500);
-        return "Error: " + e.getMessage();
-    }
+            response.header("Content-Type", "application/json");
+            return foodList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.status(500);
+            return "Error: " + e.getMessage();
+        }
     };
 
     // Gets the foodId from parsed food.
@@ -94,24 +114,24 @@ public class FoodRoutes {
             response.header("Content-Type", "application/json");
             return foodId; // food id json should be here?
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             response.status(500);
             return "Error: " + e.getMessage();
         }
     };
-// x-www-form-urlencoded must be used for testing in Postman
+    // x-www-form-urlencoded must be used for testing in Postman
     public static Route foodSearchRequest = (Request request, Response response) -> {
         HttpClient client = HttpClient.newHttpClient();
         int quantity = Integer.parseInt(request.queryParams("quantity"));
         String foodId = request.queryParams("foodId");
         String measureURI = request.queryParams("measureURI");
 
-    // get the foodId from the foodSearchParser
-    //String foodId = foodSearchParser(request, response);
+        // get the foodId from the foodSearchParser
+        //String foodId = foodSearchParser(request, response);
 
 
-    JSONObject requestBodyJson = new JSONObject();
+        JSONObject requestBodyJson = new JSONObject();
         JSONArray ingredientsArray = new JSONArray();
         JSONObject ingredientObject = new JSONObject();
         ingredientObject.put("quantity", quantity);
@@ -138,13 +158,13 @@ public class FoodRoutes {
             JSONObject fatObject = totalNutrients.getJSONObject("FAT");
 
             JSONObject nutritionObject = new JSONObject();
-            nutritionObject.put("protein", Math.ceil(proteinObject.getDouble("quantity")* 100)/ 100);
-            nutritionObject.put("fat", Math.ceil(fatObject.getDouble("quantity")* 100)/ 100);
-            nutritionObject.put("carbs", Math.ceil(carbsObject.getDouble("quantity") * 100)/ 100);
+            nutritionObject.put("protein", Math.ceil(proteinObject.getDouble("quantity") * 100) / 100);
+            nutritionObject.put("fat", Math.ceil(fatObject.getDouble("quantity") * 100) / 100);
+            nutritionObject.put("carbs", Math.ceil(carbsObject.getDouble("quantity") * 100) / 100);
             nutritionObject.put("calories", Math.ceil(caloriesObject.getDouble("quantity")));
 
             return nutritionObject;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             response.status(500);
