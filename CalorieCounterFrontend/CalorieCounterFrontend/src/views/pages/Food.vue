@@ -131,7 +131,6 @@ export default {
           const parsedResponse = JSON.parse(serverResponse);
           const foods = parsedResponse;
           this.searchResults = foods;
-          console.log("it works?");
           console.log(serverResponse);
           this.snackbar = true;
         })
@@ -170,79 +169,28 @@ export default {
 
 <style scoped>
 .bg-image {
-    margin: 0;
-    padding: 0;
-    background-image: url('src/images/image1.jpg');
-    background-size: cover;
-    z-index: 3;
-  }
-  
-  .bg-grey.darken-4 {
-    background-color: rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 1;
-  }
-
- .v-main{
-  overflow-y: auto;
-}
-
-.bg-grey-darken-4{
-  overflow: auto;
-  z-index: 1;
-}
-/* .bg-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background-image: url('src/images/image1.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  filter: brightness(1.2) contrast(1.2);
-  height: 100vh;
-  width: 100vw;
-}  */
-
-.logo3 {
-  position: absolute;
-  top: 365px;
-  left: 520px;
+  /* height: 100vh;
+  width: 100vw; */
+  /* z-index: 1;
+  overflow: auto; */
 }
 
-.logo3 img {
-  width: 50px; /* adjust the size as needed */
-  height: 33px;
+.bg-grey-darken-4 {
+  overflow: auto;
+  z-index: 1;
 }
 
-.logo4 {
-  position: absolute;
-  top: 362px;
-  left: 177px;
+v-container {
+  margin: 1rem auto;
+  padding: 1rem;
 }
 
-.logo4 img {
-  width: 270px; /* adjust the size as needed */
-  height: 40px;
-}
-.sharp-btn {
-  background-color: white;
-  border-radius: 0;
-  color: #0e0101;
-  cursor: pointer;
-  font-weight: bold;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-}
-
-.sharp-btn:hover {
-  background-color: #ffffff;
-}
-
-@media only screen and (max-width: 3868px) {
+/* @media only screen and (max-width: 3868px) {
   .bg-image {
     background-size: contain;
     background-position: center top;
@@ -253,5 +201,32 @@ export default {
   .bg-image {
     background-size: cover;
   }
+
+} */
+
+/* Small devices (mobile phones) */
+@media only screen and (max-width: 600px) {
+  /* Set the font size to 16px for small screens */
+  html {
+    font-size: 16px;
+  }
+  
 }
+
+/* Medium devices (tablets) */
+@media only screen and (min-width: 601px) and (max-width: 960px) {
+  /* Set the font size to 18px for medium screens */
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Large devices (desktops) */
+@media only screen and (min-width: 961px) {
+  /* Set the font size to 20px for large screens */
+  html {
+    font-size: 20px;
+  }
+}
+
 </style>

@@ -1,60 +1,43 @@
 <template>
-  <v-app>
-    <v-app-bar class="bg-grey-darken-4">
-      <div class="logo">
-        <img src="src/images/image3.jpeg" alt="My Picture">
+<v-app>
+      <div>
+        <nav class="navbar navbar-expand-sm bg-black text-white ">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+              <img src="src/images/image3.jpeg" alt="Website Logo" width="40" height="40"
+                class="d-inline-block align-top">
+            </a>
+            <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ">
+                <li class="nav-item">
+                  <router-link class="nav-link text-decoration-none  text-white" to="/about">About us</router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link class="btn btn-light " to="/login" v-if="!isAuthenticated">Login</router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link class="btn btn-light " to="/signup" v-if="!isAuthenticated">Signup</router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link class="btn btn-light " to="/food" v-if="isAuthenticated">Food Diary</router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link class="nav-link text-decoration-none  text-white" to="/"
+                    v-if="isAuthenticated">Dashboard</router-link>
+                </li>
+                <li class="nav-item">
+                  <button class="btn btn-light" @click="logoutFunction" v-if="isAuthenticated">Logout</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <router-view />
       </div>
-      <div class="logo2">
-        <img src="src/images/image4.jpeg" alt="My Picture">
-      </div>
-      <v-app-bar-title>
-      </v-app-bar-title>
-
-      <!-- <div class="dropdown">
-  <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Menu
-  </a>
-
-  <ul class="dropdown-menu">
-    <router-link to="/">
-    <li><a class="btn btn-primary dropdown-item" href="#">Home</a></li>
-  </router-link>
-  <router-link to="/food">
-    <li><a class="btn btn-primary dropdown-item" href="#">Calorie Counter</a></li>
-  </router-link>
-  <router-link to="/about">
-    <li><a class="btn btn-primary dropdown-item" href="#">About us</a></li>
-  </router-link>
-  <router-link to="/signup">
-    <li><a class="btn btn-primary dropdown-item" href="#">Signup</a></li>
-  </router-link>
-  <router-link to="/Login">
-    <li><a class="btn btn-primary dropdown-item" href="#">Login</a></li>
-  </router-link>
-  </ul>
-</div> -->
-
-
-      <div class="btn-group">
-        <router-link to="/">
-          <v-btn class="btn btn-primary mx-3" color="white" variant="primary" v-if="isAuthenticated">Home</v-btn>
-        </router-link>
-        <router-link to="/food">
-          <v-btn class="btn btn-primary mx-3" color="white" variant="primary" v-if="isAuthenticated">Calorie Counter</v-btn>
-        </router-link>
-        <router-link to="/about">
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" v-if="!isAuthenticated">About us</v-btn>
-        </router-link>
-        <router-link to="/signup">
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" v-if="!isAuthenticated">signup</v-btn>
-        </router-link>
-        <router-link to="/Login">
-          <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" v-if="!isAuthenticated">Login</v-btn>
-        </router-link>
-        <v-btn class=" btn btn-primary mx-3" color="white" variant="primary" @click="logoutFuncion" v-if="isAuthenticated">logout</v-btn>
-      </div>
-    </v-app-bar>
-    <router-view></router-view>
     <v-snackbar v-model="snackbar">
       {{ snackbarError }}
       <template v-slot:actions>
@@ -69,6 +52,8 @@
 <script>
 import router from "../router/index.js";
 import userServices from "./../services/user.service";
+import { createRouter, createWebHistory } from 'vue-router'
+
 
 export default {
   name: "App",
@@ -76,20 +61,25 @@ export default {
   data() {
     return {
       snackbarError: "",
-      snackbar: false
+      snackbar: false,
+      isAuthenticated: false
     }
   },
-  computed: {
-    isAuthenticated() {
-      return localStorage.getItem('session_token') !== null
-    }},
+  watch: {
+    $route: {
+      handler: function(){ 
+      this.isAuthenticated = localStorage.getItem('session_token') !== null
+      },
+    immediate: true
+  }
+  },
   methods: {
-    logoutFuncion() {
+    logoutFunction() {
       userServices.logout()
         .then(() => {
           localStorage.removeItem('session_token')
           this.$router.push('/login')
-          // location.reload()
+          location.reload()
         })
         .catch((error) => {
           this.snackbar = true;
@@ -97,47 +87,60 @@ export default {
           console.log(error)
         })
     }
+  },
+  mounted() {
+    this.$router = createRouter({
+      history: createWebHistory(),
+      routes: []
+    })
   }
 };
+// This is an even listetener that togles the nav bar
+document.addEventListener("DOMContentLoaded", function () {
+  var navbarToggler = document.querySelector(".navbar-toggler");
+  var navbarCollapse = document.querySelector(".navbar-collapse");
+
+  navbarToggler.addEventListener("click", function () {
+    if (navbarCollapse.style.display === "block") {
+      navbarCollapse.style.display = "none";
+    } else {
+      navbarCollapse.style.display = "block";
+    }
+  });
+});
 </script>
 
 <style>
-.bg-grey-darken-4 {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: relative;
-  z-index: 3;
+/* Centers the navigation links and buttons on the top of the screen. */
+/* Centers the logo/icon and the links and buttons in the navbar. */
+.navbar-brand {
+  display: flex;
+  align-items: center;
 }
 
-.dropdown {
-  position: relative;
-  z-index: 9999;
-  overflow: auto;
+.navbar-nav {
+  display: flex;
+  align-items: center;
 }
 
-.btn-white {
-  color: white;
+/* Fills the toggler icon background with white, making it visible. */
+.navbar-toggler-icon {
+  background-color: white;
 }
 
-.logo {
-  position: absolute;
-  top: -30;
-  left: 450px;
-}
+/* Changes the size of the nav bar. */
+@media screen and (max-width: 991px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: center;
+  }
 
-.logo img {
-  width: 93px;
-  /* adjust the size as needed */
-}
+  .navbar-nav .nav-item {
+    margin-bottom: 10px;
+  }
 
-.logo2 {
-  /* position: absolute; */
-  top: 0;
-  left: 0px;
-}
-
-.logo2 img {
-  width: 450px;
-  /* adjust the size as needed */
-  height: 63px;
+  .navbar-brand {
+    margin-bottom: 20px;
+  }
 }
 </style>
