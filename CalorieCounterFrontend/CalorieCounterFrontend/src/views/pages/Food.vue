@@ -1,8 +1,8 @@
 <template>
-  <v-app>
+  <v-app style="min-height: 100%;">
     <v-main class="bg-grey-darken-4">
-      <div class="bg-image">
-        <v-container style="height: 70vh; max-height: 70vh" class="align-center d-flex">
+      <div class="bg-image" style="height: 100%; display: flex; flex-direction: column;">
+        <v-container style="flex: 1 0 auto; overflow-y: auto;" class="align-center d-flex">
           <v-row justify="center">
             <v-col cols="12" lg="6">
               <v-card elevation="10">
@@ -54,7 +54,7 @@
             </v-col>
           </v-row>
         </v-container>
-        <v-container style="max-height: 1vh" class="align-center d-flex">
+        <v-container style="flex: 1 0 auto; overflow-y: auto;" class="align-center d-flex">
           <v-row justify="center">
             <v-col cols="12" lg="6">
               <v-card>
@@ -173,7 +173,7 @@ export default {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  min-height: 100%;
   /* height: 100vh;
   width: 100vw; */
   /* z-index: 1;
@@ -206,15 +206,17 @@ v-container {
 
 /* Small devices (mobile phones) */
 @media only screen and (max-width: 600px) {
+
   /* Set the font size to 16px for small screens */
   html {
     font-size: 16px;
   }
-  
+
 }
 
 /* Medium devices (tablets) */
 @media only screen and (min-width: 601px) and (max-width: 960px) {
+
   /* Set the font size to 18px for medium screens */
   html {
     font-size: 18px;
@@ -223,10 +225,10 @@ v-container {
 
 /* Large devices (desktops) */
 @media only screen and (min-width: 961px) {
+
   /* Set the font size to 20px for large screens */
   html {
     font-size: 20px;
   }
 }
-
 </style>
