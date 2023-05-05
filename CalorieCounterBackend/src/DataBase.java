@@ -6,7 +6,6 @@ import java.util.*;
 import java.sql.*;
 
 
-
 public class DataBase implements AutoCloseable {
 
     // allows us to easily change the database used
@@ -99,12 +98,12 @@ public class DataBase implements AutoCloseable {
         byte[] bytes = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
             bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                    + Character.digit(hex.charAt(i+1), 16));
+                    + Character.digit(hex.charAt(i + 1), 16));
         }
         return bytes;
     }
 
-    public Integer authenticateUser(String email, String password)  {
+    public Integer authenticateUser(String email, String password) {
         String sql = "SELECT user_id, password, salt FROM users WHERE email = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
@@ -173,6 +172,7 @@ public class DataBase implements AutoCloseable {
         }
         return null;
     }
+
     public void removeToken(String token) throws SQLException {
         String sql = "UPDATE users SET session_token=null WHERE session_token=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -202,12 +202,22 @@ public class DataBase implements AutoCloseable {
         }
     }
 
-
-    public void createFood(String name, int calories) {
+    public void createFood(String foodName, int calories, int addedByUserId) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO Food (name, calories) VALUES (?, ?)");
-            ps.setString(1, name);
+            // Get the current local time as a timestamp
+            long dateAdded = System.currentTimeMillis();
+
+            // Prepare the SQL statement with placeholders for the values
+            String sql = "INSERT INTO foods (food_name, calories, date_added, added_by) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            // Set the values for the placeholders in the SQL statement
+            ps.setString(1, foodName);
             ps.setInt(2, calories);
+            ps.setLong(3, dateAdded);
+            ps.setInt(4, addedByUserId);
+
+            // Execute the SQL statement and check if any rows were affected
             int rowsInserted = ps.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("A new food item was inserted successfully!");
@@ -217,34 +227,55 @@ public class DataBase implements AutoCloseable {
         }
     }
 
-    private void insertBMRIntoDatabase(double BMR) {
+//    private void insertBMRIntoDatabase(double BMR, int userId) {
+//        try {
+//            PreparedStatement ps = connection.prepareStatement("UPDATE users SET BMR = ? WHERE user_id = ?");
+//            ps.setDouble(1, BMR);
+//            ps.setInt(2, userId);
+//            int rowsInserted = ps.executeUpdate();
+//            if (rowsInserted > 0) {
+//                System.out.println("BMR for user \" + userId + \" was updated successfully!");
+//            }
+//        } catch (SQLException sqle) {
+//            error(sqle);
+//        }
+//    }
+
+    /*	 The BMR for men (655.1 + (9.563 x Weight in kg) + (1.850 x Height in cm) -
+         (4.676 x Age in years)*/
+    public void menBMR(int weightInKg, int heightInCm, int ageInYears, int userId) {
+        double BMR = 655.1 + (9.563 * weightInKg) + (1.850 * heightInCm) - (4.676 * ageInYears);
+        BMR = Math.ceil(BMR);
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO User (BMR) VALUES (?)");
+            PreparedStatement ps = connection.prepareStatement("UPDATE users SET BMR = ? WHERE user_id = ?");
             ps.setDouble(1, BMR);
-            int rowsInserted = ps.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new user's BMR was inserted successfully!");
+            ps.setInt(2, userId);
+            int rowsUpdated = ps.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("User's BMR was updated successfully!");
             }
         } catch (SQLException sqle) {
             error(sqle);
         }
     }
 
-    /*	 The BMR for men (655.1 + (9.563 x Weight in kg) + (1.850 x Height in cm) -
-         (4.676 x Age in years)*/
-    public void menBMR(int weightInKg, int heightInCm, int ageInYears) {
-        double BMR = 655.1 + (9.563 * weightInKg) + (1.850 * heightInCm) - (4.676 * ageInYears);
-        BMR = Math.ceil(BMR);
-        insertBMRIntoDatabase(BMR);
-    }
-
-    // The BMR for women (66.47 + (13.75 x Weight in kg) + (5.003 x Height in cm) -
-    // (6.755 x Age in years)
-    public void womenBMR(int weightInKg, int heightInCm, int ageInYears) {
+    // The BMR for women (66.47 + (13.75 x Weight in kg) + (5.003 x Height in cm) - (6.755 x Age in years)
+    public void womenBMR(int weightInKg, int heightInCm, int ageInYears, int userId) {
         double BMR = 66.47 + (13.75 * weightInKg) + (5.003 * heightInCm) - (6.755 * ageInYears);
         BMR = Math.ceil(BMR);
-        insertBMRIntoDatabase(BMR);
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE users SET BMR = ? WHERE user_id = ?");
+            ps.setDouble(1, BMR);
+            ps.setInt(2, userId);
+            int rowsUpdated = ps.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("User's BMR was updated successfully!");
+            }
+        } catch (SQLException sqle) {
+            error(sqle);
+        }
     }
+
 
     private int getMaxUserId() throws SQLException {
         Statement statement = connection.createStatement();
@@ -257,16 +288,15 @@ public class DataBase implements AutoCloseable {
         return maxID;
     }
 
-    private void updateAMR(String activityLevel, double multiplier) throws SQLException {
-        int maxID = getMaxUserId();
-        String getBMRQuery = "SELECT BMR FROM User WHERE UserID = " + maxID;
+    private void updateAMR(int userId, String activityLevel, double multiplier) throws SQLException {
+        String getBMRQuery = "SELECT BMR FROM users WHERE user_id = " + userId;
         ResultSet BMRResultSet = connection.createStatement().executeQuery(getBMRQuery);
         if (BMRResultSet.next()) {
             double BMR = BMRResultSet.getDouble("BMR");
             double AMRcalc = Math.ceil(BMR * multiplier);
-            PreparedStatement updateQuery = connection.prepareStatement("UPDATE User Set AMR = ? WHERE UserID = ?");
+            PreparedStatement updateQuery = connection.prepareStatement("UPDATE users SET AMR = ? WHERE user_id = ?");
             updateQuery.setDouble(1, AMRcalc);
-            updateQuery.setInt(2, maxID);
+            updateQuery.setInt(2, userId);
             int rowsUpadted = updateQuery.executeUpdate();
             if (rowsUpadted > 0) {
                 System.out.println("AMR for " + activityLevel + " activity level: " + AMRcalc);
@@ -275,9 +305,9 @@ public class DataBase implements AutoCloseable {
     }
 
     //Sedentary (little to no exercise)
-    public String sedentary() {
+    public String sedentary(int userId) {
         try {
-            updateAMR("sedentary", 1.2);
+            updateAMR(userId,"sedentary", 1.2);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -285,9 +315,9 @@ public class DataBase implements AutoCloseable {
     }
 
     // Lightly active (exercise 1-3 days/week)
-    public String lightlyActive() {
+    public String lightlyActive(int userId) {
         try {
-            updateAMR("lightly active", 1.375);
+            updateAMR(userId,"lightly active", 1.375);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -295,9 +325,9 @@ public class DataBase implements AutoCloseable {
     }
 
     // Moderately active (exercise 3-5 days/week)
-    public String moderatelyActive() {
+    public String moderatelyActive(int userId) {
         try {
-            updateAMR("moderately active", 1.55);
+            updateAMR(userId,"moderately active", 1.55);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -305,9 +335,9 @@ public class DataBase implements AutoCloseable {
     }
 
     // Active (exercise 6-7 days/week)
-    public String active() {
+    public String active(int userId) {
         try {
-            updateAMR("active", 1.725);
+            updateAMR(userId,"active", 1.725);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -315,9 +345,9 @@ public class DataBase implements AutoCloseable {
     }
 
     // Very active (hard exercise 6-7 days/week)
-    public String veryActive() {
+    public String veryActive(int userId) {
         try {
-            updateAMR("very active", 1.9);
+            updateAMR(userId,"very active", 1.9);
         } catch (SQLException sqle) {
             error(sqle);
         }
@@ -325,10 +355,9 @@ public class DataBase implements AutoCloseable {
     }
 
     // To lose weight - 500 calories to the maintenance(AMR)
-    public String loseWeight() {
+    public String loseWeight(int userId) {
         try {
-            int maxID = getMaxUserId();
-            String updateQuery = "UPDATE User SET CalorieIntake = AMR - 500 WHERE UserID = " + maxID;
+            String updateQuery = "UPDATE users SET CalorieIntake = AMR - 500 WHERE user_id = " + userId;
             Statement s = connection.createStatement();
             s.executeUpdate(updateQuery);
         } catch (SQLException sqle) {
@@ -338,10 +367,9 @@ public class DataBase implements AutoCloseable {
     }
 
     // To gain weight + 500 calories to the mainenance(AMR)
-    public String gainWeight() {
+    public String gainWeight(int userId) {
         try {
-            int maxID = getMaxUserId();
-            String updateQuery = "UPDATE User SET CalorieIntake = AMR + 500 WHERE UserID = " + maxID;
+            String updateQuery = "UPDATE users SET CalorieIntake = AMR + 500 WHERE user_id = " + userId;
             Statement s = connection.createStatement();
             s.executeUpdate(updateQuery);
         } catch (SQLException sqle) {
@@ -351,11 +379,11 @@ public class DataBase implements AutoCloseable {
     }
 
     // Get current calorie intake
-    public double getCalorieIntake() {
+    public double getCalorieIntake(int userId) {
         double CalorieIntake = 0;
         try {
             int maxID = getMaxUserId();
-            String results = "SELECT CalorieIntake FROM User WHERE UserID = " + maxID;
+            String results = "SELECT CalorieIntake FROM users WHERE user_id = " + userId;
             Statement s = connection.createStatement();
             ResultSet CalorieSet = s.executeQuery(results);
             if (CalorieSet.next()) {
@@ -394,21 +422,12 @@ public class DataBase implements AutoCloseable {
         return "Food calories subtracted from CalorieIntake";
     }
 
-    /**
-     * Prints out the details of the SQL error that has occurred, and exits the
-     * programme
-     *
-     * @param sqle Exception representing the error that occurred
-     */
     private void error(SQLException sqle) {
         System.err.println("Problem Opening Database! " + sqle.getClass().getName());
         sqle.printStackTrace();
         System.exit(1);
     }
 
-    /**
-     * Closes the connection to the database, required by AutoCloseable interface.
-     */
     @Override
     public void close() {
         try {
@@ -419,5 +438,4 @@ public class DataBase implements AutoCloseable {
             error(sqle);
         }
     }
-
 }

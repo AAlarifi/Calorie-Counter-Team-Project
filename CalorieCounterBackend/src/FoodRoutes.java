@@ -15,8 +15,9 @@ public class FoodRoutes {
     public static Route insertFoodRoute = (Request request, Response response) -> {
         String name = (request.queryParams("name"));
         int calories = Integer.parseInt(request.queryParams("calories"));
+        int addedByUserId = Integer.parseInt(request.queryParams("addedByUserId"));
         try (DataBase db = new DataBase()) {
-            db.createFood(name, calories);
+            db.createFood(name, calories, addedByUserId);
         }
         return "Food has been added to the database";
     };

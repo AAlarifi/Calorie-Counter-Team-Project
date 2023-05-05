@@ -1,12 +1,16 @@
 const submitCalories = (food, calories) => {
   let session_token = localStorage.getItem("session_token");
-  if (!session_token) {
-    return Promise.reject(new Error("No session token found. Please login again."));
+  let user_id = localStorage.getItem("user_id");
+  if (!user_id) {
+    return Promise.reject(new Error("No user ID found. Please login again."));
   }
-    return fetch(`http://localhost:8008/secured/food?name=${food}&calories=${calories}`, {
+  if (!session_token) {
+    return Promise.reject(new Error("No session token  found. Please login again."));
+  }
+    return fetch(`http://localhost:8008/secured/food?name=${food}&calories=${calories}&addedByUserId=${user_id}`, {
         method: "POST",
         headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded',
             "X-Authorization": session_token
         }
     })
