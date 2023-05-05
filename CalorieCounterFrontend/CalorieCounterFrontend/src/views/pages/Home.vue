@@ -22,7 +22,7 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn block variant="outlined btn btn-primary" @click="calculateAMR()">calculate AMR</v-btn>
+                  <v-btn block variant="outlined btn btn-primary" @click="calculateAMR()">calculate your daily Caloire Intake</v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -100,6 +100,7 @@ export default {
   z-index: 1;
   overflow: auto;
 }
+
 
 @media only screen and (max-width: 1068px) {
   .bg-image {
